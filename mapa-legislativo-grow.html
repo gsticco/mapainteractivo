@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Interactivo de Género — Grow - Género y trabajo</title>
+  <style>
+    :root {
+      --bg:#EEEbE4; --surface:#FFF; --surface2:#F7F5F2;
+      --border:#DDD9D0; --border2:#C8C4BB;
+      --purple:#7B1FA2; --purple-light:#AB47BC; --purple-pale:#F3E5F5;
+      --magenta:#C2185B; --teal:#00796B; --text:#1A1A2E;
+      --text2:#5A5570; --text3:#9490A8; --white:#FFF;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+
+    header{display:flex;align-items:center;gap:14px;padding:8px 20px;background:var(--white);border-bottom:1px solid var(--border);flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+    .divider-v{width:1px;height:22px;background:var(--border);}
+    header h1{font-size:13.5px;font-weight:600;color:var(--text);}
+    header .subtitle{font-size:11px;color:var(--text3);margin-left:auto;white-space:nowrap;}
+    header .subtitle strong{color:var(--purple);}
+
+    .main{display:flex;flex:1;overflow:hidden;}
+
+    /* ──────────────── LEFT PANEL (ACCORDION) ──────────────── */
+    .left-panel{
+      width:230px;min-width:230px;
+      background:var(--white);
+      border-right:1px solid var(--border);
+      display:flex;flex-direction:column;
+      overflow-y:auto;flex-shrink:0;
+      box-shadow:2px 0 6px rgba(0,0,0,0.04);
+    }
+    .left-panel::-webkit-scrollbar{width:3px;}
+    .left-panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+    .left-panel-title{
+      padding:10px 14px 8px;
+      font-size:9.5px;font-weight:700;
+      text-transform:uppercase;letter-spacing:0.1em;
+      color:var(--text3);border-bottom:1px solid var(--border);
+      flex-shrink:0;
+    }
+
+    .cat-section{border-bottom:1px solid var(--border);}
+    .cat-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px 13px;
+      cursor:pointer;
+      font-size:11px;font-weight:700;
+      color:var(--text2);
+      transition:all 0.15s;
+      user-select:none;
+      gap:6px;
+    }
+    .cat-header:hover{background:var(--surface2);color:var(--text);}
+    .cat-header.open{background:var(--purple-pale);color:var(--purple);border-left:3px solid var(--purple);padding-left:10px;}
+    .cat-chevron{font-size:9px;transition:transform 0.2s;display:inline-block;flex-shrink:0;}
+    .cat-header.open .cat-chevron{transform:rotate(180deg);}
+
+    .cat-body{display:none;flex-direction:column;padding-bottom:4px;background:#FDFCFB;}
+    .cat-body.open{display:flex;}
+
+    .layer-btn-left{
+      padding:7px 14px 7px 26px;
+      font-size:11px;color:var(--text2);
+      cursor:pointer;border:none;
+      border-left:3px solid transparent;
+      background:none;text-align:left;
+      transition:all 0.15s;font-family:inherit;
+      line-height:1.4;
+    }
+    .layer-btn-left:hover{background:var(--purple-pale);color:var(--purple);border-left-color:var(--purple-light);}
+    .layer-btn-left.active{background:var(--purple-pale);color:var(--purple);font-weight:700;border-left-color:var(--purple);}
+
+    .cat-divider{height:1px;background:var(--border);margin:3px 14px;}
+
+    .cat-source{
+      font-size:9px;color:var(--text3);
+      padding:5px 14px 6px;font-style:italic;
+      border-top:1px solid var(--border);
+      line-height:1.45;margin-top:2px;
+    }
+
+    /* ──────────────── MAP AREA ──────────────── */
+    .map-area{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;position:relative;background:var(--bg);overflow:hidden;}
+    #map-svg{width:100%;height:100%;display:block;}
+
+    /* COUNTRIES */
+    .country{stroke:white;stroke-width:1.2;stroke-linejoin:round;cursor:pointer;transition:filter 0.18s,stroke-width 0.18s;filter:drop-shadow(1px 2px 3px rgba(0,0,0,0.15));}
+    .country:hover{stroke-width:2;filter:drop-shadow(2px 3px 6px rgba(0,0,0,0.3)) brightness(1.08);}
+    .country.inactive{fill:#C8C4BB !important;filter:drop-shadow(1px 2px 2px rgba(0,0,0,0.08));}
+    .country.inactive:hover{filter:drop-shadow(2px 3px 5px rgba(0,0,0,0.2)) brightness(1.05);}
+    .country.selected{stroke:#1A1A2E !important;stroke-width:2.5 !important;filter:drop-shadow(2px 4px 8px rgba(0,0,0,0.35)) brightness(1.05) !important;}
+    .country-label{font-size:8px;fill:rgba(0,0,0,0.52);text-anchor:middle;dominant-baseline:middle;pointer-events:none;user-select:none;font-weight:600;letter-spacing:0.02em;}
+    .country-label.active{fill:rgba(0,0,0,0.72);font-size:9px;}
+
+    /* TOOLTIP */
+    .map-tooltip{position:absolute;background:rgba(255,255,255,0.97);border:1px solid var(--border2);border-radius:8px;padding:9px 14px;font-size:12px;pointer-events:none;opacity:0;transition:opacity 0.12s;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.12);min-width:160px;}
+    .map-tooltip.visible{opacity:1;}
+    .tt-name{font-weight:700;color:var(--purple);margin-bottom:3px;}
+    .tt-value{color:var(--text);font-weight:600;font-size:13px;margin-bottom:2px;}
+    .tt-sub{color:var(--text3);font-size:10px;}
+
+    /* LEGEND */
+    .legend{position:absolute;bottom:14px;left:14px;background:rgba(255,255,255,0.94);border:1px solid var(--border);border-radius:8px;padding:9px 13px;box-shadow:0 2px 8px rgba(0,0,0,0.08);max-width:210px;}
+    .legend-title{font-size:10px;font-weight:700;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;}
+    .legend-item{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--text2);margin-bottom:4px;}
+    .legend-item:last-child{margin-bottom:0;}
+    .legend-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08);}
+    .legend-grad-wrap{display:flex;flex-direction:column;gap:2px;margin-bottom:3px;}
+    .legend-grad{height:10px;border-radius:3px;width:100%;}
+    .legend-grad-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--text3);}
+
+    /* ZOOM */
+    .zoom-controls{position:absolute;bottom:14px;right:14px;display:flex;flex-direction:column;gap:4px;z-index:20;}
+    .zoom-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:rgba(255,255,255,0.95);color:var(--text2);font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;box-shadow:0 1px 4px rgba(0,0,0,0.1);font-family:inherit;line-height:1;}
+    .zoom-btn:hover{background:var(--purple-pale);border-color:var(--purple-light);color:var(--purple);}
+    .zoom-btn.reset{font-size:12px;}
+
+    /* LOADING */
+    #map-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);z-index:10;gap:12px;font-size:13px;color:var(--text2);}
+    .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* ──────────────── RIGHT SIDEBAR ──────────────── */
+    .sidebar{width:350px;background:var(--white);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;box-shadow:-2px 0 8px rgba(0,0,0,0.04);}
+    #sidebar-top{padding:11px 13px;border-bottom:1px solid var(--border);background:var(--surface2);flex-shrink:0;}
+    .filter-label{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-bottom:5px;}
+    .filter-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px;}
+    .filter-row:last-child{margin-bottom:0;}
+    .filter-btn{padding:3px 9px;border-radius:20px;border:1px solid var(--border2);background:white;color:var(--text2);font-size:11px;cursor:pointer;transition:all 0.15s;font-family:inherit;}
+    .filter-btn:hover{border-color:var(--purple-light);color:var(--purple);}
+    .filter-btn.active{background:var(--purple);border-color:var(--purple);color:white;}
+    .capa-info-title{font-size:13px;font-weight:700;color:var(--purple);margin-bottom:4px;}
+    .capa-info-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:3px;}
+    .capa-info-src{font-size:10px;color:var(--text3);font-style:italic;}
+    .tema-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;background:var(--purple-pale);color:var(--purple);border-radius:12px;padding:2px 8px;font-weight:700;margin-bottom:6px;}
+
+    .list-panel{flex:1;overflow-y:auto;padding:8px 10px;}
+    .list-panel::-webkit-scrollbar{width:4px;}
+    .list-panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+    .list-count{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);padding:3px 2px 7px;}
+
+    /* LAW CARDS */
+    .country-group{margin-bottom:12px;}
+    .group-header{font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:0.09em;padding:3px 3px 5px;border-bottom:2px solid var(--purple-pale);margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+    .group-header.intl{color:var(--teal);border-bottom-color:#E0F2F1;}
+    .law-card{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:7px 10px;margin-bottom:4px;cursor:pointer;transition:all 0.15s;}
+    .law-card:hover{border-color:var(--purple-light);background:var(--purple-pale);}
+    .law-card.selected{border-color:var(--purple);background:var(--purple-pale);}
+    .law-card-name{font-size:11.5px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4;}
+    .law-card-meta{display:flex;gap:6px;align-items:center;}
+    .law-year{font-size:11px;color:var(--text3);}
+    .badge{font-size:10px;padding:2px 7px;border-radius:12px;font-weight:600;letter-spacing:0.03em;}
+    .badge-nacional{background:#E3F2FD;color:#1565C0;}
+    .badge-supranacional{background:#F3E5F5;color:#6A1B9A;}
+    .badge-convenio{background:#E0F2F1;color:#00695C;}
+    .empty-list{text-align:center;padding:20px;color:var(--text3);font-size:12px;}
+    .empty-list-hint{font-size:11px;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin-top:4px;line-height:1.5;}
+
+    /* CAPA ITEMS (sidebar list for non-legislation layers) */
+    .capa-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:7px;margin-bottom:3px;cursor:pointer;transition:all 0.15s;border:1px solid transparent;}
+    .capa-item:hover{background:var(--purple-pale);border-color:var(--purple-light);}
+    .capa-item.selected{background:var(--purple-pale);border-color:var(--purple);}
+    .capa-item.no-data{opacity:0.45;cursor:default;}
+    .capa-dot{width:13px;height:13px;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,0.1);}
+    .capa-item-name{font-size:12px;font-weight:600;color:var(--text);flex:1;}
+    .capa-item-val{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;}
+    .capa-item-unit{font-size:10px;color:var(--text3);margin-left:1px;}
+
+    /* DETAIL */
+    .detail-panel{border-top:1px solid var(--border);background:white;flex-shrink:0;max-height:220px;overflow-y:auto;padding:12px 14px;}
+    .detail-panel::-webkit-scrollbar{width:4px;}
+    .detail-panel::-webkit-scrollbar-thumb{background:var(--border2);}
+    .detail-empty{color:var(--text3);font-size:12px;text-align:center;padding:8px 0;}
+    .detail-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+    .detail-close{background:none;border:1px solid var(--border2);border-radius:50%;width:22px;height:22px;font-size:12px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;font-family:inherit;}
+    .detail-close:hover{background:#fce4ec;border-color:var(--magenta);color:var(--magenta);}
+    .detail-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;flex:1;}
+    .detail-meta{display:flex;gap:8px;align-items:center;margin-bottom:7px;flex-wrap:wrap;}
+    .detail-pais{font-size:12px;color:var(--magenta);font-weight:700;}
+    .detail-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:9px;}
+    .detail-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--purple);text-decoration:none;border:1px solid var(--border2);padding:4px 9px;border-radius:6px;transition:all 0.15s;background:var(--surface2);}
+    .detail-link:hover{border-color:var(--purple);background:var(--purple-pale);}
+    .cd-name{font-size:14px;font-weight:700;color:var(--purple);margin-bottom:8px;}
+    .cd-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+    .cd-row:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+    .cd-label{font-size:11px;color:var(--text2);}
+    .cd-val{font-size:12px;font-weight:700;color:var(--text);}
+    .cd-note{font-size:11px;color:var(--text3);font-style:italic;margin-top:6px;line-height:1.45;}
+    .cd-src{font-size:10px;color:var(--text3);margin-top:5px;}
+
+    footer{font-size:10px;color:var(--text3);padding:5px 16px;border-top:1px solid var(--border);background:var(--surface2);flex-shrink:0;}
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABBsAAAKVCAIAAAABSnQBAABn0UlEQVR42u3de3iU9Z3//5sMmRwmYSYMA8kAmZzIgYRgYjAshCBg0chidUFt/C7IqnhYvFaoV1exXli5rGh7WbBXWVHXVuG3TW1xpbIUawXkuKRiAiGQADkThsAQMsPkODDJ74/pZrNh5p7TPafk+bj6h01m7tzzmXuGz+v+HN5jBgYGBAAAAACjycz5D506+LkkhwqjNQEAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAImCJgAAAABAogAAAABAogAAAABAogAAAABAogAAAAAAEgUAAAAAEgUAAAAAEgUAAACAEWUsTRBU2nu7BUFo6+7quXVTEIQms6nzpsX2qwvGdvP//PfttIqY+OjYwf+bM14jCELU2PD4aIUgCOrIaNoWrlx7pr6+6309g1eOPGxsrFxO4wAAABJFMDJbLIaerut9PbbYUGG47M3R9F2d+q7Owf9r92j5moSYcHlSrHJ8RJQmSkFPkSuw8trlY20Xh145dqWr1Knj4mZOmKRVxNJuAABgmDEDAwO0gn+093a3dXe1mE31NzrOG9uD4ZRsPcXEWGV8tIJxjFGiz3qr/MolV4KEXcVa3YLJOq4WAABC3cz5D506+Lkkh2KMwoesA/1Xurv0Xebq6wYvhyB85LyxfWi2ydckpIxTpSnHT4pWyMawxmYEZon9rU17W+q8OcghffMhfXO+JmFp0jRyBQAAIFH4hNliaek0fXtVH5wpQkSF4fLgOedrEnLGazJUE5gcNTLCbaWh7fOGWpGlOB5cKstTs4q1OpoXAAASBaSh7zKfunblyOUWqTptQZIuYsPlRQmJzKEP6Yi7tfqvns1xErezvqaq/erjGTOJnQAAjGasoyBIuIpoEaLX59bT3/r04owNl7+cX0SoAAAgtEi4joJE4SHbPjl/bqkf8UHCUbQoSkikExnkGkwdW6rK/XNJECoAACBRwCXWgf7ajvYDl5qCZLOmwNIqYpYmZWTGqVnGHYT2Ntd5uQibUAEAAInCFayjcJXZYjlyucWfXbTgp+/qfP/Md4IglCSm3TVJy84/waPB1OHna9V80/LJuVPP5dxJvAQAYLQhUbjSbzZ/dbEh5DZu8qe9LXV7W+rSVer7E9NSlHE0SMDTr1uTnWzT2GxlSWw/6bNa9V3m7ls33Spbcd7Y/lVLQ4kujbcAAAASBf6mwdTx+/ozvtgkZ0SyVbdgKlRgWQf636o44uKD8zUJi6em2F1qb/thsVbX3tt94FLzIX2zi9mS0SoAAEYb1lGQJXwiNlz+UEpmniaeXOFnH9eecmU8LTZc/lj6jOzxGhcP22e9VXbhjCtHLklMY5gCAIDgxzoKskSwM9+0bD9X9XlDLbnCz1evK53+dJV69fS8CJkbH/8I2dhVmTNTxql21teIPIyadwAAjEIkCrKEP3LFk1l5rK/wg9/Xn3ElTni8frpYq5uiGPdRTeXtmybHhsvXzJjl01ol1oF+Y19v4w2jIAgz1BPdSkQAAIBE4Vvtvd27my6w9tp3uWJLVblWEbMyYybV8XwaiZ3mYa0ixsvtmFKUcY+lz7Dt8TUoX5NQOi3blS5+g6njel+Po98WTNTaDRJftTTU3+gYumXzyoxcuw8Wuw4tlpZO07dX9YIgtHWbh7aVVhETHx0rCMKsidrEGKXre+D2WW+dbr/q6LfjI6JEgvSJq3q3niXyt5LHqRytXbEO9Fca2hydQ9TYcNdnvgEAQKJw2CHY3XTBxVWn8Ia+q/OtiqP5moRlKVlULfAFVwYoVk/P934GWvZ4TbFWN/ipcatzf+hyi0h0H3YcW2/484Zab+pI9llvlV+5JL5plb6r0/Zb27lpFTFz4qcWTprsNCNFyMZ+3dogcuTNRYsdNXiT2eTom+fnc+65/U/XmTq2n6uy+/iX8+c6OoHajnZHzxIEoSQxjUQBACBReOXEVb2XnRW4q8JwucJweXlq1tyEqSyukDSwmZ0OUCxPzZJqF6aHUjIqDZcFQfjhHbN9tLOT2WJ5q+KIl1lif2uTB3U59F2dO+trdtbXlCSmLU5MEb9Q75mSItJlr+1od9RlXzBZ5yhR1Jk6bn/WgUtNdh+sVcSIDP3tbjoncvILpyTx2QEAkCg81N7b/eHZCpZMBMrO+po/t9T7etr9qHLq2hXxB8SGy+cmTJXqz8nGhP3wjtmqiEgfxULv44Qk9wv2ttQdudzyUEqmyCBMniZeJFHsbjrnKFGoI6O1ihi730IHLjUNe1af9dbQSV/DIo1IM4p8y+VrEliLAgCQxKi7SWwd6N9ZX/P6t4eIE4Flvml5q+Lox7Wn+qy3aA3vHbncIv6AexNTpe39qyOjfRQnGkwdPy7f73EYsA70722u236uSpLhR9vuAnub60TCVUmiw91y9V2d7b3djn67NCnD7s/PG9uHfS5EVmvMUE/07KooTkjkgwMAIFG4Td9l3lD+DasmgkeF4fLGbw+duW6gKbzq9VosTnvPhZMmh8prcavg9+1x4r3q7zyY6SRub0vdr05/ax3ot/vbuyaJLSP56xW9o19lxqkd/arO1DH0/37d2mD3YSWJaY7GGawD/SKJQquIYfs1AACJwu1+xs76mrcqjrJqIuh6kDct75/5jsEKb5wzXhN/QLFWFyrzWz45d8rLOOFodpCXzhvb36v+zm6oUEdGp6vUImnEURQRGd8YumpCZPKSSJhpvmES+boTmSsFAACJwo723u6fVx5jaCKY2QYr9F1mmsID1c4GebLiJoTECzlxVe9NHviqpcFHcWIwVHzVYn+s4P5EsTLhtR0Oz8pRJBg68anymv3dsbSKGJFl8X8SHajJ08TzwQEASGXkL8s7cVUvsm4ymKWr1DHhckEQUsaposeGD/1V8jiV7T/aurt6bt0c/Hn3rZsNN4yCIHTetPi0a+ULtpUVruyug2E6nY28JcYoQ+KFfN5Q6/Fzz1w3SD7Z6XZ7W+oyVOrb5wulKONiw+WOxgTE12enq9R2P62DOz4da7to97mOlmEIgmC2iH0DlCSm8REDAJAoXNJnvVV24UxI1K1LV6lTx8VpoqLHR0QpIyJc30Ln9juUxVrd4H/bagz3Wa36LnOT2dTW3Rn8MWNvS139jY7HM2ZSs8J1Tt/WUGlMkVk6WkVMmlKdFKsUBEGriFVHRg37sA8ruieiJDHtrknawU+Z7WPy1yt6FwPJlqpyu/Ui7k1M3VlfY/cptvXZjsYT7k9Ms/sO2nZ8EpnyJLIMQ3xNtvjCDwAASBR/097b/YuTx4N21US6Sp2rnqiOjI6PVvhoO39BEGRjwmwH1ypiB7e/NFsshp6uc8b2YUWIg6p//FbFkSez8lg5Kol8TULonryt2FzehATxULS/tcnFLLFwStKwMGD7mJTo0hZOSXKxfsX+1qYS3fBpToWTJjtKFIIg/PWK/van2OjGKe2Ob9gmPjnKBiLjDOJrstNVat995wAASBQjx5nrBtdvWPo5RaQpx0+KVgRwykGsXB4rl9s669aB/ivdXXWm61XtV4MqXZhvWrZUlZckpjnqhGHQCF7R7mI17j7rLVdigNOjRcjGlujSNFHRTudJ7m2puz2ZRMjGDi0lfvtTHE3nk40JK0pItPsS6kwdjrJBkeO9X8XXZIsv+QAAgEQhWAf6v2pp8MN0atcVa3X5E+Inx8QG4WY7sjFhWkWsVhFbrNX1WW9d6jRXXGurNFwOkrEd2wyo53LuZM63iE6fvVlmi+WzhhoPL/uERG+GmNJVatdnvrkyQOFiOBEEwfYwp6HC7jCFSBlsQbR+9sIpSXa/tRzdGUlXqUUaR2RNdmy4nKE/AACJwkmc8N3ekR4EiTnxUwI7HOGWCNnYFGVcijLuoZSM5humimttwbA71nlj+88rj63JuYtlFf5n6b/l8TKknPGaFMHDnmu+JmFV5kzXH++0ul++JsHFODEYKo5fuST+TXKqve32RCFSBlsQXZ8dIRubr0lwvbVFxhlEqmsLgnBvYioXNgBAciPn1q/ZYtlQ/k3A40S+JmFtbuHmosXLU7O0ithQvLkuGxOWooxbnpq1uWjx2tzCgM/C13d1vlVxhI1lR4nYcHnptGy3PvhOh9TcOqDN4xkznV6WZoudvyuy/5J4/WzXK1jHhst14xxu3lV+5ZLIc0Ol0CEAgEQRkE6n+a2KIwGcqxMbLl+emvXzOfesypyZoowbGbN0bNFiVebMn8+5Z3lqVmx4wEYJbBvLNvzfKsKwkYeNqJHGNTNmuTU/0EfV/WLl8qHbptnV0mm6/YeZcWqRT4pI/Wzb/rOunNu9iaki3zB/bqmXtikAABgViaLB1BHAYtjpKvXa3MKfzl44gv+1ti05/enshWtzC0VqA/valqpyyhTa7fuKP+BC6FQmSVeptYpYt57itLpf/gQPS7k5fWJNxzW7OVxkzbRI/WzB5SlJIuMMDaYOkW/CBZN1fF4AACQK+/+CbqkqD8ifztckvDar+PkZs0bPSscUZdzzM2a9Nqs4UFOhdtbX7G2u43M7PFSI3ts237SEyn5QMe6Pg7V1m51etJ6djMjMIhtHa+KLROcvNd8weRAVhoYukTsXhxwvKREvsA0AwOhNFHub6wISJ2xZYlXmzNH5L7Q6Mto2FcrptBCfvOktdYSKYaY5Gzi61DliV6E4WgbtStYSJxsTJv50R2EmVi4XidwiGzG58jZddrygqM8qtpL+kdRsPikAABKFnTjh/11i8zUJPy1cOGqzxFARsrHLU7MCMl5BqBgmx8EOQoPOhc7EJz9nLW+eLhJmRJZZnze2213SLQhCxbU2p6dkvmlxtKBIZE22+GJuAAC8FKrz/v0fJ9JV6tJp2QSJYWzjFUuTpu1uuuDxTqOehQpBEByVDBttMlQTxB9w5HKLB7UCVRGRr80qFnlAW3dXYEtJBu1srhRlnMg2snbfDutAv4vLhCqutdmdyiWyJrsoIZFPCgDAd0Ly3xg/xwmtImZtbuHzM2YRJ8RzxdrcQq0ixm9/tP4GWz/9Taxc7nQphQc7ZcnGhKkjo0X+Fx+tCOwLD+a9EO6ZkiIS8G5fn13b4eo40iF98+1PF1+TvXBKEh8TAACJImBxYnlq1o/y5lBl1hUpyrgf5c1ZmZHrh7+VrlJTS3uoImfVDH5ff2YUNovTddvixLfJEk9xM9QTRQLe7euzD1xqcv3Ebo8fImuy8zUJbBoLACBRBCZO2JZMFGt1dFtdJxsTVjBR+9PChT5dXEGcuF2GswUD+q7OM842WnVXn9Ua8BcuPiwmvm7bKfE9qcVXWUTIxpY4rmw9bH22eKHr2w2LH+JrshdPTeEDAgAgUfzNiat6/8SJ2HD5M9l3rsqc6XSnf9hvQLl8VebMZ7Lv9EVRPOKEXbpxSqet/dvzpx2tCfakt22xbD39bcBfeHx0rLMo5eEwhfcVFe+apHX0q2Hrs0+3X7X7sGey77QbmVx8ui1xuVviAwCAEZsoGkwd289V+eEP5WsSNswqzna2eQ6cyh6v2SD1TlDECUdkY8IeSsl0kgFuWj45d0qqOBHYKvWDUsapxB9w6toVz47sdOelWRO14g9QR0aLVIQ8MmSe0tetDXYfk6aMc7Qeo/LaZadPF0SXcwAAMLoShb7L7J+6EyszcldlzmTOsVQiZGNtgxXECT/I08Q7HaY4b2zfWV8jUrY5tOKELbiKP8DuMmin+qy3nO68lBjjfD/W+x1PfBo8MbPFYnd2VrFWFyEb62g9xrG2i4NfjyKTu/I08Xw0AAAkCj9NrtAqYn5auLDA2U1HeNbn+2nhwnTvKgMQJ5xyZZhCEIRD+ub3qr/zOFScuKr/cfn+IIkTgiCoI6Od7nP1ecM5dw9bdsHJQvbYcLkrsyJFZqMNrs8+4mBR9Zz4KbZYbnegT9/VaZvQdayt1dFfL0lM4yMDACBRCH3WW364G1qs1f0obw6rJnwnVi5/LudOkYWqxAlJuDJMIQjCeWP7zyuPtfd2u3Vw60D/x7Wn/DP50C1O97k6pG92azXFiat6p8VVnP7RwZh3b2Kqo9/a1mfbTRSx4fLB9Q+O6uWdunZFfCzFxZMEAGAkJwrrQP+HZyt9HSeeyb5zeWoWvVVfk40JK9GleTADijjhViO/nF/kyiP1XZ2vf3toZ32NK0XibN3WDeXf+LOIoetcKbbwVsVRF1dan7lucCU1uV7hoXDSZJFod+Kq3u5X3NAckqKMsxsUj1xuEamTna5Sc5cEAECiEL5qaXBrR0V3xYbLX2MRtn9lj9e8NqvY9T2giBNuX9Vyueux7ZC++UfHvv649lSDqeP2eVDtvd36LvPHtad+dOzrnfU1wTPTaRjxfVoHbakqP3FVL34LY29znStVwEsS01xfbeVo2pKNo/QyLIfYHegw37TsrK9xdOT7PR0SBADAXcG7BPnMdYNP94pNV6kfz2B/2ABQR0ZvLLz7vervnMZF4oTHsa1Yq3O6sHhQheHy4OBDbLh8mkp9wdgetPnBroVTklz5uth+rurzhtqHUjJnqCcOjQR91lvlVy79uaXexVftbgnqxVNT3BreSVephyWWwkmTRcKDnWAZLqcuJwBgtCcKfZfZlTuF3sSJkOuqOp31ro6MDpXXIhsT9lzOnTvOnRbpZhEnvPFQSkZbd6cHQ3zmm5bgnNokLkI2dmVGriuzlcw3LYMPS1epO2/2uVsFb2VGrrvbwWkVsVpFjOt/6PbhBdtAh+tvjStr9AEAGMmJos96y6ebO5UkppXognQ+gHWg39jX29bd1XPrZvV1gyAI7nbvbPeYY8LlSbHK8RFRyoiI4EwasjFhqzJnTopS2L21TJyQJLO5MhA0YhRM1FZfN7j1efGgcfI1CZ7tCLc0KcPFuySx4XLdODv70hYnJLr+6hztOQsAwGhJFD5djR2EccJssbR0mlrMplPtbe7eLrVztP+5x3zo/3bQU8fFZajUmihFUE30KtGlKcLDh03nIE5IGCq+amnw3exBt+ZW+cGKjBlt3WbvP0SOaBUxKzJmePbczDhXd08uSki0e/Hb1me78t3o1jIPAABGYKI4cVXvu7uqKzNyg6TiRJ/11qVOc8W1tkrDZT9MWD9vbD9vbLf1LLWKmJnq+AyVWjdOGQy99mKtbopi3GAFQ+KEtKHClp99ESrW5hYqIyKCKlHIxoStybnrk3OnfPEdYlt55fGVKRsTVpKY5sobIbLl672Jqa6sprhrEnV1AACjOFG093b7brf7tbmFAV+q2Ge9VWfqOHCpKYBzUfRdnfquOlvPpliry58QH/BokaKMW5tbuKWqnDjhCyW6tJkTJm0/d0qqm/ex4fIns/JSlHHuVrTwA1vlE8mne0lyZRYlJDpNFFpFjMgoYt6EBKeJQquICaElVQAAEoXErAP9vzh5fKTGiQZTx6HLLcG25vWQvtl2j7lYq5sTP2WwolZAQsXL+XMnRSuIE76gVcT+KG9OpaHt84ZaL8fEShLTFiemBPPbJBsT9vyMWYf0zW5tjiRieWpWsVYnSdpxurp6aVKG+BHSVWrxsPRIajYXPABg9CaKzxvO+Wj+TwDjhLu7UgY2WmgVMfdMSRm2saY/e718IH3azy6YqJ2hnri/tenI5RYPLsh0lbp0Wnao3P8u1uoKJ00uu3DGmxifr0konZYt4cfB6epqp8st7k9ME0kUjlZ1AwAwKhKFvsvsownZy1OzAhIn2nu7/3pF79OSGj54Fzpts85KEtMWTklicefIEyEbW6JLK9Gl6bvMp65dcSVaaBUxc+Kn5k1ICLniLRGysasyZy5NmnbgUrNbC5Ziw+V5moQFk3WSxyfx1dXFWp3TwR/dOKXIEe5NTGWUDwDgf2MGBgYCfhLWgf4N5d/44i5+QHZ2au/t3t10IRQ39R8mX5OwNGkac7JHtvbeblNf3/W+nu5bNxtuGG0/nBSl0ERFR40NT4xRigSJPuut0+1X7f4qeZzK7pXTYOq43tfj6IDjI6J8l//1XeY60/WGG0a7+0FpFTHx0bEp41TZ4zU+veb1XWZ9l9nurzJUE1yJbSJtGKgBRgBAKJo5/6FTBz8fOYliZ32NLwYo/B8nzBbLZw01IyBLDGtGxiswIpktFkEQQm7sBQCAYEsUge8mtvd2+yJOpKvU/owT1oF+n278H0B7W+r2ttQtT82amzCVCRUYScgSAACMhERhHej/8GyFL+LEczl3+u1VnLlu+O3500G+9tpLO+tr/txSb9szlI8NAAAAgiVRVBraJC9wGxsu96YQlVvMFouPymkFIfNNy5aq8nxNwrKULG7uAgAAIPCJos96yxf17H54x2z/9HdPXNX7rh5f0KowXK4wXH4m+87s8Ro+PwAAAAhkoii7cEbyY67MyPXD3kR91lsfnq0cJUMTdr1/5jvJt+oHAAAAicIN7b3dku+JlK9JKJio9fWZN5g6PqqpHNmrJlxRYbh8wdi+ZsYsKtMBAACMZgHbukfyAQqtImZFxgxfn/be5rotVeXECRvzTctbFUd9VJoQAAAAJAqHGkwdkk8ZWj0936ersa0D/b86/e2I3B/WSzvra351+lvrQD9NAQAAQKLwB+tA/+/rJR6g8PXyCbPFsqH8m9G8cELceWP7e9Xf2eqFAQAAgEThW5LvGJuuUvt0+UR7b/dbFUeY6eQ0VLxVcYRQAQAAQKLwLetA/+cNtdIe8/GMmb474QZTx+vfHiJOuMJ80/JWxZEGUwdNAQAAQKLwlUpDm7S985UZub6rPtFg6thSVc5V4lao2FJVTqgAAAAgUfiE5AMUPp3vRJzw2Jaqcn2XmXYAAAAgUUis+YZJ2gGK0mnZxIkglK5ST4pW0A4AAACjgV8r3Em7xVNJYpqP9ncK8jihVcTER/+tqFznTUuw7UCVrlI/l3OnT3fyBQAAwGhMFA2mDgm3eIoNly9OTPHFebb3dgdJnMjXJEyKUmiiopPHqWLC5REyJ2+W2WKx9N9qvGE09HRf6emSvCQ5cQIAAACBTBSHLrdIeLSHUjJ90W01Wyy/OHk8gO9Hukqdq56YPV7jwfBLrFwuCPLBJ67KnNne233muqGq/ap/xjGIEwAAACQKX2nv7ZbwlrlWEeOLBdnWgf5A1Z3I1yQUJyROjol1OhDhFnVkdLFWV6zVWQf6m2+Y/tRS57toQZwAAAAgUfjQX6/oJTzaI6k+WZD9XvV3fo4TseHyexNTCydNljZI3E42JixFGff8jFl91lvlVy4da7soeZFB4gQAAACJwlesA/17W+qkOlq+JiFFGSf5Se5trvPnEud0lfr+xDRfvBBxEbKxtlGLBlPH7+vPSJIriBMAAAAkCt+q7ZCyp740aZrkZ9hg6pAw84jTKmIeSc32f5YYJkUZ93J+kfe5gjgBAABAovC53U3npDpUviZB8h1jzRbLRzWVfmiH2HD5k1l5Ac8St+eKM9cNvz1/2oMZX8Va3UMpGcQJAAAAEoUPtfd2Szhl3xcDFJ+cO+WH5RPLU7PmJkwNzs539njNxsK7P284d0jf7PqzShLTSnRpfIQAAABIFL4l4ZpsrSJG8gGKE1f1vl4+ERsu/+Eds31UjE8qsjFhy1OzFkzW/eLkcVfyFXECAAAANj6/ZX5EujIUkm/xZLZYtp+r8unLL9bqNhbeHeRxYpA6Mnpj4d3FWh1xAgAAAC7y7RiFvsss1YQirSJG8hUIn5w75dOXvza3MKhWTbjCNliRFTfh/TPfEScAAADglG/HKE5duyLVoe6ZkiLtufl0vlNsuPynhQtDLk4Myh6v+WnhwthwOXECAAAAgUwUEk55ytPES3hifdZbnzfU+uhVp6vUL+cXxcrlIX1lxMrlL+cXDQ0VxAkAAAD4NVFIOOWpJDFN2l2S9rc2+Wh/J1t9hlCPE4OhYmPh3ekqNXECAAAAjvhwHYWEU56KEhIlPLH23m4f1bMbeeXeZGPCnsu5s9LQVjBRy6cF/tHUaPis7Lij3y4rnZ2UrKGVAAAYFYlCqilPWkWMtLf8dzddIE64FSqIE/Cnz8qOHz5gf1KiLlkzNVFNEwEAEFR81f01WyxSTSuSdk12e293heEycQIITlfaTI7ihCAI69Yvkcn4lAEAMDoSxTnjNakONUM9UcIT88UAhVYRQ5wAJPHFZycc/WrJg/nMdwIAYBQliuNXLklynHSVOkIm2dQsHw1QrMm5izgBeK+3x7JnV4XdX6niFE88u4AmAgBgtCQK60C/VKUeFkxOkvDEfDFA8Uz2CNnZCQi4P+50OEDx0oYHmO8EAMAoShRXurukOlSadEXizBaL5AMUJYlp2eOZhgFIwGrtL9t+1O6v5i3IzMqZQhMBADCKEkWd6bokx5F2ypOE5fYGT29xYgrXECDNJ/Sg/QXZqjjFmnX30j4AAIyuRFHVflWS4+RKtybbOtAveaIonZbN8glAmk+otf83276x+6vnX7wvMoqJhQAAjKZEIeEiirwJCVKdVfMNk7RFsksS09SR0VxAgCRuWm4lJk24/ee5ebqCQkYCAQAIatJXuDP29UpynNhwuYQrnv8kaZHs2HA5850ACUVGyTf+7JHeHktj/dUjB88N7vj04it/T+MAADDqEkXjDaMkx8nTSDZA0We9JdWwic2TWXnMdwJ8kSuycqZk5UxZvWZRU6NBEASlipFAAABGX6JoMpskOU5W3ASpTqnO1CHhC8zXJKRItwMVALsoZgcAQKiQ/kZ7nUma0YDEGKVUp3TgUpOEL3DxVOY7AQAAAD5LFPquTu8PIuEiCmmnPGkVMVpFLNcNAAAAYCPxrKf23m5JjjNNpZbqlKSd8vRIajYXDUKd1dp/zWAWBCEyMjx4FiqYjN29vTeH/mSCJjZ46mRfaTP5/8SG/lGbSfHKgF88F1vamxsNtv9b+Hdp3uztO3gpBtvVCAAIZKJok6hado50hahrOq5JdSitIoYVFAhRTY2G8iMX9u4+aeyw8yGdtyCzYHaqo97hnl0VtWcv2T3s/Q/keVzNurfHUl3VWnmisfrUxcEe6jCqOMWMO6YWzE69Iz/J4+6myPlnTp+85MF8RwnnZEXTieP1p09edNRo9z+Ql56llTBd+K1N3nlzt6NfOWqTmurWbb/8ethZvb/jabcShcnYfeFc28F9Zw4fqHX0GF2yZvH9udkzp7KWBgBGaaLouXVTor67ZDOLDumbpTrU0qQMrhiEFqu1/8vdJ//w2+N2+8SDDh+otfXwljyY/8CygmE3wmvPXnLU/yuYnZrl/lldaTP9f78+JNKnHGTs6Bo8N12y5h9+cFfR/Ex3e/Ai5297ycNarPJE046PDjnq0A9rNFWc4qUND3gcq4b218u2H6uqbHa3TZ79l3s8+OvijT+sTexmCXevwyMHa//zd3915SDNjYYPt+6zZaeSpXd8f3kBJQ4BYHQliurrBkmOExseIclxpJqFZZMZp+aKQQipqW59e+MX4llimD27KvbsqihdOffRFXN8cUquZwm7Hc3Nm/b8Zts3z794n4/K3nnQYsaOrvXryrxpsaZGw+ZNezzrrzc3GtavK9Mla9atX+KjO/qf7jhWtv2oN0c4Ud7wq3e+dKtVB9u2bPvRsu1HS1fOJVcAwChKFJ0S1aWWalm2VMUxBEEo1uqoQYFQYbX2b3l7j2cdd0EQyrYfPXO69ZXXH5S2D3eivOGNVz/z8iDGjq43Xv2sdOXc5Y/NlnC6kfctFj9ZNX/hdHefuGdXhe1+vDeaGw1rn/7YFznQyzhhMnZv+NffezO4Mdi8e3eflGQsCADgCxJ3kSXZVSlfutp2UhXHEAQhf0I8lwtCJU68vn6nx51jm6rK5mcf/3eTsVuqU/pw6z7v48TQLubr63f29liCp8U2b9rT5E7X2Wrtf+fN3d7HiaFtsuFff2+19kvVJhv+9ffexImmRsMLT3/sfZwYTJLr15V9uuMYH3AAGOGJos96S5LjxIRLdlu00nBZqkPpxim5XBAqccKV6fiu9OEk6aGajN2vr9+5Z1eFtK/Ulnlu3w0pgC32Wdlx19vkydJtXmYYu23yZOk2SXLgl7tPetMmNdWta5/+2IOZTk5T0ztv7pYqNQEAgjFRSDXlKSlWmr67daDfLNEpMeUJoeLX2w5I0jm2aW40bHl7j5f99Q3/+nsJT2lY5nnpX/7Dyw60hC12+ECtKwmnt8fygg9624Nt8sLTH3vZ577SZvJm8KSmunX9ujIfXeGHD9T+etsBPukAEFSkXEfRZ7VKcpzxEVHS/Mva1yvVS8uKm8C1guB3orxB8qEAL++j/3rbARfnvdh2sP3f13K83sXNoN558782/uyRgLw6O2/B8XpH29EO2rr5zy7GCY/bZMvbe158ZalnL8Fk7Hlzw+cet4DJ2P32xi98ep3v2VWRnpXgwaoVAEAIJAp9l1mS4ygjpNnoScJl2fHRCq4VBDmTsftX73zp1lNslQ0c1VvwT8JRxSmef/G+nNwpw1aBz184fe1LS87X6J1uvlRV2bxnV4XTfrx/lB+rEz+Tg/vPOk0FtjbJK0gatvTc1iaVJ5qcbp10+EDt/EXZnu2I5c2IjdXa/86b/+XW5ZSbp1OqotxNd5s37cmcPjng9f4AANInCqmoIiIlOU63RMUxBEFQR1LJFcHu9//x367f+Z6/KHtaRvxgfbTeHktj/dWGuqsSLhR2JeGo4hTvfrDKUZk2mSwsK2fKux+scjpH6MOt+wpmp0rYv9Qla+bMS8/NS0xOnSgIQlub6S9/qnJl/Keqstlq7Xe0CdWVNtPmTXu8bJOCwhRX2uSNVz/75A9rpK1CbSsQET9ZlTl9siAISmXUsBx45GCti4Fk3oLMf3yieOhb9uIrS3t7LH/cecJRHcZh3tzw+bsfrOKDDwAjLVEYeqTZFkaqFQsNEo1RSLj3FOAjvT0WF+c7vfrGsttvXUdGybNypmTlTCmYnfrmhs8l2Z/HacIR7zoPUqqiPyp71uniaan6l6o4xU/efnhYbYekZM3qNYuK5me4sjzgmsHsKNs4nU2kS9Zs/NkjrrSJK6Hi3/9tn8dzn24PEoVF08RLXlit/b/Z9o0rR3v7l//PbhNFRskfXTFn+WOzXdnJt7nRUFPdyn6yABAMpFxtfKWnK6heW1u3NLOwcsZruFAQ5P6484QrPblNm0vFZ8JMilf+4r2V3s8gcppwXIwTf7vLIAt7bdPy3DydeP/S+z2OcvN02z55ylG/OStnyqbNpR4f3GTsFo9quXm6X7y30sU2Uaqit33ylHibHD5Q6/0Gu/MWZG775KlHV8xxWkHvyMFap2MLthYWH02SycJefGVp6cq5Ts9t2y+/5rMPACMtUUgiXSVZXWp9V6ckx5FqpTjgI1Zrvyt1A979YJUrN3RlsrDVaxatXrPIm1Mq/+868Qe8/cv/59aEHJks7JXXHxR/zJe7T3pzzqvXLNr4s0fEi/pl5UxRxTlZVXX9mtmz03vl9QfdqtkXGSV32iZO3whxr76x7MVXlrpY6NDpAIUqTvHapuUuHu3RFXOcJlvbMAXfAABAohhOwmIUUpFqpTjgIxdbnFeWLF05160e/H1L79Alez4695+/+6vIb+ctyPRgzUNklFz8vvXe3Sc93jV13oJMF0dm/unZu8UfcPXqDbupb69ooihdOdeDCuWRUfJ5CzI9fiPEbflgletru5saDU4HKH7y9sNuRaYnnl3gNL9VVbbwDQAAIypRXJCiYLZUpCq3F5whBxjqzKmLTh/z/eUFbh1TJgtbt36JZ+fT1GgQn96zrHS2Z0cWfxXGjq7zNXrPjvzUP7s6JmNblOyu8zV68Q53YdE0z85cvDGbGw1NHq2KKV05N8mdSOn0Ipy3IDPJzYwqk4X95O2HxR+z17uBKQBA0CUKqcrJSaJTupOJkI3lQkEw++pPVeIPWLd+iQf3v5OSNZ4tqHC6sDve002ZIqPk4jetG+quenDY1WsWuT6Ao1R6Mg3yyMFzTlvbszZx+kQP1tnrkjXLH5st7UV4/wN5nr068Xfc2NElSY1wAECwJApJBNsy6FgGKBD0nHYZi+ZnenbkFU/M8+BZ52sui/xWFafwIN4MmnHHVJHf1p695O4BVXGK+5be4Vaq8eC0b5jEer3iC6ydEn962yWjuwf8hx/c5db0JKu1X/wiVMUpPN6UqcTZu3PhXBtfAgAQWNx9d2KadCvFAV9weoNWl6xxq3fo696zsaPrwe/93Get0eNBRPG4fVzX0iQ2KbSqstl3bdJ60efzUa8ZzN7kQHF3fy9bfOOBrq5evgcAILDCaAIgpPX2OqnkmJjk71R8+uTFQLWGN/WeXSe+GNouSUp8+C1lSa5gdqrvDt55g0QBACQK3+izWnl3AV935uxysXT3KEp9PYFcY+aHlOVow1xJON0WzIOpbgAAaY3YWU/6LvMofDv1XeY603WpioWPSJ4t1Om+dbNYqwvOV3Sx2cmcFoUiclS9xSZjt1v75PrjlEw9I7vN7W6YO5ovQgAgUYwQyeNUo+qNtA70v1f93flg2sA3OFUYLnv2xKBNFFN1TiY1jbZZ5sEWJwRBiIwMH9lt7rR0iTcXocc1RgAAfsM6CuIERjgPtvrBiA850opytoLfm6UOTpd9+39eHwBgGPZ6Ggmab5iIE3DkzOlWP//F3Dyd+Nx9D1Y2j3i+axPPSvJJq/bsJc9qmwg+XqQBACBR+ENbdwj8Y1Zxje3YRy+n61b9s/3RUEqVkxpwT/3zohF/234YXbJGfLuntS8t8cMmtoG6CA8fqPX4BTotDjhx4ji+BwAgsILuH7Dq64agOh99V2coxJ5OLmWfytckBHlvVfwBV9pM/jwfp7NQRmFJsjnz0sUfcLEltIcZnRbpO1+j9+CwvT2WPbsqxB+TnDqR7ygAGDmJIqjKS8eMplrXqePiuJRHM6e91Tc3fO7ZkQ/uP+vBs+7IT3Jy2H1nRtt7VFg0TfwB5UcuhPQLXHRfjvgDtv3yaw8OW/7fdU6TjDcl2AEAQZcogqq8dIRMsgld7b3dQf4uZlDYe3TLzUsUf0Bzo8GDbNDbY/nNtm88OB+lKlp82OTwgVrPSjRYrf0huvNPkrNxpLLtR0O6TZzGSA8uwittps2b9jiJanPS+AYAgBGVKCQREusWgo1unDI2nLt0o5crsz42b9rjbod1x68Pe1yrzumwyY5fH/bgsF/uPrnsvnc2/OvvD+4/azJ2h9bbVLpyrvgD/rjzhAeH3fL2nmX3vfPOm7tPlDcEsE2cxkjbRej6GVqt/a6MrbHREwCQKOyQcN1CukR37huDvmCcbEzYY+kzuJp9J8gn0UVGyZ32VgVBePO1XS7256zW/nfe3O10/rqI7y8vUMUpRB6wZ1fFpzuOuXXMK22mD7fuEwShqrJ586Y9jz+8ddUj//bh1n011a2BLUrtepuIP6Bs+1F326Sp0XD4QK0gCIcP1L7x6mePP7z1hac//nTHsZrqVv8PXDz7L/c4fcwLT3/c1Oh8sZzJ2P36+p3Nzh45b0Gm00XhAIAQSxSTohQjshcYbIvF7coer9EqYrigfSQpNth7LfctvcPpY6oqmx9/eOuJ8gbxh/X2WF5fv9PWT/Um5PzTs3c77UBv+Nffu9jxbWo0vPQv/zHsh8aOrj27KtavK/vBA++62xcPzuDnVqioqW79yUt/GPbD5kZD2faj69eVLbvvHW8yoQeycqY4HaYwdnStffrjg/vPirzvNdWtLzz9sSt7lP3jE8V8OwHASEsUmihptoPss96S5DgpEpXNvhAipR5WT8/ngh61lKpoFwsavPHqZ++8udvu7k+9PZZPdxz7wQPvSrLhbNH8TPFhClvIeX39TvFQYbX2H9x/du3TH4tPwbr7e9nB/zY5HaZwMWhZrf2f7ji2fl2ZeJsU3e3vuh+uDFMIgrB5054nS7ft2VVxpc1kGzezWvuvtJlsWcLp67JhgAIAgkcw1qPovGmRZF119NhwSc7HfNPSZ70l4VJvH1FHRudrEioMl7msJRcl0bXkU0/98yIXBxYOH6i1PTI3T5c9Y0r8ZNX5mssXm9ulrVwhk4X95O2H1z79sdNQ8WTptrnzM9KzEjKnTx7aRzQZu7/cfXLv7pNO+5elK+eGROcyMkq+aXPp+nVlTtvkh89tz5k5Na8geVpG/NDaHVfaTN/85UzZ9qNO/9a69Uv8X/QjK2dK6cq5rpyesaPrw637bNPYPKCKU6xZdy9fTQAwAhOFVhEryXFMfX3qSAn+IUyWaIxCEIRLneYUZQjs0Fo6LZtE4Qvx0YrgP0mlKvrVN5a98epnrj+lqrLZp/XvkpI169Yvcbpdj23y0p5df/u/8xZknj550fVF4ao4xfLHZofKteRin7u50dDcaBictuRum+Tm6YrmB6Yw+fLHZp853erruopv//L/sWksAAQPKWc9Rchkkhznel+PJMdRRURK9dJCpSh1hGzsyoxcLutRq6AwxcW5T65mVBcWfIubv3D6kgfdm493+ECtW3Hi3Q9WhVa16UdXzHFaD86bNsnN0722aXmg2kQmC3vxlb93OuHNG+vWL2G+EwCM2EQh1UroJrM09X1lY8KkWqxcGTo3/vM08ewkKzlJBs38Y+1LS9ztrYp0TCW59//Eswu8TyYiccL/c3u899qm5dJmv6Ft8srrDwY2YilV0e9+sMpHoeLVN5bNXzidLyUAGLGJQqqVBm3dkm0gm6aUZgNZ801L8Ne5G8xRT2blcWWPWjJZ2GublnsfKiTsmMpkYY+umLNu/RJpX2lunm7bJ0+FYpwQ/nYjf6nkQWvegsyPyp4NhulASlX0R2XPShVuB6/JTZtLCwpT+JgDwEhOFIIgSDImcF66vZWy4iZIdai/XtGHypuaooxLp4q2dPI1CaEYKtydazSsY7rtk6ek7ZjOXzh9ywernO4u6qJ165ds/NkjoT6T/tEVc7ZIdy//1TeWvfjK0uCZAGa7DqVKTbl5unc/WJWVM4VvJAAY+YkiPlqaxdlmizT1qhJjJJtre+Ryi3WgP1Te19Jp2VzcUokJwVlkMlnY6jWLPOvB2zqmvuisJyVr3v1g1atvLPOmD126cu7vvnhhxMx7SUrWfFT27Lr1S7xvkyC8eW8bnvrdFy94k291yZpNm0s3/uyREB2PAoDRQOIdUVPGqSTZa8h8sy9WLkGHRpKD/M8pWZpvmEJixydBENSR0cVa3SF9M5e4BH2+2FBdA5qUrPnFeysrTzR98dkJp3vv6JI1//CDuwr/Lm1olrBbtmKozOmT3T2rgsKUj8qerTzRVHmi0fUSbLpkzeL7cxfdmzPydviRycLmL5xeND+z8kTTwX1nXK8tmJunW3RfTtH8zCBfmB4ZJV+9ZtEDywpOHK//6k9VzY0u1QxVxSnmzs8omp/BuAQABL8xAwMDEh7uzHXD+2e+8/44KzNyCyZqJTmlnfU1UnWs8zUJqzJnhspb22e99aNjX3OJe+/l/LlS7YwcQL09luqq1oP7zgiC0NLU3txoUMUpZtwxVRCEgtmpumRNkr3RjCttpmdWfCBy2Pd3PO3NrjtWa//FlvYzpy7Wnr0kCILJ2GNLPoPnNmWqOjcvMTl1ojdBwmTs7u296bC/Gxnu7s1v8QMqlVHenK3V2n++Rt9Qd9XWJrY3y5apEpPUUrWJeFb08iW4cinWn29rvdguCMLgrriDS9VFLkgAgIRmzn/o1MHPJTmUxGMUUm3bX33dIFWiyIqbIFWiqDBcXpo0LVS2/bHtJLv9XBUfGC/FhkeMgFcRGSUvKExxd2KMrVMrdthIr2r/yWRhScmapGSNN7NinFKqopXBfcBhbZKVMyUrZ4pP2ySAu696dikCAIKZxGPlUpWAkLBMW5qk85R2N10IoXeXnWSlSRTy0duG52suO+1bc4UAAECikJKEJSCkWpwdIRsr4cZHFYbLfdZbofLuspOs90Jx16ya6taa6lbvj9PbYxFf5+CjigoAAGBUJwpBuu2eWjpNUp3S7EmTJXyBZRfOhNAbzE6yXkodFxdaJ1xT3bp+Xdn6dWXeh4o/7jwh/oD5i9hSDAAA+CBR5IyXZjldTcc1qU5phnqihC+wwnA5VKrd2bCTrDcSQ2qjpz27KtavK7P9t5ehoqa6tWz7UZEHqOIUeQVJXCEAAED6RJE8TiXJcSqlW0oh7cQnQRA+PFsRQu+xOjK6JDGNa90zUm024Aef7jj24dZ9Q3+yfl3ZO2/u7u1xewKhbaBD/DH/9OzdQb5pKQAACNVEIdXibPNNi4RDAfdL2qXWd3WeuW4Iobd54ZQklmh7nMdCJU7YHVI4fKD2Bw+8e3D/WavVpfqMvT2Wd97c7TROqOIURfNZRAEAAHyTKGRjwqQaEGi8YZTqrHTjlNJ2qX97/rRUa8f9IEI29qEU+n9uy9ckhMR57tlVIT5DafOmPcvue+fDrftqqlvtRoveHktNdeuHW/f94IF3Xamw9vBjsxmgAAAANmN9cdDUcXHnje3eH+f4lUtSVaWQjQkrSkjc21In1Ws037R8cu7U8zNmhco7naeJ/7q1Qd/VyUXvOqkWBfla0d2Zf/jtcVuZMPHgMbh302C5tMGicq4rXTnXp6USAABAaPHJXcYMicYozhvbJdyqdeGUJGlf5nlj+4mr+lB5p2Vjwh5JZYm2e0KlVLZSFf3uB6tUcW4s+WhuNBw+UHv4QK27cSI3T/foijlcGwAAwLeJYnKMZP2wOlOHVIeKkI2VfBLL9nNV+i5zqLzZKcq4UJnGEyQmhc6ybA9ChQdy83SvbVrOhQEAAHyeKCTcW+nApSYJT2xp0jTJX+zW09+G0IIKX7TASJWvSZCNCaWlArZQoUv21UytJQ/mv7ZpOcsnAACAPxKFIAi5EpWAkHbikzoyWvKb9LYFFdaB/pB4v9lJ1nWhsohiWKj4xXsrV69ZJO1hdcma93c8vXrNIuIEAADwX6JIU46X6lASTnwSfHOT/ryx/b3q70IlVLCTrIsyVBNC8bRlsrAlD+Z/8oc1uXk6SQ64bv2Sdz9YNSleySUBAAD8migkXNK6u+mchCfmi2EKW6j4vOFcSLzl7CTrithweaw8hHOXUhW98WePbPlglcebMuXm6V59Y9lnX744f+F0rgcAACBirO8OXazVHdI3e38cfVen2WKRsHu3NGlahXQFuQcd0jcrxoaX6EJgTlHBRC07yYorSkgcAa8iKVmzes2iJ55dcLGlvfzIhdaL7eK1JuYtyJwyVZ2bl5icOjEyioEsAADgkjEDAwM+OnSDqWNLVbkkhypJTJO2p763uU7C2hTDctRDKRnBv6JX32V+q+IoHwBHXs6fGypbx3rgSptp2E+Y1AQAwGgzc/5Dpw5+LsmhfNjx1Y2TrI9y5HKLtKsUfLeW4JC+OSTWVGgVsewk60hsuHwExwlbfhj2P950AAAQjIlCNiasWCvN2lDzTUttR7uE5+bTtQS2hdrBv6XsspQsPgB2jYwpTwAAACGfKARByJ8QL9WhpF2fLQhCwUStVhHju1DxVsWRIC9+FyuXs5OsXTMnTKIRAAAAgiJRSDjxSd/VKXkHffX0fN+9dvNNy1sVRyVZm+47ixNT2El2eNAa6VOeAAAAQilRSDjxSRCEry42SHt66sjo5am+nfmzs77mV0FcVFs2JoydZIdhyhMAAEAQJQpBEObET5HqUBWGy+293dKeXrFWl65S+7QFzhvbf1y+/8RVfXBeAT6d/RWK7pqkpREAAACCKFFoFbESzqvZ3XRB8jN8PGOmHxp6+7mqoF1ZMVMdzyfhfy7XGHVkNO0AAAAQRIlCEIR7E1OlOpQvhili5fJnsu/0Qzvouzrfqjj6ce0pyV+CxxpMHW9VHPFRaY5QdM+UFBoBAAAg6BJF4aTJEh7NF8MU2eM1ftv1qMJw+fVvDwU8V9iyxJaqcipnDzVDPZFGAAAAcMtYP/yNCNnYfE1CheGyVD3ypUnTJJ+asjgxpf5Gx3lju3/avcJwucJwWauIeSQ1WzdO6bca233WW6fbr37eUGu+aeHqH6YkMS1CNpZ2AAAACLpEIQhCcUKiVIlCEITdTRdWZUq8+EE2Jmz19LyN3x7yZ1db39W5parc1pedOWGS7zYttQ70N98wVVxrC/LdbAOLNdkAAADBmyhSlHFaRYxUE2wqDJeLExJTlHHSnmSEbOzL+UVvVRzx//37vS11tsUMxVpdVtyENGWcJDfL23u7G28Ym8wmgoRT6So1a7IBAAA8MGZgYMA/f+nMdcP7Z76T6mhaRcyP8ub4YrJQg6nDNm4QWLHh8mkqdc54zfiIKGVEhCoi0umLtQ70G/t627q7em7drL5ukHBQaDRYm1soeUYFAAAIWjPnP3Tq4OeSHMp/s8Yz49Sx4XKpbv/ruzorDW0FE6WfppKijFubWxjwUGG+abGttbg9Ztz+YMKD9wGVOIHg9+D3fi7y23Xrl8xfOH20tcmVNlPt2UsiDxiFbQIA/ue/RGErz7z9XJVUB9x+rmqGeqIvltIGSahwFDO4aiW3NCmDRgBCUe3ZS5s37SFRAEBghfnzj+VpJK6kVnbhjI9O1RYquD5Gg9hweWacmnYAAADwjF/3ypSNCStJTJOwnpqPlmgPDRVBOFIBaT2Ukum33XsxjMnY/e//tk/kAU/98yKlihXzAACQKIZYOCVJ2grNH9VUbiy820c9QkLFiBcbLpd86Ayu6+29efhArcgD/vGJYiXNBABAcPP3rdkI2Vhpq1Obb1p2nDvtuxO2hYrYcDnXyojEAAUAAECIJQpBEBYnpkjbQa8wXD5z3eDTUPFyfhGhYuRhgAIAACAkE4Vt0ydpj/nb86f7rLd82PWUyzfMKk5XsX53RGGAAgAAICQThSAIeZp4aW/5m29aPjxbaR3o9905R8jGPpdzp7RTthBAWkWML+qZAAAAkCj8QTYm7LH0GdIe87yx/auWBl+fdoku7ZnsO7luRoCVGTNpBAAAAO+NDdQfzh6v0Spi9F2dEh5zb0tdhkrt6+LH2eM1Py1c+Mm5U+eN7VxAISpfk6BVxNIOQKibOHHcvAWZtAMAjNJEIQjC6un5r397SNpjflRT+XJ+Uazct6uoY+Xy52fMOqRv3llfwzUUipalZNEIwAiQlTMlK2cK7QAAgRXIZanqyOhirU7aY5pvWrZW/9WnCyoGFWt1r80q1ipiuIxCS0limq8zJwAAAInCT5YmTZN8V1Z9V+d71d/5LRS9nF+0MiOXvWVDRWy4fHFiCu0AAAAwQhJFhGys5Eu0BUE4b2zf21znt1dRMFG7YVbxyN4GasS8ujUzZrFjLAAAgITGBvwMssdr0lVqyVc5722pEwShROenfnCEbGyJLu2uSdrdTRcqDJdHWJZYOCUpQjZ2sFVDFwuy4Uhvj6Wx/mpD3dXas5cEQcicPnnJg/luHcFq7b9mMAuC0NNjaW78W81NXbImKkouCMKkeGXAX+OVNpMgCIMvUBAEpTIqMkruhz86+HcFQZg4cdz4CbGCIEzQxMpkYaFyeZhMPYIgXL9mvnr1xmADBsk7CwAkCkEQhMczZv64fL/kh/XP1k9DqSOjV2XOXJo0bWTkimKtbmnSNFuWEARh4ZSkI5dbzDctIfpyYsPlpdOyR1gneOvmP4s8YMpU9aMr5nh28Jrq1j99Uenot/MXZRcUpnh/WJOxR/zxW3/xZ6Uq6vaf3/9Ant31uCZj97//2z5HR7P7rCttpv/v14cOH6gd9nNXEoUth1RVthw7fH4wRTgyb0Fm5vTJBbNT/dkH7e2x7Ptz9R9+e9zY0WX3AbpkzYoni3Nyp0gVLazW/ost7WdOXSw/VldV2Sz+YF2yZs689Ny8RI9XV4tfqIIgvPjKUo9fyPkafVVly97dJx21nk1unu6BZQXTMuKVqmh6FQBIFIHr6snlKzNyt5+rkvzIW6rK1+YW+jNUjIxcMXRcYlCEbOxDKZm+eJv847H0GcNeUaiLjJKbjD3inbbvLy/wrKdYtv2YyJGXlc727JyvXr1xe99dhKNzKJidane7rt7emyLHH/YsWyRz63yG9jXFm+h2hw/UHj5Q++HWfbpkzbP/ck96ltand+hNxu7f/8d/79lVIf6w5kbDG69+ZktQK56Y502uuNJm+uYvZ8q2H3X9Kc2NhuZGQ9n2o6o4xT89e3fh36W5ewJOrygPEkVvj+WPO0+4/kKqKpttV4LtnWXvKQAkioApmKg9fuWSLyo8BCRUDOaK0mnZ+1ubQuXWvlYRc8+UlDxNvKOVBnma+K9bG6StIuIf+ZqE7PGakfcBLl05R7xTW/7fdfMXTvegRyVyWF2yJik55BvTZOx+4emPxe89280SO3973OlNa6fd6PXrynTJmo0/e8RHd7VPlDfYcoLr9uyqOHrw3PMv3ufB6NPB/Wf/83d/dTpKI8LY0bV50x5VnMKzE5CK7f11KxTZfWdf2fgQs6EAjCpBNIf1cZ/VMN5SVd5g6gjIi7Ktr9hYePfa3MJ0lTpor4Nire7l/Lkv5xcVTNSKLFyWjQl7JDX0Jg6NvPlOg9KztKo4hcgD/vN3f/XgsNVVrSK/XXx/bqi325U2kwdx4uD+s0+WbivbftSbODG09/n4w1sP7j8reZ/40x3H3I0Tg936N1797NMdx1x/SlOj4YWnP968aY83cWLYCXy4dZ/V2u//q6Kp0WB7f71/Z59Z8cGnO44F5FUAQEAE0SSQWLn8mew73z/jk41fAzVSMdgRT1HGPT9jVp/1Vp2p48ClpiCpt12s1WXFTciMU7u+/VGKMi5fkxBas7nWzJg1wuY7/e+lJQsrWXqHSB+oudFwpc3k7u3SLz47IfLbortDu0RxU6Nh7dMfu5tA3tzwuSSd5mE2b9rTeaPX3VXgYt91b+/xYB7XULbLyekKHI/njDm1Z1fFxeb21zYt9+e67Zrq1vXryiQ8YNn2o2dOt/r5VQBAoATXN132eE2+JsFHBw/gSMWgCNnY7PGa52fM+vmce57JvrNYq/N/IYvYcHlJYtra3MLNRYuXp2Zlj9e4u5vq0qRpIXSJlySmjez9ne5beof4A775yxm3Duh0ylNILz+1Wvt/8tIf3H3W9WtmX8QJmw+37qupbpXkUAf3n5Wki1+2/agrIxW+iBM2VZXNO3973G9Xxac7jkkbJwZfxQ+f224ydtPVAECi8LcVGTN818kOhlAxNFosT8366eyFPy1caEsXviu/rVXE2FLEz+fc89PZC0t0aSnKOI/LMqgjo0OlPIVWETPi69kpVdG5eWK15/fuPunWAcWnPP3DD+4K6eb69bYDHsxZysqZovPl0pH168p6e7xdanXieP3mTXukOqWy7UdPlDeIPCAySl66cq7v2qRs+1HJp4TZb7fyBu9nOjnS3Gh4583/YvoTgBEv6KaCyMaE/fCO2a9/e8h3oaIkMc1vdSpcESuXZ4/X2NYNWwf6jX29jTeM3bduNtwwdt60eDA/yjbOkzNeMz4iShkRoY6U/o5ySOwkGxsuX5Nz12ioZye+PtvY0VVT3er6/jOVJxpFflv4dyFc63Dfl9Vu7c401LP/co/IbWxVnGLu/Iz0rITBAhS2qhRtl4yubCwrCMLWzX/2eJ9TG8lHDH71zpfbPnlKZPOl7y8vEO+Lz1uQWTA7dbAAhSAItWcvdd7odWVjWUEQfrPtm6L5mb7eEcuzNSeuq6ps/vW2A6vXLKLDAYBE4VfqyGgfbSZrYyvTtjgxJQj7mrIxYerIaFsGKNb+743nPuutzv/bfTf19SkjIob+JCZc7rfVAiGxk+yTWXmxcvlo+Bjb1meL3Ho/cvCci4nCau0X2W80N0/nZdWCwr9Le3/H04P/92Jzu3h/7tU3lk3V2dnSQKmM8qxv5/GZ24Ypbs8GpSvn3v29bLsrVWw7Yj26Ys7B/Wd/s+0b8bGRwwdq//GJYh9tEGTr2bddMrZebD998qKLozTGji7xnGMbprg9VMxbkLmsdPbURPXtYcD2Apc8mO/K0hRjR9eRg7UebFbmIqu1/wV3VtTMW5A5ThmdnpXQeaO39uyllqZ2F+fC7dlVkVeQHMA9rABgNCYKQRAKJmqbzKZD+mYfHX9vS139jY7ncu4MlRvYEbKxw9KCL0Ye3BLkO8mWJKYFaiF+AIKos/XZe3ZVPPHsAlfu9Z6v0Yv89oFlBV6eamSU3K1MMlWn9sMunKo4RcnSOwqLpkVFyUUKOQ8bpihdOdfFch/zF04vmp/5w+e2i3dAv/nLGY8rEtq1es0iuwX1aqpbt/3ya1d6w4cP1D71z4tEVs4MG6aYtyDTxVw0KV757gerPty6T7xixn/+7q++SxRHDta6Eq5sl8ew99q2mL6mutXFsiS/eufLj8qeZZU2gJEqeL/dHkrJ8Ol2q+eN7RvKvzFbLFwEHvZix4St9NmGv15KV6mDamKbHzhdn115osm1PtY5kd/m5I600l1LHszf8sGqj3//z4+umJOUrJkUrxTp8w2uppi3IPN3X7zw6Io5rqcjmSzslY0PiT/m2OHzEmak93c8veTBfLud+6ycKe9+sMrFVRBfiq7DGVxNoUvWvL/j6RdfWepWAnzi2QXiC1SaGw0+Wtnc22P5zbZvnD4sN0+37ZOnHL3XWTlTNv7skXXrlzg9jm28hX84AJAoAtBhfTxjpk+3QjLftPy4fP+Z6wauA89oFbG+25vLY7Hh8udy7hxt74XT9dniG8LaiE95mrcg08spT0FFFafY8sGq1WsWuVWtb936JVs+WPXiK0s9aIpJ8UrxyfRS9Z7nLcj8qOxZpz37R1fMcSVUlG0/Kr5q/PvLC9atX/KL91Z6MJrkStC6cK7NFxfAH3eecDpAkZune23Tcqfv9fyF0zdtLnX6F3+z7RuWaAMgUQSiayiX//CO2b7+K++f+W5vc511gC96TyxLyQq2OPFyftFoWI19u9KVYhNmqiqbnfZWxac83f9A3ohpq3kLMrd98pQHlb+TvKsXXjA7VfwBHV7Xzpu3IPPFV5a6OLvm0RVzXCmFIb79V2SUfP7C6R7P53GaQ+rP+yRRON3fSZescb2aRFbOFKcjFcaOLheHCgGARCExdWT02txCX/+VvS11P688xgwoz1JfUO0ku2bGrFGyGvt2TutnH/nGyaQL8SlP6VnakdFQuXm6tS8tCch4i9MF5V5WvVDFKdasu9etp6x4Yp74ZSM42/5LkndE5LetF6WvB9rkQju/svEht2LS/IXT5y1wUvzx4L4zAgCQKAIiRRm3MiPX139F39X54/L9J67quSbctTgxxf91+uxam1s4sovZibOtzxZ5wFd/crI3l8iUpyUP5o+YRaUvvvL3gXotvo4xz794n7t/IjJK/vyL94k/5qho1PSe3e28fOrMqYviD3C0BEXcU//sZIvYwwdqmfgEYEQaGxJnWTBRa+jptu366lPbz1VVXzeUTsv22zasI6EjOyYsGHaSXZ6aNXo2d3LkPtEdn5obDU2NBkeTdsTv2hbNzxgZTfTqG8skr/l9pc1Ue/aS7b9PHK+3/Ufm9Mkx4yIFQVAoIqdlxA/+0XkLMkUKR3Te6PX4NHLzdJ7tT5pXkCT+AGNHl8nY7Va7mYzd+tbrV6/eEAThfM3lG6ZuQRCmTFXHT1YNts9glz09K2HPLoeHammSfozCabr+3v2e3MZSqqLtbjE81MWW9iRfVksEABKFGNvWPX4IFRWGyxeM7Q+lZBZM1HJ9uB75AruTbEli2tDyHaOWbX22yF6W5UcuOOrNlB+54OhZqjiF6wXygpxUt8N7eyzVVa2VJxodDewMiw22HUhz8xJNxh6Rw9aeveTKwga7Ft2X4+FNAVnYkgfzxXdx1bded5oorNb+8zX6qsoWF4v6CYKw5MH8vILktktGkcd4ORPMg2Oq4hQed/pXPFksXmKl2XGqBwAShT8sTkypv9HhQQ1pd5lvWrafqzp+5dLjGTNH7aR8d63MmPlWxdFAxYnRtlesCPH62Xt3n1z+2Gy7c372Ot4ktMTZ1rSjitXa/+Xukx9u3efWs4wdXWXbjzpdDRwoRfMzxBPF1as3xDdhqKlufXvjF0Y3V5bv2VUh/nd9wekWBTPumBrwyAoAoSWUJkbLxoQ9l3OnT4tUDHXe2P7j8v1sA+WiQO0kS5wYRnx9trGjy+6GTk2NBpG+YGHRNBrW5uD+s0+WbnM3TgS/8RM8X4B0pc30wtMfr19XZvR6oyr/6O29Kf6AzOmTPT74BI2TlhycFwcAJIrREioEQdjbUreh/BtqVjjVZ70VgN6zSr04MYXG/z+fEWfrs//0ReXtPxSf8sQkDZtPdxzbvGlPqPSb3RIZGS7+AEcLPGqqW59Z8YEvJiYFkG0BjMcfQD4pAEgUhAo7zDct75/57q2KIw2mDq6Y21kH+g/pm3907OsKw2U/x4nncu4cnaUnxInXzz58oPb2gmUiU54efmw2TWqLE0E7Z8l7ERFOZsDqL3XYjRPr15WF3Iu9fs3M9QwA0grJHY1soeK96u/8sKbif/9B7ercUlWerlKXTstWR0Zz6diyRKWh7fOGWvNNf5fyKElMW5yYQpywy+mGM9VVrUM3BRKf8lR0dyZNumdXhStxQpesSUxSD+7yJAhC2yVj68X2lqb2IL+LbzL1OAnwWcPnNF5pM7kYJ+YtyBynjB48QueN3tqzl0zGHpEFPz7lzRQvAMDISRSBChWCIJw3tr/+7aF0lfr+xLTRvFdpALOEwNoJF4hvOLPjo0NDE4XI3vy6ZI3ke62GnN4ei9OFE/MWZN7/QJ7IjlgmY/eFc21ffHYiUN1ocYO737ruzQ2fO81X//CDu4rmZ94+Eci2n1Vvj6Wx/uqRg+eOHjwXVHPJThyvn79wumfPvdJmEn+AN4s0AIBE4atQ8VVLgx+2lL09V5w3tmsVMY+kZo+2XNFnvbW/tcn/bU6ccIt4hYHmRsPQ8gIie/Mvvj+XxvzjzhPiD9i0udTp7rpKVXRBYUpBYco7b+4WqUcRKOdrnExZVCj+z9KCmupW8VGX0pVzH10xR/yYkVHyrJwpWTlT0rMSNm/a47cX63TxtPgOv+KcTqnyZpEGAASt0J40IhsTVqJLK0kMTP/SNg/qx8f3H9I3B2Rdsp+193bvrK/50bGviRMh8NGQhZWunCvygC//Z+GEydgt0jVcdG/OKG/J3h6L+HwnV+JE8LvY7GSwd9imqNt++bWXcSKwnw6R/dAEQaiqbHa6w6wjR5zVF584cRxfUABIFMGoRJe2PDUrUH/dfNNi62fvrK/Rd43ABX991ltnrhveqjjy+reHDukDOWFjbW4hccJ1d38vW+S3g0uxj3zj8H55bp4uMmq012MRX2CQm6cLnjjhcb3tmupWp3Oxht3XFx+gWB70q/nnOqsBL/K5EM+fTstrJKdO5NsJAIkiSBVrdWtzCwN7Dof0zW9VHLUNWZgtlhHQqg2mDltYev/MdwGshy0IQmy4/OX8uaN54YoHJsUrdY53fTV2dDU1GgTRKU8PLCugGcUXGBTOcTviejOjRtyHW/fdvouXU1Zr/9sbvxB/zLwF/2cthPj9+9w8nbs7qHqchTxW5CxR/OG3x61WtysR7ftztfgDSOkASBTBLkUZ99qs4tjwAH9Z24Ysfly+/62KIyEaLfRd5r3NdT8+vn9LVXlgByWGxIkirYLtWdy24slikd/+5U9V4lOecnIDf/e9pyfAnyDxzm5Kmnv3m3t7LD5dme10ycftvtx90umq6PmL/s94l3iFOA+KRovEWh9xOlBg7Oj69bYDbh2zqdHgdAW/BxEUAELC2JH0YtSR0S/nF31y7pSfN4By0C/v3Flfs7O+JjZcXpSQmKFS68Ypg3a30z7rrTpTR03HtWCIEEOlq9Srp+dFyMbyWfWA+PrsPbsqxo2LcvTbeQsyg+FmavmRC4Gtr2e3DsOgqsoWt2Y9Ob2H7aWy7UdjYiNtOym5oqa61ZX638Oypfji46MHz61es8itjrj/t9aNjJLPW5ApvkR+z66KovkZLr6/JmP3T176g9OHFcxO5XsJwIg00rbzj5XLn8u5s1irC55TMt+07G2p21JVvu7IV786/e0hfbO+yxwMK7n7rLcaTB17m+veqjhim9oUbHGiJDHt+RmziBMec7o+W2TN8f0P5AXDSyjbftTu5BOrtd/jtbPuZdrb6jAMJVIZ0G7X2Wn3/fTJi16e8Idb932645jTGTtWa/+HW/e5UlCidOXcYdlSvJ6DsaPL9bemt8fiSkfcF+/1Pz5R7PQx69eVOV0XYTu9F57+2OlQz7wFmZPilXwvARiRRmBfTTYmbHlqVlbchPfPfBds52bbdtb231pFTJpSnRSrTB6nigmX+6Hf3Ge91d7bo+8yV183XDC2B6SUhOvW5haycMJ7d38v27NKz+lZ2iB5CVve3nP/A3npWVqZLMxk7O7o6Co/cmHv7pOJSRM2/uwRX/918Z15jB1dn+445sq+Rgf3n/3Ntm+cPsy2vsXLYZmy7UePHT6/4snivIIku0sarrSZ3tzwuYsjA7eXYFcqo8Sf8s6b//XapuVOV1M0NRo2b9rjSiWKI9/Uuj7w4qJJ8UqnwxS2hKa/1PHAsgK7YcBq7T9ysNbFrW9dyTAAQKIILtnjNa/NKv7FyeNB22/Wd3XquzoPDflJviYhJlyeFKscHxGljIgQBMHj4tztvd2CILR1d/XcutlkNnXetFQYLofKe6dVxKzJuStWzvpFabpN4vWz7VryYL67i2t95/CBWrvdPmNHl9Xa7+vzdFpf2RbYlj8229GZ2PrNrr8Fa5/+ODdP52VYam40vPHqZ6o4xcOPzZ6UoJqqU/f0WJobDSeO158+edH1cnLzFmTeXuIwMkquilOIHKSqsvn19TtffOXvHZVH7O2xbN38Z9frcny4dd9Xf6ra+LNHpK23+I9PFLtyDnt2VezZVTFvQWbB7FRdsiYqSi4IwsXm9vrzba7HdQYoAJAoQpU6Mnpj4d07zp0Olc607TwP2ftVvibB9SOEtGKt7qGUjKBdcBKKxOtn2+V0JxypOL3bLe5iS7uvV1m4EslsYwKL78/Nnjk1Pl4ZGSW/0ma6fs3cUHe1/FidB0uxpVq9bezocmWZhCOqOMWadffa/VXJ0jvEO9NVlc0vPP1xydI7UtPjp2XEK1XRtvElW6rxoMZfc6Oht/emUuo399U3lrn46XCUbF2hS9asfWkJ30UASBShSjYmbFXmzFkTtUE4A8qDsDGyxYbL18yYxZ5OkhNfn223H+m3GgteLv4+c+qiH9ZtP/sv9zhdb9DswhoJn8rN00m+i9RP3n7Y0Rv0/eUFTm/PGzu6PJtx508FhSlLHsx3ZbGENzb+7JHgGfQDAF8YFd9x2eM1Py1cmK5S834HrXxNwoZZxcQJn+RqZ+uzhym5bd68r7vCHj+3/Jg/yrenZ2nFSyy7G9hefWOZ5Cf5yusPSniSgiCsXrNIJK1FRsmlXdiwaXNpoD4gTzy7wJuL0JWXJu1kLQAgUQRMrFz+/IxZKzNyecuD7q0Jlz+TfeeqzJns6eQ74vWzhyksmubPcytdOcfj51ZVNntQhsyDSPbuB6ukihPvfrDKF4U+IqPkP3n7YenelLlOA4OEHfFNm0uzcqboArRNsEwW9tqm5fMWZEp+ZFWcwvbS+AoCQKIYUQomahmsCCq2oYns8RqawqfE62cP6wP5uf5DVs4Ub26uX2zxR/EZpSra+5votjihVEXbiiFIfpJJyRpJ7vSvXrPIld2rZLKwF1/5e+8HRlavWWTrc4sXZPR1qHjxlaVuDeW5+HYTJwCQKEYm22DFM9l3Bry69igXGy5fm1vI0ITfuNhde/ix2f4/t4/KnvX4bveZUxf9c5JZOVM2bS71uAO95MH8bZ88NTj7xdGKZ+9P8pM/rPH4Zr/tnrrr05mUquh3P1jl8Z/LzdO9v+PpwT9XUJiiC2g1w0dXzNm0uVSScyhdOXfo2w0AJIqRKXu8ZsOs4qAqhDeqlCSmbSy8m3IT/uTi+uyiuzP9f262aSfu3iHWJWvWrV+y6N4cv51nVs6UbZ885e7wgi5Z8/6Op1evWTR0lXNklNytwtKuU6qif/HeSg8WOaxes+ijsmfdvadu+3PuvhZVnGLd+iUbf/bIsA1VX9n4UGA/Jlk5U979YNW69Us8jo7zFmR+8oc1j66YEwwl5wHAb0bv7eEI2djlqVkLJus+PFuh7+rkUvCPfE3C0qRpHtfZgDe99tKVc8X33tElawJ1V1UmC3t0xZz4ySqnxcJy83SFc9KyZ05NCsT97Mgo+YuvLF1WOvsvf6oS3yBIFacoWXpHYdE0R+d539I7YsZF/mbbN65Xh3C9MVevWbTiiXn7/lz9h98eFz++Llmz+P7cRffmeNwDlsnCljyYX3R35pe7T+7dfVL8zy15ML9ofoatXuHtv50Ur9y0uXTbL792t4KKtOYvnF40P/N8jb6qssXpKxq8LBfdl3NHfhLjEgBGpzEDAwO0QoOp46OayiCvIR3qtIqYR1KzGZcIoE93HBNPFKvXLJK8MrEHmhoNzY2G8zWXb5i6bT8pmJ0qCMLEieOSUycGz61fq7X/fI3+6tUbnTd6a89eGnqqumSNi4Gnt8diMvUMPl2hiJyqUyuVURK+zCttpovN7V1dvYNNOk4ZnZ6VIAiCL3rAtrdPEIQTx+ttP8mcPjlmXOTEieMcBQmRcx48QmRkuN1TPbj/rHgK3fWXH3nfgLY3aOgbPdiGwXZZAoDrZs5/6NTBz0kUknYOBvorDW2fN9SSKyQXGy5/KCUzTxNP3brAWvXIv4nfbf3dFy/QMUJo2bOrQrwSiPeJAgBIFE6xKPZvZGPCCiZq8zTxRy9f3FlfQ4OQJUaYpkaDeJzIzdMRJxByxGuS+GJPLQAAicJ5rijW6gonTd7f2nTkcgvjFWSJkdPxOnJB/AEPLCuglRBaTMZuySuFAwBIFNKIkI0t0aUtTkxhHpQHtIqYe6akkCWCSm+PRXwFhSAIvii7BnjPau3/9bYDK56YN2wMzWTsfuHpj8Wfmzl9Mg0IACSKQBqcB1Xb0b676Rz7QbmSJVh7HZx2/Pqw+APmLchkyhOC087fHt+zq2LProrVaxZlz5waFSXv6bGcOXXR6TZWQoB2QwYAEgXs5Irs8Zrs8Rp9l/mriw0Vhsu0ye2KtboFk3XsCRucaqpbxfc5FQTh/gfyaCgEoSttpsHhNfEV2LfLzdOxlysAkCiCi1YRuypzZum07PIrl/7cUs9UKOF/JjjNUE+k7nUw6O2xtLWZ4uOVQ0cbmhoNb2/8wulz07O0NCCCjdXa/+YGzzchKV05hzYEABJFMIqQjS3W6oq1On2X+Vhb6yH9KF0UWJKYNnPCJK0ilksieJhMPWuf/lgQBFWcYsYdUwVBOHyg1rWO11wXqwQA/vTl7pMel7rLzdO5W/8bAECi8DetInZ5atZDKRnNN0wV19pGSbQo1uryJ8TrxilZdR3MjB1dLmYJm/uW3kGjIegSsrHb3WlOg1Rxihdf+XvaEABIFKFBNiYsRRmXoowbwdEiNlyep0kgSIxU8xZkMtccQeidN//L4+e+tOEBrmoAIFGEcLRYnpql7zLXma4fa7sY0ttDpavUueqJ2eM1rLcewVRxirUvLaEdEGx6eywmY7dnz920uZT5TgBAogh5WkWsVhFbrNX1WW9d6jSfM7bX3+g4b2wPlRSRphw/KVrBcMRo8JO3H2YFBYJQZJT8F++t/PW2A063KRtKl6zZ+LNHGJ0AABLFiBIhG2sbuBAEwTrQb+zrbbxhbDKb6kztQTJ8oVXEpCnVSbHK5HEqVUQkKWJU2bS5NClZQzsgOMlkYavXLHpgWcE3fznjtD6jLlnzDz+4q2h+JgkZAEgUI/pfxzFh6shodWR0wUTtYMBo6+5q7+1uuGFs6zb7IWNoFTHx0bEp41TqyOj4aAURYtRSxSle2vAAM0MQ/CbFKx9dMef7ywtMpp7as5faLhlbL7afPnnR2NGVm6dTqqIyp0/OnjmVbAwAJIpRHTAEQSjW6mw/7LPe6rxp6bNa9V1mQRAMPd1Xev5WEfaCsd1pBYzYcPk0lfpv/wxHKTRR0YIgaBWxETJZTLickhGwKV059/vLC6iQjRASGSWPjJJPilfSFABAooATEbKxtn4/dR7gSa8rMlyXrHG0f78uWbP4/tyiu9nZCQAAkCgA2KNURb/7wSqrtf+awVx79pLthwpF5FSdOjIynCABAABIFACck8nCJsUrmR8CAAD8hoW5AAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAJAoAAAAAIFEAAAAAIFEAAAAAIFEAAAAAIFEAAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAIkCAAAAAEgUAAAAAEgUAAAAAEgUAAAAAEgUAAAAAECiAAAAAECiAAAAAECiAAAAAECiAAAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAAASBQAAAACQKAAAAACQKAAAAACQKAAAAACQKAAAAACARAEAAACARAEAAACARAEAAACARAEAAACARAEAAAAAJAoAAAAAJAoAAAAAJAoAAAAAI9H/D7lrWCVLXPwgAAAAAElFTkSuQmCC" alt="Grow - Género y trabajo" style="height:36px;display:block;">
+  <div class="divider-v"></div>
+  <h1>Mapa Interactivo de Género — América Latina</h1>
+  <span class="subtitle">Indicador: <strong id="subtitle-capa">Brecha salarial de género</strong></span>
+</header>
+
+<div class="main">
+
+  <div class="left-panel" id="left-panel">
+    <div class="left-panel-title">Indicadores</div>
+  </div>
+
+  <div class="map-area" id="map-area">
+    <svg id="map-svg"></svg>
+    <div class="map-tooltip" id="tooltip">
+      <div class="tt-name" id="tt-name"></div>
+      <div class="tt-value" id="tt-value"></div>
+      <div class="tt-sub" id="tt-sub"></div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoom-in" title="Acercar">+</button>
+      <button class="zoom-btn" id="zoom-out" title="Alejar">−</button>
+      <button class="zoom-btn reset" id="zoom-reset" title="Restablecer vista">⊙</button>
+    </div>
+    <div id="map-loading"><div class="spinner"></div><span>Cargando mapa…</span></div>
+  </div>
+
+  <div class="sidebar">
+    <div id="sidebar-top"></div>
+    <div class="list-panel" id="list-panel">
+      <div class="list-count" id="list-count"></div>
+      <div id="list-container"></div>
+    </div>
+    <div class="detail-panel" id="detail-panel">
+      <div class="detail-empty">Seleccioná un país o una norma para ver su detalle</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Este material fue desarrollado con asistencia de inteligencia artificial (Claude – Anthropic) y requiere revisión humana antes de su uso o publicación.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+// LEGISLACIÓN (con temas)
+// ════════════════════════════════════════════════════════════════════════════
+const LEYES = [
+  // ——— ARGENTINA ———
+  {id:"AR-001",nombre:"Ley 26.485 — Protección integral a las mujeres",pais:"Argentina",codigoPais:"ARG",anio:2009,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley de protección integral para prevenir, sancionar y erradicar la violencia contra las mujeres en los ámbitos en que se desarrollen sus relaciones interpersonales. Incluye la violencia laboral como tipo específico.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/150000-154999/152155/norma.htm"},
+  {id:"AR-002",nombre:"Ley 27.499 — Ley Micaela",pais:"Argentina",codigoPais:"ARG",anio:2019,tipo:"nacional",temas:["acoso","discriminacion"],descripcion:"Establece la capacitación obligatoria en género y violencia contra las mujeres para todas las personas que se desempeñan en los tres poderes del Estado Nacional, en todos sus niveles y jerarquías.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/315000-319999/318666/norma.htm"},
+  {id:"AR-003",nombre:"Ley 27.580 — Ratificación Convenio 190 OIT",pais:"Argentina",codigoPais:"ARG",anio:2020,tipo:"nacional",temas:["ratificacion_convenios"],descripcion:"Aprueba el Convenio 190 de la OIT sobre la eliminación de la violencia y el acoso en el mundo del trabajo, con carácter de ley nacional.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/340000-344999/342664/norma.htm"},
+  {id:"AR-004",nombre:"Ley 23.592 — Actos discriminatorios",pais:"Argentina",codigoPais:"ARG",anio:1988,tipo:"nacional",temas:["discriminacion"],descripcion:"Penaliza los actos u omisiones discriminatorios por motivos de raza, religión, nacionalidad, ideología, opinión política, sexo, posición económica, condición social o caracteres físicos.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/20000-24999/20465/texact.htm"},
+  {id:"AR-005",nombre:"Ley 24.417 — Protección contra la violencia familiar",pais:"Argentina",codigoPais:"ARG",anio:1994,tipo:"nacional",temas:["violencia_genero"],descripcion:"Primera ley nacional de protección contra la violencia familiar. Establece medidas cautelares de urgencia, intervención judicial y asistencia a víctimas de violencia en el ámbito doméstico.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/0-4999/804/norma.htm"},
+  {id:"AR-006",nombre:"Ley 27.736 — Ley Olimpia (violencia digital)",pais:"Argentina",codigoPais:"ARG",anio:2023,tipo:"nacional",temas:["violencia_genero","discriminacion"],descripcion:"Tipifica como delito la difusión no consentida de imágenes íntimas. Modifica el Código Penal incorporando penas de prisión e inhabilitación.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/380000-384999/382790/norma.htm"},
+  // ——— BOLIVIA ———
+  {id:"BO-001",nombre:"Ley 348 — Integral para una vida libre de violencia",pais:"Bolivia",codigoPais:"BOL",anio:2013,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley integral que garantiza a las mujeres el derecho a una vida libre de violencia. Define 16 formas de violencia incluyendo la laboral y política, crea el Sistema Integral Plurinacional de Prevención.",link:"https://drive.google.com/file/d/1p_RXRxMRReK8mb8yuSWYIOB5wbRCxVsT/view?usp=sharing"},
+  {id:"BO-002",nombre:"Ley 243 — Contra el acoso y violencia política",pais:"Bolivia",codigoPais:"BOL",anio:2012,tipo:"nacional",temas:["acoso","violencia_genero"],descripcion:"Protege a las mujeres en el ejercicio de la función político-pública. Define el acoso político, establece medidas de protección y sanciones.",link:"https://drive.google.com/file/d/1p_RXRxMRReK8mb8yuSWYIOB5wbRCxVsT/view?usp=sharing"},
+  // ——— BRASIL ———
+  {id:"BR-001",nombre:"Lei 14.457 — Programa Emprega + Mulheres",pais:"Brasil",codigoPais:"BRA",anio:2022,tipo:"nacional",temas:["acoso","discriminacion"],descripcion:"Instituye el Programa Emprega + Mulheres e incorpora disposiciones sobre acoso sexual y violencia en el trabajo. Obliga a empresas con más de 20 personas a adoptar medidas de prevención.",link:"https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14457.htm"},
+  {id:"BR-002",nombre:"Lei 9.029 — Proibição de práticas discriminatórias",pais:"Brasil",codigoPais:"BRA",anio:1995,tipo:"nacional",temas:["discriminacion"],descripcion:"Prohíbe prácticas discriminatorias para el acceso o mantenimiento del empleo por motivo de sexo, origen, raza, color, estado civil u otros.",link:"https://www.planalto.gov.br/ccivil_03/leis/l9029.htm"},
+  // ——— CHILE ———
+  {id:"CL-001",nombre:"Ley 20.005 — Acoso sexual laboral",pais:"Chile",codigoPais:"CHL",anio:2005,tipo:"nacional",temas:["acoso"],descripcion:"Tipifica y sanciona el acoso sexual laboral. Modifica el Código del Trabajo incorporando el concepto, el procedimiento de investigación interna obligatorio y sanciones.",link:"https://www.bcn.cl/leychile/navegar?idNorma=236425"},
+  {id:"CL-002",nombre:"Ley 20.607 — Acoso laboral (mobbing)",pais:"Chile",codigoPais:"CHL",anio:2012,tipo:"nacional",temas:["acoso"],descripcion:"Sanciona el acoso laboral o mobbing. Define la conducta como hostigamiento reiterado que atenta contra la dignidad, integridad y permanencia en el empleo.",link:"https://www.bcn.cl/leychile/navegar?idNorma=1042709"},
+  {id:"CL-003",nombre:"Ley 21.153 — Acoso sexual en espacios públicos",pais:"Chile",codigoPais:"CHL",anio:2019,tipo:"nacional",temas:["acoso","discriminacion"],descripcion:"Amplía la tipificación del acoso sexual incluyendo espacios públicos y entornos digitales. Refuerza la protección en contextos educativos y laborales.",link:"https://www.bcn.cl/leychile/navegar?idNorma=1131140"},
+  // ——— COLOMBIA ———
+  {id:"CO-001",nombre:"Ley 1257 — Violencias contra mujeres",pais:"Colombia",codigoPais:"COL",anio:2008,tipo:"nacional",temas:["violencia_genero","discriminacion"],descripcion:"Dicta normas de sensibilización, prevención y sanción de formas de violencia y discriminación contra las mujeres, incluyendo la violencia económica y laboral.",link:"https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=34054"},
+  {id:"CO-002",nombre:"Ley 1010 — Acoso laboral",pais:"Colombia",codigoPais:"COL",anio:2006,tipo:"nacional",temas:["acoso"],descripcion:"Define, previene, corrige y sanciona el acoso laboral. Establece tipos de conducta acosadora, mecanismos preventivos obligatorios y medidas sancionatorias.",link:"https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=18843"},
+  {id:"CO-003",nombre:"Ley 2365/2024 — Acoso sexual en el ámbito laboral",pais:"Colombia",codigoPais:"COL",anio:2024,tipo:"nacional",temas:["acoso","violencia_genero"],descripcion:"Adopta medidas de prevención, protección y atención del acoso sexual en el ámbito laboral y en instituciones de educación superior. Establece obligaciones a empleadores, mecanismos de queja, garantías de estabilidad laboral para las víctimas y un Plan Transversal para la Eliminación del Acoso Sexual.",link:"https://www.secretariasenado.gov.co/senado/basedoc/ley_2365_2024.html"},
+  // ——— COSTA RICA ———
+
+  {id:"CR-002",nombre:"Ley 7142/1990 — Promoción de la Igualdad Social de la Mujer",pais:"Costa Rica",codigoPais:"CRI",anio:1990,tipo:"nacional",temas:["discriminacion","ley_cupos"],descripcion:"Establece medidas para promover la igualdad real y efectiva entre mujeres y hombres en Costa Rica. Define políticas en materia laboral, educativa y política, incluyendo el acceso equitativo al mercado de trabajo y la prohibición de discriminación por razón de sexo.",link:"https://www.pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=12739"},
+  {id:"CR-001",nombre:"Ley 7476 — Hostigamiento sexual en el empleo",pais:"Costa Rica",codigoPais:"CRI",anio:1995,tipo:"nacional",temas:["acoso"],descripcion:"Pionera en América Latina: prohíbe y sanciona el hostigamiento sexual en relaciones laborales y de docencia. Crea obligaciones al empleador y mecanismos de denuncia.",link:"https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_resultado_simple.aspx?param1=NER&param2=1&param3=FECHA&param4=DESC&param5=7476"},
+  // ——— ECUADOR ———
+  {id:"EC-001",nombre:"Ley Orgánica Integral para Prevenir y Erradicar la Violencia",pais:"Ecuador",codigoPais:"ECU",anio:2018,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley integral que reconoce la violencia contra la mujer como problema de salud pública. Define tipos de violencia incluyendo la laboral, crea el Sistema Nacional para Prevenir y Erradicar la Violencia.",link:"https://drive.google.com/file/d/1vVAMENqdMK95_YUR45fgqVchikdslhPu/view?usp=drive_link"},
+  // ——— MÉXICO ———
+  {id:"MX-001",nombre:"Ley General de Acceso a una Vida Libre de Violencia",pais:"México",codigoPais:"MEX",anio:2007,tipo:"nacional",temas:["violencia_genero"],descripcion:"Coordina federación, estados y municipios para prevenir, sancionar y erradicar la violencia contra las mujeres. Define la violencia laboral e introduce la alerta de violencia de género.",link:"https://drive.google.com/file/d/1vbnrsA9XO7qP8L3YqbfSlMzBJPxAr-ZL/view?usp=sharing"},
+  {id:"MX-002",nombre:"NOM-035-STPS-2018 — Factores de riesgo psicosocial",pais:"México",codigoPais:"MEX",anio:2018,tipo:"nacional",temas:["acoso"],descripcion:"Norma oficial que establece los elementos para identificar, analizar y prevenir los factores de riesgo psicosocial, incluyendo la violencia laboral, en centros de trabajo.",link:"https://www.dof.gob.mx/nota_detalle.php?codigo=5541828&fecha=23/10/2018"},
+  {id:"MX-003",nombre:"Ley General para la Igualdad entre Mujeres y Hombres",pais:"México",codigoPais:"MEX",anio:2006,tipo:"nacional",temas:["discriminacion","ley_cupos"],descripcion:"Regula y garantiza la igualdad entre mujeres y hombres. Define la política nacional en materia de igualdad y establece la transversalización de género en el Estado.",link:"https://www.gob.mx/indesol/documentos/ley-general-para-la-igualdad-entre-mujeres-y-hombres-24-03-2016"},
+  {id:"MX-004",nombre:"Ley Federal para Prevenir y Eliminar la Discriminación",pais:"México",codigoPais:"MEX",anio:2003,tipo:"nacional",temas:["discriminacion"],descripcion:"Prohíbe la discriminación por razón de sexo, género u otras condiciones. Crea el CONAPRED y establece medidas positivas para la igualdad.",link:"https://www.gob.mx/indesol/documentos/ley-federal-para-prevenir-y-eliminar-la-discriminacion-58120"},
+  // ——— URUGUAY ———
+  {id:"UY-001",nombre:"Ley 18.561 — Acoso sexual",pais:"Uruguay",codigoPais:"URY",anio:2009,tipo:"nacional",temas:["acoso"],descripcion:"Declara de interés general las acciones para prevenir y sancionar el acoso sexual en relaciones laborales y en la enseñanza. Define acoso sexual, mecanismos de denuncia y sanciones.",link:"https://www.impo.com.uy/bases/leyes/18561-2009"},
+  {id:"UY-002",nombre:"Ley 19.580 — Violencia basada en género",pais:"Uruguay",codigoPais:"URY",anio:2017,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley integral contra la violencia basada en género. Define tipos y modalidades incluyendo la violencia laboral, establece derechos de las víctimas y medidas de prevención.",link:"https://www.impo.com.uy/bases/leyes/19580-2017"},
+  {id:"UY-003",nombre:"Ley 19.849 — Ratificación Convenio 190 OIT",pais:"Uruguay",codigoPais:"URY",anio:2019,tipo:"nacional",temas:["ratificacion_convenios"],descripcion:"Aprueba el Convenio 190 de la OIT. Uruguay fue el primer país del mundo en ratificarlo.",link:"https://www.impo.com.uy/bases/leyes/19849-2019"},
+  // ——— INTERNACIONAL ———
+  {id:"INT-001",nombre:"Convenio 190 OIT — Violencia y acoso en el trabajo",pais:"Internacional",codigoPais:"INT",anio:2019,tipo:"convenio_internacional",temas:["ratificacion_convenios","acoso"],descripcion:"Primer tratado internacional vinculante que reconoce el derecho a un mundo del trabajo libre de violencia y acoso. Define violencia y acoso de género, establece principios y obligaciones para los Estados.",link:"https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C190"},
+  {id:"INT-002",nombre:"Recomendación 206 OIT — Violencia y acoso",pais:"Internacional",codigoPais:"INT",anio:2019,tipo:"convenio_internacional",temas:["ratificacion_convenios","acoso"],descripcion:"Complementa el Convenio 190 con orientaciones prácticas. Incluye directrices sobre políticas nacionales, protección de grupos vulnerables y mecanismos de control.",link:"https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:R206"},
+  {id:"INT-003",nombre:"CEDAW — Eliminación de la discriminación contra la mujer",pais:"Internacional",codigoPais:"INT",anio:1979,tipo:"supranacional",temas:["discriminacion","violencia_genero"],descripcion:"Carta internacional de los derechos humanos de las mujeres. Obliga a los Estados a garantizar igualdad de derechos en todas las esferas incluida la laboral.",link:"https://www.ohchr.org/es/instruments-mechanisms/instruments/convention-elimination-all-forms-discrimination-against-women"},
+  {id:"INT-004",nombre:"Convención de Belém do Pará — OEA",pais:"Internacional",codigoPais:"INT",anio:1994,tipo:"supranacional",temas:["violencia_genero"],descripcion:"Convención Interamericana para prevenir, sancionar y erradicar la violencia contra la mujer. Incluye la violencia en el ámbito laboral.",link:"https://www.oas.org/juridico/spanish/tratados/a-61.html"},
+  {id:"INT-005",nombre:"Convenio 111 OIT — Discriminación en el empleo",pais:"Internacional",codigoPais:"INT",anio:1958,tipo:"convenio_internacional",temas:["discriminacion"],descripcion:"Convenio fundamental de la OIT que prohíbe la discriminación por motivos de raza, color, sexo, religión u otros en el empleo y la ocupación.",link:"https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C111"},
+  {id:"INT-006",nombre:"Declaración Universal de los Derechos Humanos",pais:"Internacional",codigoPais:"INT",anio:1948,tipo:"supranacional",temas:["discriminacion"],descripcion:"Proclamada por la Asamblea General de la ONU. Establece los derechos fundamentales inalienables de todas las personas, sin distinción de sexo u otra condición, como base del derecho internacional de los derechos humanos.",link:"https://www.un.org/es/about-us/universal-declaration-of-human-rights"},
+];
+
+// ════════════════════════════════════════════════════════════════════════════
+// CATEGORÍAS DEL PANEL IZQUIERDO
+// ════════════════════════════════════════════════════════════════════════════
+const CATEGORIES = [
+  {
+    id:'trabajo', nombre:'Trabajo e igualdad económica',
+    fuente:'OIT / CEPAL / ILOSTAT, 2022–2025',
+    capas:[
+      {id:'brecha', nombre:'Brecha salarial de género', tema:null},
+      {id:'participacion', nombre:'Tasa de participación económica', tema:null},
+      {id:'licencias', nombre:'Licencias parentales', tema:null},
+      {id:'tnr', nombre:'Trabajo doméstico no remunerado (TNR)', tema:null},
+    ]
+  },
+  {
+    id:'legislacion_cat', nombre:'Legislación y normativa',
+    fuente:'Registros nacionales, OIT NORMLEX, OEA. Actualizado 2024.',
+    capas:[
+      {id:'legislacion', nombre:'Todas las leyes', tema:null},
+      {id:'legislacion', nombre:'Matrimonio igualitario', tema:'matrimonio_igualitario'},
+      {id:'legislacion', nombre:'Identidad de género', tema:'identidad_genero'},
+      {id:'legislacion', nombre:'Discriminación', tema:'discriminacion'},
+      {id:'legislacion', nombre:'Acoso laboral', tema:'acoso'},
+      {id:'legislacion', nombre:'Ley de cupos / paridad', tema:'ley_cupos'},
+      {id:'legislacion', nombre:'Violencia de género', tema:'violencia_genero'},
+      {id:'legislacion', nombre:'Ratificación de convenios', tema:'ratificacion_convenios'},
+      {id:'_divider_', nombre:'—', tema:null},
+      {id:'c190', nombre:'Mapa ratif. Convenio 190 OIT', tema:null},
+      {id:'cdn', nombre:'Mapa ratif. Conv. Derechos del Niñe', tema:null},
+    ]
+  },
+  {
+    id:'representacion', nombre:'Representación política',
+    fuente:'IPU (Unión Interparlamentaria) / ONU Mujeres, 2026',
+    capas:[
+      {id:'parlamento', nombre:'Mujeres en el parlamento (%)', tema:null},
+      {id:'cuotas', nombre:'Cuotas y ley de cupos', tema:null},
+    ]
+  },
+  {
+    id:'diversidad', nombre:'Diversidad e identidad',
+    fuente:'ILGA World, 2024',
+    capas:[
+      {id:'lgbtq', nombre:'Matrimonio igualitario e identidad de género', tema:null},
+    ]
+  },
+  {
+    id:'indices', nombre:'Índices',
+    fuente:'PNUD, Informe de Desarrollo Humano 2023',
+    capas:[
+      {id:'idg', nombre:'Índice de Desigualdad de Género (IDG)', tema:null},
+    ]
+  },
+  {
+    id:'violencia', nombre:'Violencia',
+    fuente:'CEPAL / ONU Mujeres, 2024',
+    capas:[
+      {id:'femicidios', nombre:'Femicidios (tasa por 100.000 mujeres)', tema:null},
+    ]
+  },
+  {
+    id:'mercado_laboral', nombre:'Mercado laboral',
+    fuente:'CEPAL / OIT / ILOSTAT / INDEC, 2023–2024',
+    capas:[
+      {id:'ocupacion', nombre:'Tasa de ocupación femenina (%)', tema:null},
+      {id:'fem_pobreza', nombre:'Índice de feminidad de la pobreza', tema:null},
+      {id:'tnr_tiempo', nombre:'Proporción tiempo TNR — Mujeres (%)', tema:null},
+      {id:'sin_ingresos', nombre:'Mujeres sin ingresos propios (%)', tema:null},
+      {id:'informalidad', nombre:'Informalidad laboral femenina (%)', tema:null},
+      {id:'actividad_hijos', nombre:'Tasa de actividad con 3 hijos o más (%)', tema:null},
+    ]
+  },
+  {
+    id:'generacional', nombre:'Mercado laboral por generación',
+    fuente:'OIT / ILOSTAT, datos obtenidos agosto 2026. Mujeres únicamente.',
+    capas:[
+      {id:'part_juv', nombre:'Participación laboral — Jóvenes 15-24 (%)', tema:null},
+      {id:'part_mayor', nombre:'Participación laboral — 55-64 años (%)', tema:null},
+      {id:'emp_juv', nombre:'Empleo — Jóvenes 15-24 (%)', tema:null},
+      {id:'emp_mayor', nombre:'Empleo — 55-64 años (%)', tema:null},
+      {id:'desem_juv', nombre:'Desempleo — Jóvenes 15-24 (%)', tema:null},
+      {id:'desem_mayor', nombre:'Desempleo — 55-64 años (%)', tema:null},
+    ]
+  },
+];
+
+// ════════════════════════════════════════════════════════════════════════════
+// COLORES Y MAPAS
+// ════════════════════════════════════════════════════════════════════════════
+const COUNTRY_COLORS = {
+  MEX:"#C8924A",GTM:"#4A7EC8",BLZ:"#4AB5A0",HND:"#E07A50",SLV:"#A0C84A",
+  NIC:"#C84A8C",CRI:"#4AB5E0",PAN:"#78C84A",COL:"#C8B84A",VEN:"#4A8C50",
+  GUY:"#8C5AC8",SUR:"#4AC8B5",ECU:"#4A5EC8",PER:"#C87A50",BOL:"#5CC84A",
+  BRA:"#96C864",PRY:"#4AC878",URY:"#A05CC8",ARG:"#4AB0C8",CHL:"#5A7CC8",
+  MLV:"#4AB0C8"
+};
+const ISO_MAP = {
+  484:"MEX",320:"GTM",84:"BLZ",340:"HND",222:"SLV",558:"NIC",188:"CRI",
+  591:"PAN",170:"COL",862:"VEN",328:"GUY",740:"SUR",218:"ECU",604:"PER",
+  68:"BOL",76:"BRA",600:"PRY",858:"URY",32:"ARG",152:"CHL",238:"MLV"
+};
+const COUNTRY_NAMES = {
+  MEX:"México",GTM:"Guatemala",BLZ:"Belice",HND:"Honduras",SLV:"El Salvador",
+  NIC:"Nicaragua",CRI:"Costa Rica",PAN:"Panamá",COL:"Colombia",VEN:"Venezuela",
+  GUY:"Guyana",SUR:"Surinam",ECU:"Ecuador",PER:"Perú",BOL:"Bolivia",
+  BRA:"Brasil",PRY:"Paraguay",URY:"Uruguay",ARG:"Argentina",CHL:"Chile",
+  MLV:"Argentina"
+};
+const COUNTRY_ALIAS = { MLV:"ARG" };
+
+// ════════════════════════════════════════════════════════════════════════════
+// DATOS POR CAPA
+// ════════════════════════════════════════════════════════════════════════════
+const CAPA_DATA = {
+  participacion:{
+    ARG:{valor:51.7,anio:2025},BOL:{valor:58.0,anio:2021},BRA:{valor:53.0,anio:2024},
+    CHL:{valor:52.0,anio:2023},COL:{valor:51.7,anio:2024},CRI:{valor:41.0,anio:2024},
+    ECU:{valor:52.4,anio:2024},SLV:{valor:46.7,anio:2024},GTM:{valor:40.4,anio:2024},
+    HND:{valor:40.0,anio:2023},MEX:{valor:47.0,anio:2023},NIC:{valor:50.1,anio:2024},
+    PAN:{valor:52.7,anio:2024},PRY:{valor:60.0,anio:2023},PER:{valor:67.0,anio:2022},
+    URY:{valor:54.6,anio:2022},VEN:{valor:37.7,anio:2024},
+  },
+  femicidios:{
+    ARG:{tasa:1.0,anio:2024},BOL:{tasa:1.4,anio:2024},
+    BRA:{tasa:1.3,anio:2024},CHL:{tasa:0.4,anio:2024},
+    COL:{tasa:0.8,anio:2024},CRI:{tasa:1.3,anio:2024},
+    ECU:{tasa:0.9,anio:2024},SLV:{valor:74,tasa:2.18,anio:2023},
+    GTM:{tasa:1.9,anio:2024},HND:{tasa:4.3,anio:2024},
+    MEX:{tasa:1.3,anio:2024},NIC:{valor:71,tasa:1.95,anio:2022},
+    PAN:{tasa:1.0,anio:2024},PRY:{tasa:0.8,anio:2024},
+    PER:{tasa:0.9,anio:2024},URY:{tasa:1.3,anio:2024},
+  },
+  lgbtq:{
+    ARG:{nivel:3,anio:2010,nota:"Matrimonio igualitario (2010) e Ley de Identidad de Género (2012)"},
+    BOL:{nivel:1,nota:"Constitución prohíbe discriminación por orientación sexual"},
+    BRA:{nivel:2,anio:2013,nota:"Matrimonio igualitario por decisión del STF (2013)"},
+    CHL:{nivel:2,anio:2022,nota:"Matrimonio igualitario (2022). Unión civil desde 2015"},
+    COL:{nivel:2,anio:2016,nota:"Matrimonio igualitario por sentencia de la Corte Constitucional (2016)"},
+    CRI:{nivel:2,anio:2020,nota:"Matrimonio igualitario por resolución de la Sala IV (2020)"},
+    ECU:{nivel:2,anio:2019,nota:"Matrimonio igualitario por sentencia de la Corte Constitucional (2019)"},
+    SLV:{nivel:0,nota:"La Constitución define el matrimonio como heterosexual"},
+    GTM:{nivel:0,nota:"Sin legislación de protección específica"},
+    HND:{nivel:0,nota:"La Constitución prohíbe expresamente el matrimonio igualitario"},
+    MEX:{nivel:2,anio:2022,nota:"Reconocimiento federal y en todos los estados desde 2022"},
+    NIC:{nivel:0,nota:"Sin legislación de protección específica"},
+    PAN:{nivel:0,nota:"Sin legislación de protección específica"},
+    PRY:{nivel:0,nota:"Sin legislación de protección específica"},
+    PER:{nivel:1,nota:"Decretos anti-discriminación, sin reconocimiento de uniones"},
+    URY:{nivel:3,anio:2013,nota:"Matrimonio igualitario (2013) y Ley de Identidad de Género (2018)"},
+    VEN:{nivel:1,nota:"La Constitución prohíbe discriminación por orientación sexual"},
+    GUY:{nivel:1,nota:"Despenalización de relaciones entre personas del mismo sexo (2023)"},
+    SUR:{nivel:0,nota:"Sin legislación específica"},
+    BLZ:{nivel:1,nota:"Despenalización de relaciones entre personas del mismo sexo (2019)"},
+  },
+  c190:{
+    ARG:{anio:2021},URY:{anio:2020},ECU:{anio:2021},MEX:{anio:2022},CHL:{anio:2023},
+    PAN:{anio:2022},PER:{anio:2022},SLV:{anio:2022},COL:{anio:2025},CRI:{anio:2025},
+    BOL:{estado:"discusion"},BRA:{estado:"discusion"},PRY:{estado:"discusion"},GTM:{estado:"discusion"},
+    HND:{estado:"discusion"},NIC:{estado:"discusion"},VEN:{estado:"discusion"},
+  },
+  cdn:{
+    MEX:{anio:1990},GTM:{anio:1990},BLZ:{anio:1990},HND:{anio:1990},
+    SLV:{anio:1990},NIC:{anio:1990},CRI:{anio:1990},PAN:{anio:1990},
+    COL:{anio:1991},VEN:{anio:1990},GUY:{anio:1991},SUR:{anio:1993},
+    ECU:{anio:1990},PER:{anio:1990},BOL:{anio:1990},BRA:{anio:1990},
+    PRY:{anio:1990},URY:{anio:1990},ARG:{anio:1990},CHL:{anio:1990},
+  },
+  brecha:{
+    ARG:{valor:25,anio:2023},BOL:{valor:22,anio:2022},BRA:{valor:19,anio:2023},
+    CHL:{valor:22,anio:2023},COL:{valor:6,anio:2023},CRI:{valor:9,anio:2023},
+    ECU:{valor:15,anio:2023},SLV:{valor:18,anio:2023},GTM:{valor:28,anio:2022},
+    HND:{valor:20,anio:2023},MEX:{valor:18,anio:2023},NIC:{valor:15,anio:2022},
+    PAN:{valor:19,anio:2023},PRY:{valor:33,anio:2023},PER:{valor:28,anio:2023},
+    URY:{valor:19,anio:2023},VEN:{valor:26,anio:2022},
+  },
+  parlamento:{
+    ARG:{valor:41,anio:2026},BOL:{valor:51,anio:2026},BRA:{valor:17,anio:2026},
+    CHL:{valor:35,anio:2026},COL:{valor:29,anio:2026},CRI:{valor:49,anio:2026},
+    ECU:{valor:43,anio:2026},SLV:{valor:32,anio:2026},GTM:{valor:20,anio:2026},
+    HND:{valor:30,anio:2026},MEX:{valor:50,anio:2026},NIC:{valor:55,anio:2026},
+    PAN:{valor:22,anio:2026},PRY:{valor:24,anio:2026},PER:{valor:42,anio:2026},
+    URY:{valor:30,anio:2026},VEN:{valor:32,anio:2026},GUY:{valor:36,anio:2026},
+    SUR:{valor:31,anio:2026},BLZ:{valor:13,anio:2026},
+  },
+  licencias:{
+    ARG:{maternidad:91,paternidad:2,anio:2024},
+    BOL:{maternidad:91,paternidad:3,anio:2024},
+    BRA:{maternidad:119,paternidad:20,nota:"20 días para empresas adheridas al Programa Empresa Cidadã",anio:2024},
+    CHL:{maternidad:126,paternidad:5,nota:"Incluye postnatal de 84 días + 12 semanas de permiso parental",anio:2024},
+    COL:{maternidad:98,paternidad:14,anio:2024},
+    CRI:{maternidad:119,paternidad:8,anio:2024},
+    ECU:{maternidad:84,paternidad:10,anio:2024},
+    SLV:{maternidad:112,paternidad:3,anio:2024},
+    GTM:{maternidad:84,paternidad:2,anio:2024},
+    HND:{maternidad:70,paternidad:0,anio:2024},
+    MEX:{maternidad:84,paternidad:5,anio:2024},
+    NIC:{maternidad:84,paternidad:5,anio:2024},
+    PAN:{maternidad:98,paternidad:3,anio:2024},
+    PRY:{maternidad:126,paternidad:14,anio:2024},
+    PER:{maternidad:98,paternidad:10,anio:2024},
+    URY:{maternidad:84,paternidad:13,anio:2024},
+    VEN:{maternidad:182,paternidad:14,anio:2024},
+  },
+  cuotas:{
+    ARG:{tipo:"paridad",porcentaje:50,anio:2017},
+    BOL:{tipo:"paridad",porcentaje:50,anio:2010},
+    BRA:{tipo:"cuota",porcentaje:30,anio:1997},
+    CHL:{tipo:"cuota",porcentaje:40,anio:2015},
+    COL:{tipo:"cuota",porcentaje:30,anio:2011},
+    CRI:{tipo:"paridad",porcentaje:50,anio:2009},
+    ECU:{tipo:"paridad",porcentaje:50,anio:2020},
+    SLV:{tipo:"cuota",porcentaje:30,anio:2013},
+    GTM:{tipo:"ninguna",porcentaje:0},
+    HND:{tipo:"paridad",porcentaje:50,anio:2012},
+    MEX:{tipo:"paridad",porcentaje:50,anio:2019},
+    NIC:{tipo:"paridad",porcentaje:50,anio:2012},
+    PAN:{tipo:"paridad",porcentaje:50,anio:2021},
+    PRY:{tipo:"cuota",porcentaje:20,anio:1996},
+    PER:{tipo:"paridad",porcentaje:50,anio:2020},
+    URY:{tipo:"cuota",porcentaje:33,anio:2009},
+    VEN:{tipo:"paridad",porcentaje:50,anio:1997},
+  },
+  idg:{
+    ARG:{valor:0.305,ranking:51},BOL:{valor:0.402,ranking:89},BRA:{valor:0.373,ranking:79},
+    CHL:{valor:0.272,ranking:44},COL:{valor:0.360,ranking:75},CRI:{valor:0.280,ranking:46},
+    ECU:{valor:0.332,ranking:62},SLV:{valor:0.362,ranking:76},GTM:{valor:0.477,ranking:111},
+    HND:{valor:0.430,ranking:101},MEX:{valor:0.325,ranking:59},NIC:{valor:0.445,ranking:105},
+    PAN:{valor:0.474,ranking:110},PRY:{valor:0.418,ranking:96},PER:{valor:0.371,ranking:80},
+    URY:{valor:0.246,ranking:37},VEN:{valor:0.483,ranking:113},GUY:{valor:0.498,ranking:116},
+    SUR:{valor:0.452,ranking:107},BLZ:{valor:0.391,ranking:84},
+  },
+  tnr:{
+    ARG:{mujeres:43.0,varones:25.7,brecha:17.3,anio:2021},
+    BOL:{mujeres:35.0,varones:12.0,brecha:23.0,anio:2022},
+    BRA:{mujeres:21.3,varones:11.7,brecha:9.6,anio:2023},
+    CHL:{mujeres:35.6,varones:15.5,brecha:20.1,anio:2023},
+    COL:{mujeres:34.1,varones:12.4,brecha:21.7,anio:2023},
+    CRI:{mujeres:35.2,varones:18.0,brecha:17.2,anio:2023},
+    ECU:{mujeres:31.5,varones:11.3,brecha:20.2,anio:2023},
+    SLV:{mujeres:36.0,varones:14.0,brecha:22.0,anio:2023},
+    GTM:{mujeres:39.0,varones:12.0,brecha:27.0,anio:2023},
+    HND:{mujeres:37.0,varones:12.0,brecha:25.0,anio:2023},
+    MEX:{mujeres:42.8,varones:16.9,brecha:25.9,anio:2023},
+    NIC:{mujeres:22.9,varones:12.1,brecha:10.8,anio:2023},
+    PAN:{mujeres:33.0,varones:13.0,brecha:20.0,anio:2023},
+    PRY:{mujeres:28.5,varones:11.8,brecha:16.7,anio:2023},
+    PER:{mujeres:39.2,varones:16.2,brecha:23.0,anio:2022},
+    URY:{mujeres:30.0,varones:16.0,brecha:14.0,anio:2023},
+  },
+  ocupacion:{
+    ARG:{mujeres:48.35,varones:65.63,anio:2024},
+    BOL:{mujeres:71.02,varones:81.97,anio:2024},
+    BRA:{mujeres:48.4,varones:68.25,anio:2024},
+    CHL:{mujeres:47.68,varones:66.13,anio:2024},
+    COL:{mujeres:45.74,varones:70.07,anio:2024},
+    CRI:{mujeres:40.84,varones:63.74,anio:2024},
+    ECU:{mujeres:50.29,varones:74.86,anio:2024},
+    GTM:{mujeres:49.3,varones:83.8,anio:2024},
+    HND:{mujeres:38.24,varones:70.68,anio:2024},
+    MEX:{mujeres:44.97,varones:73.91,anio:2024},
+    NIC:{mujeres:54.58,varones:76.43,anio:2024},
+    PAN:{mujeres:45.99,varones:69.46,anio:2024},
+    PER:{mujeres:57.39,varones:74.12,anio:2024},
+    PRY:{mujeres:54.83,varones:78.39,anio:2024},
+    SLV:{mujeres:41.68,varones:70.51,anio:2024},
+    URY:{mujeres:50.93,varones:67.80,anio:2024},
+  },
+  fem_pobreza:{
+    ARG:{indice:116,anio:2022},
+    NIC:{indice:103,anio:2023},
+    HND:{indice:107,anio:2023},
+    BOL:{indice:112,anio:2023},
+    GTM:{indice:114,anio:2023},
+    MEX:{indice:116,anio:2023},
+    SLV:{indice:116,anio:2023},
+    PER:{indice:116,anio:2023},
+    COL:{indice:122,anio:2023},
+    PRY:{indice:122,anio:2023},
+    ECU:{indice:122,anio:2023},
+    VEN:{indice:123,anio:2023},
+    PAN:{indice:125,anio:2023},
+    CHL:{indice:130,anio:2023},
+    BRA:{indice:132,anio:2023},
+    CRI:{indice:136,anio:2023},
+    URY:{indice:153,anio:2023},
+  },
+  tnr_tiempo:{
+    ARG:{mujeres:18.4,varones:9.3,brecha:9.1,hs_mujeres:43.0,hs_varones:25.7,anio:2021},
+    BOL:{mujeres:23.3,varones:12.1,brecha:11.2,anio:2023},
+    BRA:{mujeres:12.0,varones:5.3,brecha:6.7,anio:2023},
+    CHL:{mujeres:20.7,varones:11.5,brecha:9.2,anio:2023},
+    COL:{mujeres:18.9,varones:5.9,brecha:13.0,anio:2023},
+    CRI:{mujeres:20.1,varones:9.6,brecha:10.5,anio:2023},
+    ECU:{mujeres:19.7,varones:4.7,brecha:15.0,anio:2023},
+    SLV:{mujeres:23.2,varones:9.2,brecha:14.0,anio:2023},
+    GTM:{mujeres:22.2,varones:3.9,brecha:18.3,anio:2023},
+    HND:{mujeres:15.5,varones:3.0,brecha:12.5,anio:2023},
+    MEX:{mujeres:20.9,varones:8.2,brecha:12.7,anio:2023},
+    NIC:{mujeres:22.9,varones:12.1,brecha:10.8,anio:2023},
+    PAN:{mujeres:18.0,varones:7.6,brecha:10.4,anio:2023},
+    PRY:{mujeres:15.0,varones:4.4,brecha:10.6,anio:2023},
+    PER:{mujeres:18.8,varones:6.5,brecha:12.3,anio:2023},
+    URY:{mujeres:14.8,varones:7.2,brecha:7.6,anio:2023},
+  },
+  informalidad:{
+    ARG:{mujeres:41.5,varones:41.6,anio:2024},
+    BOL:{mujeres:81.0,varones:80.0,anio:2023},
+    BRA:{mujeres:37.2,varones:38.5,anio:2024},
+    CHL:{mujeres:22.9,varones:23.9,anio:2024},
+    COL:{mujeres:49.1,varones:53.6,anio:2024},
+    CRI:{mujeres:27.0,varones:28.2,anio:2024},
+    ECU:{mujeres:51.3,varones:52.9,anio:2023},
+    SLV:{mujeres:68.4,varones:63.1,anio:2023},
+    GTM:{mujeres:79.2,varones:77.5,anio:2023},
+    HND:{mujeres:74.8,varones:71.2,anio:2023},
+    MEX:{mujeres:59.3,varones:55.3,anio:2024},
+    NIC:{mujeres:64.7,varones:66.3,anio:2022},
+    PAN:{mujeres:44.5,varones:43.1,anio:2023},
+    PRY:{mujeres:62.5,varones:60.6,anio:2023},
+    PER:{mujeres:71.0,varones:60.9,anio:2024},
+    URY:{mujeres:20.5,varones:22.8,anio:2024},
+  },
+  actividad_hijos:{
+    ARG:{mujeres:56.7,varones:97.6,anio:2025},
+    BOL:{mujeres:57.0,varones:99.0,anio:2021},
+    BRA:{mujeres:51.4,varones:95.2,anio:2023},
+    CHL:{mujeres:66.0,varones:98.0,anio:2024},
+    COL:{mujeres:48.9,varones:96.1,anio:2023},
+    CRI:{mujeres:39.0,varones:94.0,anio:2023},
+    ECU:{mujeres:52.1,varones:97.3,anio:2023},
+    SLV:{mujeres:41.2,varones:93.8,anio:2022},
+    GTM:{mujeres:35.4,varones:98.1,anio:2022},
+    HND:{mujeres:40.0,varones:94.0,anio:2023},
+    MEX:{mujeres:38.0,varones:96.8,anio:2024},
+    NIC:{mujeres:43.5,varones:95.0,anio:2021},
+    PAN:{mujeres:46.8,varones:94.6,anio:2023},
+    PRY:{mujeres:63.9,varones:98.7,anio:2023},
+    PER:{mujeres:65.0,varones:97.0,anio:2023},
+    URY:{mujeres:72.5,varones:97.5,anio:2022},
+    VEN:{mujeres:39.8,varones:92.1,anio:2021},
+  },
+  sin_ingresos:{
+    ARG:{mujeres:22,varones:17,anio:2024},
+    GTM:{mujeres:51,varones:14,anio:2023},
+    SLV:{mujeres:40,varones:13,anio:2023},
+    HND:{mujeres:39,varones:18,anio:2023},
+    VEN:{mujeres:32,varones:10,anio:2023},
+    CRI:{mujeres:31,varones:10,anio:2023},
+    ECU:{mujeres:31,varones:11,anio:2023},
+    COL:{mujeres:30,varones:12,anio:2023},
+    BOL:{mujeres:28,varones:7,anio:2023},
+    PRY:{mujeres:27,varones:11,anio:2023},
+    PAN:{mujeres:25,varones:9,anio:2023},
+    MEX:{mujeres:25,varones:6,anio:2023},
+    PER:{mujeres:21,varones:10,anio:2023},
+    BRA:{mujeres:19,varones:11,anio:2023},
+    CHL:{mujeres:18,varones:9,anio:2023},
+    URY:{mujeres:12,varones:7,anio:2023},
+  },
+  part_juv:{
+    ARG:{valor:34.5,anio:2025},BLZ:{valor:44.4,anio:2019},BOL:{valor:59.2,anio:2025},BRA:{valor:48.0,anio:2025},
+    CHL:{valor:25.7,anio:2025},COL:{valor:37.0,anio:2025},CRI:{valor:27.4,anio:2025},ECU:{valor:32.3,anio:2025},
+    GTM:{valor:44.7,anio:2024},GUY:{valor:39.3,anio:2021},HND:{valor:34.3,anio:2025},MEX:{valor:31.9,anio:2026},
+    NIC:{valor:32.5,anio:2014},PAN:{valor:33.8,anio:2025},PER:{valor:48.6,anio:2025},PRY:{valor:47.8,anio:2025},
+    SLV:{valor:33.9,anio:2025},SUR:{valor:28.3,anio:2016},URY:{valor:41.6,anio:2025},VEN:{valor:28.6,anio:2020},
+  },
+  part_mayor:{
+    ARG:{valor:54.0,anio:2025},BLZ:{valor:50.6,anio:2019},BOL:{valor:81.8,anio:2025},BRA:{valor:43.1,anio:2025},
+    CHL:{valor:53.7,anio:2025},COL:{valor:44.3,anio:2025},CRI:{valor:35.8,anio:2025},ECU:{valor:53.7,anio:2025},
+    GTM:{valor:44.9,anio:2024},GUY:{valor:30.0,anio:2021},HND:{valor:37.8,anio:2025},MEX:{valor:40.8,anio:2026},
+    NIC:{valor:45.8,anio:2014},PAN:{valor:52.3,anio:2025},PER:{valor:68.9,anio:2025},PRY:{valor:56.9,anio:2025},
+    SLV:{valor:45.3,anio:2025},SUR:{valor:35.5,anio:2016},URY:{valor:57.1,anio:2025},VEN:{valor:39.0,anio:2020},
+  },
+  emp_juv:{
+    ARG:{valor:27.2,anio:2025},BLZ:{valor:31.7,anio:2019},BOL:{valor:56.3,anio:2025},BRA:{valor:40.4,anio:2025},
+    CHL:{valor:19.2,anio:2025},COL:{valor:28.7,anio:2025},CRI:{valor:20.4,anio:2025},ECU:{valor:28.8,anio:2025},
+    GTM:{valor:42.5,anio:2024},GUY:{valor:24.5,anio:2021},HND:{valor:29.7,anio:2025},MEX:{valor:29.9,anio:2026},
+    NIC:{valor:28.3,anio:2014},PAN:{valor:25.6,anio:2025},PER:{valor:43.8,anio:2025},PRY:{valor:41.1,anio:2025},
+    SLV:{valor:30.5,anio:2025},SUR:{valor:17.0,anio:2016},URY:{valor:29.5,anio:2025},VEN:{valor:23.8,anio:2020},
+  },
+  emp_mayor:{
+    ARG:{valor:51.9,anio:2025},BLZ:{valor:48.3,anio:2019},BOL:{valor:81.2,anio:2025},BRA:{valor:41.6,anio:2025},
+    CHL:{valor:50.0,anio:2025},COL:{valor:42.3,anio:2025},CRI:{valor:34.8,anio:2025},ECU:{valor:53.3,anio:2025},
+    GTM:{valor:44.5,anio:2024},GUY:{valor:28.4,anio:2021},HND:{valor:37.4,anio:2025},MEX:{valor:40.4,anio:2026},
+    NIC:{valor:45.8,anio:2014},PAN:{valor:50.7,anio:2025},PER:{valor:67.1,anio:2025},PRY:{valor:55.8,anio:2025},
+    SLV:{valor:44.9,anio:2025},SUR:{valor:34.3,anio:2016},URY:{valor:55.0,anio:2025},VEN:{valor:37.0,anio:2020},
+  },
+  desem_juv:{
+    ARG:{valor:21.1,anio:2025},BLZ:{valor:28.5,anio:2019},BOL:{valor:4.8,anio:2025},BRA:{valor:15.8,anio:2025},
+    CHL:{valor:25.5,anio:2025},COL:{valor:22.4,anio:2025},CRI:{valor:25.5,anio:2025},ECU:{valor:10.9,anio:2025},
+    GTM:{valor:5.1,anio:2024},GUY:{valor:37.6,anio:2021},HND:{valor:13.4,anio:2025},MEX:{valor:6.5,anio:2026},
+    NIC:{valor:12.9,anio:2014},PAN:{valor:24.3,anio:2025},PER:{valor:9.7,anio:2025},PRY:{valor:13.9,anio:2025},
+    SLV:{valor:10.1,anio:2025},SUR:{valor:39.9,anio:2016},URY:{valor:29.1,anio:2025},VEN:{valor:16.8,anio:2020},
+  },
+  desem_mayor:{
+    ARG:{valor:4.0,anio:2025},BLZ:{valor:4.5,anio:2019},BOL:{valor:0.7,anio:2025},BRA:{valor:3.3,anio:2025},
+    CHL:{valor:6.8,anio:2025},COL:{valor:4.5,anio:2025},CRI:{valor:3.0,anio:2025},ECU:{valor:0.7,anio:2025},
+    GTM:{valor:0.8,anio:2024},GUY:{valor:5.3,anio:2021},HND:{valor:0.9,anio:2025},MEX:{valor:1.0,anio:2026},
+    NIC:{valor:1.4,anio:2014},PAN:{valor:3.0,anio:2025},PER:{valor:2.6,anio:2025},PRY:{valor:1.9,anio:2025},
+    SLV:{valor:1.0,anio:2025},SUR:{valor:3.4,anio:2016},URY:{valor:3.8,anio:2025},VEN:{valor:5.2,anio:2020},
+  },
+};
+
+// Metadata de cada capa (para el sidebar)
+const LAYER_META = {
+  brecha:{label:"Brecha salarial de género",desc:"Porcentaje en que los ingresos laborales de las mujeres son inferiores a los de los varones en empleos equivalentes.",fuente:"Fuente: OIT / CEPAL, 2022–2023"},
+  participacion:{label:"Tasa de participación económica",desc:"Porcentaje de mujeres en edad activa que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: OIT / CEPAL / ILOSTAT, 2022–2023"},
+  licencias:{label:"Licencias parentales",desc:"Duración en días de las licencias de maternidad y paternidad establecidas por ley.",fuente:"Fuente: OIT, 2024"},
+  legislacion:{label:"Legislación y normativa",desc:"Leyes nacionales e instrumentos internacionales sobre género y trabajo.",fuente:""},
+  c190:{label:"Ratificación Convenio 190 OIT",desc:"Países que han ratificado el C190 sobre eliminación de la violencia y el acoso en el mundo del trabajo, y países donde la ratificación está en discusión legislativa.",fuente:"Fuente: OIT / NORMLEX, contrastado agosto 2026"},
+  cdn:{label:"Ratificación Conv. Derechos del Niñe",desc:"Países que han ratificado la Convención sobre los Derechos del Niño (ONU, 1989). Todos los países de América Latina la ratificaron.",fuente:"Fuente: UNICEF / OHCHR, 2024"},
+  parlamento:{label:"Mujeres en el parlamento",desc:"Porcentaje de bancas en el poder legislativo nacional ocupadas por mujeres.",fuente:"Fuente: IPU (Unión Interparlamentaria) / ONU Mujeres, 2026"},
+  cuotas:{label:"Cuotas y ley de cupos",desc:"Tipo de cuota o paridad electoral vigente para la representación de mujeres en listas electorales.",fuente:"Fuente: OEA / CEPAL, 2024"},
+  lgbtq:{label:"Matrimonio igualitario e identidad de género",desc:"Estado de la legislación: matrimonio igualitario, ley de identidad de género y anti-discriminación por orientación sexual.",fuente:"Fuente: ILGA World, 2024"},
+  idg:{label:"Índice de Desigualdad de Género (IDG)",desc:"Índice del PNUD que mide la pérdida de desarrollo humano por desigualdad de género (0 = igualdad plena · 1 = máxima desigualdad).",fuente:"Fuente: PNUD, Informe de Desarrollo Humano 2023"},
+  femicidios:{label:"Femicidios",desc:"Tasa de femicidios (asesinatos de mujeres por razones de género) por cada 100.000 mujeres.",fuente:"Fuente: CEPAL / ONU Mujeres, 2024"},
+  tnr:{label:"Trabajo doméstico y de cuidados no remunerado",desc:"Promedio de horas semanales dedicadas al trabajo doméstico y de cuidados no remunerado, por género. El mapa muestra la brecha (horas de mujeres menos horas de varones), que refleja la desigualdad en la distribución de estas tareas.",fuente:"Fuente: OIT / CEPAL / ILOSTAT, 2022–2023. Argentina: ENUT 2021, INDEC."},
+  ocupacion:{label:"Tasa de ocupación femenina",desc:"Porcentaje de mujeres en edad activa que tienen empleo, sobre el total de la población en edad de trabajar. Permite comparar la brecha con la tasa masculina.",fuente:"Fuente: CEPAL / ILOSTAT, 2024"},
+  fem_pobreza:{label:"Índice de feminidad de la pobreza",desc:"Número de mujeres en situación de pobreza por cada 100 varones en la misma situación. Un valor superior a 100 indica que la pobreza afecta más a las mujeres.",fuente:"Fuente: CEPAL, 2023. Argentina (25–64 años): EPH 2022, INDEC / Población &amp; Sociedad Vol. 31(2), 2024."},
+  tnr_tiempo:{label:"Proporción del tiempo dedicado al TNR — Mujeres",desc:"Porcentaje del tiempo total que las mujeres dedican al trabajo doméstico y de cuidados no remunerado (TNR), comparado con el de varones.",fuente:"Fuente: CEPAL / OIT, 2023. Argentina: ENUT 2021, INDEC."},
+  informalidad:{label:"Informalidad laboral",desc:"Porcentaje de personas empleadas en el sector informal, por género. La informalidad implica falta de protección social, inestabilidad laboral y menor acceso a derechos laborales.",fuente:"Fuente: CEPAL / ILOSTAT, 2022–2024"},
+  actividad_hijos:{label:"Tasa de actividad con 3 hijos o más",desc:"Porcentaje de personas con 3 hijos o más que participan en el mercado laboral. Muestra la 'penalidad por maternidad': cómo tener hijos reduce drásticamente la actividad laboral de las mujeres pero apenas afecta a los varones.",fuente:"Fuente: CEPAL / ILOSTAT, 2021–2025"},
+  sin_ingresos:{label:"Mujeres sin ingresos propios",desc:"Porcentaje de mujeres mayores de 15 años que no tienen ingresos propios (ni laborales ni no laborales). Indicador de dependencia económica.",fuente:"Fuente: CEPAL, 2023. Argentina (15 años y más): EPH Q1 2024, INDEC / ONU Mujeres Perfil de País Argentina 2024."},
+  part_juv:{label:"Participación laboral — Jóvenes 15-24",desc:"Porcentaje de mujeres de 15 a 24 años que integran la fuerza laboral (empleadas o buscando empleo). Permite ver la brecha generacional junto con la capa de 55-64 años.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
+  part_mayor:{label:"Participación laboral — 55-64 años",desc:"Porcentaje de mujeres de 55 a 64 años que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
+  emp_juv:{label:"Empleo — Jóvenes 15-24",desc:"Razón empleo-población: porcentaje de mujeres de 15 a 24 años que efectivamente tienen empleo (no solo lo buscan).",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
+  emp_mayor:{label:"Empleo — 55-64 años",desc:"Razón empleo-población: porcentaje de mujeres de 55 a 64 años que efectivamente tienen empleo.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
+  desem_juv:{label:"Desempleo — Jóvenes 15-24",desc:"Tasa de desempleo entre mujeres de 15 a 24 años que integran la fuerza laboral. Suele ser mucho más alta que la de adultas mayores — la comparación entre ambas capas visibiliza la exclusión laboral juvenil femenina.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
+  desem_mayor:{label:"Desempleo — 55-64 años",desc:"Tasa de desempleo entre mujeres de 55 a 64 años que integran la fuerza laboral.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
+};
+
+// ════════════════════════════════════════════════════════════════════════════
+// ESTADO
+// ════════════════════════════════════════════════════════════════════════════
+let capaActiva = 'brecha';
+let filtroTema = null;
+let catAbierta = 'trabajo';
+let filtroPais = 'todos';
+let selectedLey = null;
+let selectedCountry = null;
+let gMap = null, gLabels = null, pathFn = null;
+
+// ════════════════════════════════════════════════════════════════════════════
+// UTILIDADES DE COLOR
+// ════════════════════════════════════════════════════════════════════════════
+function lerpHex(c1, c2, t) {
+  const p = c => [parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)];
+  const [r1,g1,b1]=p(c1),[r2,g2,b2]=p(c2);
+  return '#'+[r1+(r2-r1)*t,g1+(g2-g1)*t,b1+(b2-b1)*t].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+}
+function choropleth(val,min,max,cLo,cHi) {
+  if(val==null) return null;
+  return lerpHex(cLo,cHi,Math.max(0,Math.min(1,(val-min)/(max-min))));
+}
+
+const LGBTQ_COLORS = ['#C8C4BB','#90CAF9','#4AB5A0','#7B1FA2'];
+const LGBTQ_LABELS = [
+  'Sin legislación específica',
+  'Anti-discriminación / despenalización',
+  'Matrimonio igualitario',
+  'Matrimonio igualitario + Ley de identidad de género',
+];
+const CUOTA_COLORS = {ninguna:'#C8C4BB',cuota:'#CE93D8',paridad:'#6A1B9A'};
+const CUOTA_LABELS = {ninguna:'Sin cuota electoral',cuota:'Cuota en candidaturas',paridad:'Paridad (50%)'};
+
+function getCountryColor(cod) {
+  const eff = COUNTRY_ALIAS[cod] || cod;
+  if(capaActiva==='legislacion') {
+    const pc = getPaisesConLeyes();
+    return pc.has(eff) ? (COUNTRY_COLORS[cod]||'#999') : null;
+  }
+  const d = CAPA_DATA[capaActiva]?.[eff];
+  if(capaActiva==='participacion') return d ? choropleth(d.valor,40,70,'#FFA726','#1B5E20') : null;
+  if(capaActiva==='femicidios')    return d ? choropleth(d.tasa,0.3,5.0,'#FFF8E1','#B71C1C') : null;
+  if(capaActiva==='lgbtq')         return d!=null ? LGBTQ_COLORS[d.nivel] : null;
+  if(capaActiva==='c190')          return d ? (d.anio ? '#2E7D32' : '#F9A825') : '#C8C4BB';
+  if(capaActiva==='cdn')           return d ? '#0277BD' : '#C8C4BB';
+  if(capaActiva==='brecha')        return d ? choropleth(d.valor,12,30,'#E8F5E9','#C62828') : null;
+  if(capaActiva==='parlamento')    return d ? choropleth(d.valor,10,55,'#FFF9C4','#1B5E20') : null;
+  if(capaActiva==='licencias')     return d ? choropleth(d.paternidad,1,20,'#FFF3E0','#E65100') : null;
+  if(capaActiva==='cuotas')        return d ? (CUOTA_COLORS[d.tipo]||'#C8C4BB') : '#C8C4BB';
+  if(capaActiva==='idg')           return d ? choropleth(d.valor,0.24,0.50,'#C8E6C9','#B71C1C') : null;
+  if(capaActiva==='tnr')           return d ? choropleth(d.brecha,9,28,'#FFF9C4','#B71C1C') : null;
+  if(capaActiva==='ocupacion')      return d ? choropleth(d.mujeres,35,75,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='fem_pobreza')    return d ? choropleth(d.indice,100,155,'#FFF9C4','#B71C1C') : null;
+  if(capaActiva==='tnr_tiempo')     return d ? choropleth(d.mujeres,10,25,'#FFF9C4','#B71C1C') : null;
+  if(capaActiva==='sin_ingresos')   return d ? choropleth(d.mujeres,10,55,'#FFF9C4','#B71C1C') : null;
+  if(capaActiva==='informalidad')   return d ? choropleth(d.mujeres,20,82,'#E8F5E9','#C62828') : null;
+  if(capaActiva==='actividad_hijos') return d ? choropleth(d.mujeres,35,75,'#FFEBEE','#1B5E20') : null;
+  if(capaActiva==='part_juv')       return d ? choropleth(d.valor,25,60,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='part_mayor')     return d ? choropleth(d.valor,30,82,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='emp_juv')        return d ? choropleth(d.valor,17,56,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='emp_mayor')      return d ? choropleth(d.valor,28,82,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='desem_juv')      return d ? choropleth(d.valor,5,40,'#E8F5E9','#C62828') : null;
+  if(capaActiva==='desem_mayor')    return d ? choropleth(d.valor,0.7,7,'#E8F5E9','#C62828') : null;
+  return null;
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// LEGISLACIÓN — HELPERS
+// ════════════════════════════════════════════════════════════════════════════
+function getPaisesConLeyes() {
+  const fuente = filtroTema
+    ? LEYES.filter(l => l.codigoPais!=='INT' && l.temas && l.temas.includes(filtroTema))
+    : LEYES.filter(l => l.codigoPais!=='INT');
+  return new Set(fuente.map(l => l.codigoPais));
+}
+
+function getLeyesFiltradas() {
+  const effPais = filtroPais==='todos' ? 'todos' : (COUNTRY_ALIAS[filtroPais]||filtroPais);
+  return LEYES.filter(l => {
+    const okP = filtroPais==='todos' || l.codigoPais===effPais || (filtroPais==='INT' && l.codigoPais==='INT');
+    const okT = !filtroTema || (l.temas && l.temas.includes(filtroTema));
+    return okP && okT;
+  }).sort((a,b) => b.anio - a.anio); // newest first
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// PANEL IZQUIERDO — ACORDEÓN
+// ════════════════════════════════════════════════════════════════════════════
+function buildLeftPanel() {
+  const panel = document.getElementById('left-panel');
+  let html = '<div class="left-panel-title">Indicadores</div>';
+  CATEGORIES.forEach(cat => {
+    const isOpen = cat.id === catAbierta;
+    let capasHtml = '';
+    cat.capas.forEach(capa => {
+      if(capa.id === '_divider_') {
+        capasHtml += '<div class="cat-divider"></div>';
+        return;
+      }
+      const isActive = capaActiva === capa.id && filtroTema === (capa.tema || null);
+      const temaArg = capa.tema ? "'" + capa.tema + "'" : 'null';
+      capasHtml += '<button class="layer-btn-left' + (isActive?' active':'') + '"' +
+        ' onclick="setCapaFromPanel(\'' + capa.id + '\',' + temaArg + ')">' +
+        capa.nombre + '</button>';
+    });
+    html += '<div class="cat-section">' +
+      '<div class="cat-header' + (isOpen?' open':'') + '" onclick="toggleCat(\'' + cat.id + '\')">' +
+        '<span>' + cat.nombre + '</span>' +
+        '<span class="cat-chevron">&#9660;</span>' +
+      '</div>' +
+      '<div class="cat-body' + (isOpen?' open':'') + '">' +
+        capasHtml +
+        '<div class="cat-source">' + cat.fuente + '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  panel.innerHTML = html;
+}
+
+function toggleCat(catId) {
+  catAbierta = catAbierta === catId ? null : catId;
+  buildLeftPanel();
+}
+
+function setCapaFromPanel(layerId, tema) {
+  capaActiva = layerId;
+  filtroTema = tema;
+  selectedCountry = null;
+  if(capaActiva !== 'legislacion') {
+    filtroPais = 'todos';
+    selectedLey = null;
+  }
+  // Find and open the parent category
+  const cat = CATEGORIES.find(c => c.capas.some(cp => cp.id === layerId && (cp.tema||null) === tema));
+  if(cat) catAbierta = cat.id;
+  // Update header subtitle
+  const capaInfo = cat ? cat.capas.find(cp => cp.id === layerId && (cp.tema||null) === tema) : null;
+  const subtitle = capaInfo ? capaInfo.nombre : (LAYER_META[layerId]?.label || layerId);
+  document.getElementById('subtitle-capa').textContent = subtitle;
+  buildLeftPanel();
+  updateMapColors();
+  renderSidebar();
+  renderDetail();
+  renderLegend();
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// MAPA
+// ════════════════════════════════════════════════════════════════════════════
+function initMap(world) {
+  const container = document.getElementById('map-area');
+  const W = container.clientWidth, H = container.clientHeight;
+  const allFeatures = topojson.feature(world,world.objects.countries).features;
+  const latamFeatures = allFeatures.filter(f => ISO_MAP[+f.id]);
+  latamFeatures.forEach(f => {
+    const cod = ISO_MAP[+f.id];
+    f.properties = f.properties || {};
+    f.properties.cod = cod;
+    f.properties.name = COUNTRY_NAMES[cod];
+  });
+  const geoCollection = {type:"FeatureCollection",features:latamFeatures};
+  const svg = d3.select('#map-svg');
+  svg.selectAll('*').remove();
+  const defs = svg.append('defs');
+  const flt = defs.append('filter').attr('id','cshadow').attr('x','-5%').attr('y','-5%').attr('width','115%').attr('height','115%');
+  flt.append('feDropShadow').attr('dx','3').attr('dy','5').attr('stdDeviation','7').attr('flood-color','rgba(0,0,0,0.22)');
+  const projection = d3.geoMercator().fitExtent([[10,15],[W-10,H-15]],geoCollection);
+  pathFn = d3.geoPath().projection(projection);
+
+  // Grupo raíz para zoom/pan
+  const gRoot = svg.append('g').attr('id','map-root');
+  gMap = gRoot.append('g').attr('filter','url(#cshadow)');
+  gMap.selectAll('path')
+    .data(latamFeatures).enter().append('path')
+    .attr('class','country inactive')
+    .attr('id', d => 'c-' + d.properties.cod)
+    .attr('d', pathFn)
+    .on('mouseenter',(event,d) => {
+      const cod = d.properties.cod;
+      const eff = COUNTRY_ALIAS[cod] || cod;
+      document.getElementById('tt-name').textContent = d.properties.name;
+      const {v,s} = getTooltipContent(eff, cod);
+      document.getElementById('tt-value').textContent = v;
+      document.getElementById('tt-sub').textContent = s;
+      document.getElementById('tooltip').classList.add('visible');
+    })
+    .on('mousemove', event => {
+      const rect = container.getBoundingClientRect();
+      const x = event.clientX - rect.left + 14;
+      const y = event.clientY - rect.top - 50;
+      const tip = document.getElementById('tooltip');
+      tip.style.left = Math.min(x, W - 200) + 'px';
+      tip.style.top = Math.max(y, 4) + 'px';
+    })
+    .on('mouseleave', () => document.getElementById('tooltip').classList.remove('visible'))
+    .on('click', (event, d) => {
+      const cod = d.properties.cod;
+      const eff = COUNTRY_ALIAS[cod] || cod;
+      if(capaActiva === 'legislacion') {
+        if(filtroPais === eff) { filtroPais = 'todos'; selectedCountry = null; }
+        else { filtroPais = eff; selectedCountry = eff; }
+        syncCountryFilterBtns(filtroPais);
+      } else {
+        selectedCountry = selectedCountry === eff ? null : eff;
+      }
+      updateMapColors();
+      renderSidebar();
+      renderDetail();
+    });
+
+  // Labels
+  const labelCodes = ['MEX','BRA','ARG','COL','PER','CHL','VEN','BOL','PRY','URY','ECU','PAN','GTM','SLV','BLZ','CRI'];
+  const LEADER_OFFSETS = {
+    CHL:[-58,12], URY:[42,18], GTM:[-68,8], SLV:[46,-20],
+    BLZ:[44,-14], CRI:[-52,20], PAN:[62,-44], VEN:[58,-18],
+    PER:[-52,5], ECU:[-48,8],
+  };
+  const LABEL_FONT = { PRY:'6px' };
+  gLabels = gRoot.append('g');
+  latamFeatures.filter(f => labelCodes.includes(f.properties.cod)).forEach(f => {
+    const cod = f.properties.cod;
+    const cent = pathFn.centroid(f);
+    if(!cent || isNaN(cent[0])) return;
+    const off = LEADER_OFFSETS[cod];
+    const isAct = getPaisesConLeyes().has(cod);
+    const fs = LABEL_FONT[cod] || null;
+    if(off) {
+      const tx = cent[0]+off[0], ty = cent[1]+off[1];
+      const anchor = off[0] > 0 ? 'start' : 'end';
+      const lx2 = tx + (off[0] > 0 ? -5 : 5);
+      gLabels.append('line')
+        .attr('x1',cent[0]).attr('y1',cent[1])
+        .attr('x2',lx2).attr('y2',ty)
+        .attr('stroke','rgba(0,0,0,0.3)').attr('stroke-width',0.8).attr('pointer-events','none');
+      const t = gLabels.append('text')
+        .attr('class','country-label' + (isAct?' active':''))
+        .attr('transform', 'translate(' + tx + ',' + ty + ')').attr('text-anchor',anchor)
+        .text(f.properties.name);
+      if(fs) t.style('font-size', fs);
+    } else {
+      const t = gLabels.append('text')
+        .attr('class','country-label' + (isAct?' active':''))
+        .attr('transform', 'translate(' + cent + ')')
+        .text(f.properties.name);
+      if(fs) t.style('font-size', fs);
+    }
+  });
+
+  // Zoom / pan
+  const zoomBehavior = d3.zoom().scaleExtent([0.5,8])
+    .on('zoom', (event) => {
+      gRoot.attr('transform', event.transform);
+      const k = event.transform.k;
+      gLabels.selectAll('text').style('font-size', Math.max(5,8.5/k) + 'px');
+      gLabels.selectAll('line').attr('stroke-width', 0.8/k);
+    });
+  svg.call(zoomBehavior);
+  document.getElementById('zoom-in').onclick  = () => svg.transition().duration(300).call(zoomBehavior.scaleBy,1.5);
+  document.getElementById('zoom-out').onclick = () => svg.transition().duration(300).call(zoomBehavior.scaleBy,1/1.5);
+  document.getElementById('zoom-reset').onclick= () => svg.transition().duration(400).call(zoomBehavior.transform,d3.zoomIdentity);
+
+  document.getElementById('map-loading').style.display = 'none';
+  buildLeftPanel();
+  updateMapColors();
+  renderSidebar();
+  renderDetail();
+  renderLegend();
+}
+
+function updateMapColors() {
+  if(!gMap) return;
+  gMap.selectAll('.country').each(function(d) {
+    const el = d3.select(this);
+    const cod = d.properties.cod;
+    const eff = COUNTRY_ALIAS[cod] || cod;
+    const color = getCountryColor(cod);
+    const isSel = eff === selectedCountry;
+    el.classed('selected', isSel);
+    el.classed('active', !!color && !isSel);
+    el.classed('inactive', !color && !isSel);
+    if(color) el.attr('fill', color);
+    else el.attr('fill', null);
+  });
+  if(gLabels) {
+    const pc = getPaisesConLeyes();
+    const isLeg = capaActiva === 'legislacion';
+    gLabels.selectAll('text').each(function() {
+      const el = d3.select(this);
+      const txt = el.text();
+      const cod = Object.keys(COUNTRY_NAMES).find(k => COUNTRY_NAMES[k] === txt);
+      if(cod) {
+        const act = isLeg ? pc.has(cod) : CAPA_DATA[capaActiva]?.[cod] != null;
+        el.attr('class','country-label' + (act?' active':''));
+      }
+    });
+  }
+}
+
+function getTooltipContent(eff, cod) {
+  if(capaActiva==='legislacion') {
+    const leyes = LEYES.filter(l => l.codigoPais===eff && (!filtroTema || (l.temas && l.temas.includes(filtroTema))));
+    return {v: leyes.length>0 ? leyes.length + ' norma' + (leyes.length!==1?'s':'') + ' cargada' + (leyes.length!==1?'s':'') : 'Sin legislación cargada', s:'Clic para filtrar'};
+  }
+  const d = CAPA_DATA[capaActiva]?.[eff];
+  if(!d && capaActiva!=='c190' && capaActiva!=='cdn' && capaActiva!=='cuotas') return {v:'Sin datos disponibles',s:''};
+  if(capaActiva==='participacion') return {v: d.valor + '% participación femenina', s: 'Año ' + d.anio};
+  if(capaActiva==='femicidios') return {v: (d.valor ? d.valor + ' casos · ' : '') + 'Tasa: ' + d.tasa + '/100k mujeres', s: 'Año ' + d.anio};
+  if(capaActiva==='lgbtq') return {v: LGBTQ_LABELS[d.nivel], s: d.anio ? 'Desde ' + d.anio : ''};
+  if(capaActiva==='c190') return {v: d ? (d.anio ? 'Ratificado en ' + d.anio : 'En discusión legislativa') : 'No ratificado aún', s:'Convenio 190 OIT'};
+  if(capaActiva==='cdn') return {v: d ? 'Ratificado en ' + d.anio : 'No ratificado', s:'Conv. Derechos del Niñe'};
+  if(capaActiva==='brecha') return {v: d.valor + '% de brecha salarial', s: 'Año ' + d.anio};
+  if(capaActiva==='parlamento') return {v: d.valor + '% mujeres', s: 'Año ' + d.anio};
+  if(capaActiva==='licencias') return {v: 'Maternidad ' + d.maternidad + 'd · Paternidad ' + d.paternidad + 'd', s: 'Año ' + d.anio};
+  if(capaActiva==='cuotas') return {v: CUOTA_LABELS[d.tipo] + (d.porcentaje>0?' ('+d.porcentaje+'%)':''), s: d.anio?'Ley desde '+d.anio:''};
+  if(capaActiva==='idg') return {v: 'IDG: ' + d.valor + ' — Ranking #' + d.ranking, s:'PNUD 2023'};
+  if(capaActiva==='tnr') return {v: 'Mujeres: ' + d.mujeres + 'h · Varones: ' + d.varones + 'h', s: 'Brecha: +' + d.brecha + 'h/semana (' + d.anio + ')'};
+  if(capaActiva==='ocupacion') return {v: d.mujeres + '% ocupación femenina', s: 'Varones: ' + d.varones + '% · ' + d.anio};
+  if(capaActiva==='fem_pobreza') return {v: 'Índice: ' + d.indice, s: d.indice > 100 ? (d.indice - 100) + ' mujeres más por cada 100 varones pobres' : 'Paridad'};
+  if(capaActiva==='tnr_tiempo') return {v: d.mujeres + '% del tiempo — mujeres', s: 'Varones: ' + d.varones + '% · Brecha: ' + d.brecha.toFixed(1) + ' pp (' + d.anio + ')'};
+  if(capaActiva==='sin_ingresos') return {v: d.mujeres + '% mujeres sin ingresos propios', s: 'Varones: ' + d.varones + '% · ' + d.anio};
+  if(capaActiva==='informalidad') return {v: d.mujeres + '% informalidad — mujeres', s: 'Varones: ' + d.varones + '% · ' + d.anio};
+  if(capaActiva==='actividad_hijos') return {v: 'Mujeres: ' + d.mujeres + '% · Varones: ' + d.varones + '%', s: 'Brecha: ' + (d.varones - d.mujeres).toFixed(1) + ' pp (' + d.anio + ')'};
+  if(capaActiva==='part_juv' || capaActiva==='part_mayor' || capaActiva==='emp_juv' || capaActiva==='emp_mayor' || capaActiva==='desem_juv' || capaActiva==='desem_mayor') return {v: d.valor + '%', s: 'Mujeres · Año ' + d.anio};
+  return {v:'',s:''};
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// LEYENDA
+// ════════════════════════════════════════════════════════════════════════════
+function renderLegend() {
+  const el = document.getElementById('legend');
+  if(capaActiva==='legislacion') {
+    const temaLabel = filtroTema ? ({
+      violencia_genero:'Violencia de género',acoso:'Acoso laboral',
+      discriminacion:'Discriminación',matrimonio_igualitario:'Matrimonio igualitario',
+      identidad_genero:'Identidad de género',ley_cupos:'Ley de cupos',
+      ratificacion_convenios:'Ratif. convenios'
+    })[filtroTema] || filtroTema : 'Todas';
+    el.innerHTML = '<div class="legend-title">Legislación</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#7B8FCC"></div>Con legislación</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#C8C4BB"></div>Sin legislación cargada</div>' +
+      (filtroTema ? '<div style="font-size:9px;color:var(--purple);margin-top:4px;font-weight:700">Filtro: ' + temaLabel + '</div>' : '');
+  } else if(capaActiva==='lgbtq') {
+    el.innerHTML = '<div class="legend-title">Diversidad e identidad</div>' +
+      LGBTQ_LABELS.map((l,i) => '<div class="legend-item"><div class="legend-dot" style="background:' + LGBTQ_COLORS[i] + '"></div>' + l + '</div>').join('');
+  } else if(capaActiva==='c190') {
+    el.innerHTML = '<div class="legend-title">Ratif. C190 OIT</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#2E7D32"></div>Ratificado</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#F9A825"></div>En discusión legislativa</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#C8C4BB"></div>No ratificado aún</div>';
+  } else if(capaActiva==='cdn') {
+    el.innerHTML = '<div class="legend-title">Ratif. Conv. Derechos del Niñe</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#0277BD"></div>Ratificado</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#C8C4BB"></div>No ratificado</div>';
+  } else if(capaActiva==='cuotas') {
+    el.innerHTML = '<div class="legend-title">Cuotas electorales</div>' +
+      Object.entries(CUOTA_LABELS).map(([k,v]) => '<div class="legend-item"><div class="legend-dot" style="background:' + CUOTA_COLORS[k] + '"></div>' + v + '</div>').join('');
+  } else {
+    const gradients = {
+      participacion:{lo:'#FFA726',hi:'#1B5E20',lbl:['40%','70%'],title:'Participación económica femenina'},
+      femicidios:{lo:'#FFF8E1',hi:'#B71C1C',lbl:['Menos','Más'],title:'Femicidios (tasa/100k)'},
+      brecha:{lo:'#E8F5E9',hi:'#C62828',lbl:['12%','30%'],title:'Brecha salarial'},
+      parlamento:{lo:'#FFF9C4',hi:'#1B5E20',lbl:['10%','55%'],title:'Mujeres en parlamento'},
+      licencias:{lo:'#FFF3E0',hi:'#E65100',lbl:['1 día','20 días'],title:'Licencias parentales (color: días de paternidad)'},
+      idg:{lo:'#C8E6C9',hi:'#B71C1C',lbl:['Más igualdad','Más desigualdad'],title:'Índice IDG'},
+      tnr:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['Menor brecha','Mayor brecha'],title:'Brecha TNR (horas/sem)'},
+      ocupacion:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['35%','75%'],title:'Tasa de ocupación femenina'},
+      fem_pobreza:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['~100 (paridad)','155+'],title:'Índice feminidad pobreza'},
+      tnr_tiempo:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['10%','25%'],title:'% tiempo TNR — mujeres'},
+      sin_ingresos:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['10%','55%'],title:'Mujeres sin ingresos propios'},
+      informalidad:{lo:'#E8F5E9',hi:'#C62828',lbl:['20%','82%'],title:'Informalidad laboral femenina'},
+      actividad_hijos:{lo:'#FFEBEE',hi:'#1B5E20',lbl:['35%','75%'],title:'Actividad femenina con 3+ hijos'},
+      part_juv:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['25%','60%'],title:'Participación laboral — Jóvenes 15-24'},
+      part_mayor:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['30%','82%'],title:'Participación laboral — 55-64 años'},
+      emp_juv:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['17%','56%'],title:'Empleo — Jóvenes 15-24'},
+      emp_mayor:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['28%','82%'],title:'Empleo — 55-64 años'},
+      desem_juv:{lo:'#E8F5E9',hi:'#C62828',lbl:['5%','40%'],title:'Desempleo — Jóvenes 15-24'},
+      desem_mayor:{lo:'#E8F5E9',hi:'#C62828',lbl:['0.7%','7%'],title:'Desempleo — 55-64 años'},
+    };
+    const g = gradients[capaActiva];
+    if(g) el.innerHTML = '<div class="legend-title">' + g.title + '</div>' +
+      '<div class="legend-grad-wrap"><div class="legend-grad" style="background:linear-gradient(to right,' + g.lo + ',' + g.hi + ')"></div>' +
+      '<div class="legend-grad-labels"><span>' + g.lbl[0] + '</span><span>' + g.lbl[1] + '</span></div></div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#C8C4BB"></div>Sin datos</div>';
+    else el.innerHTML = '';
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// SIDEBAR
+// ════════════════════════════════════════════════════════════════════════════
+function badgeClass(t){ return t==='nacional'?'badge-nacional':t==='supranacional'?'badge-supranacional':'badge-convenio'; }
+function badgeLabel(t){ return t==='nacional'?'Nacional':t==='supranacional'?'Supranacional':'Convenio OIT/ONU'; }
+
+function renderSidebar() {
+  if(capaActiva==='legislacion') renderLegislacionSidebar();
+  else renderCapaSidebar();
+}
+
+function renderLegislacionSidebar() {
+  const meta = LAYER_META.legislacion;
+  const temaNames = {
+    null:'Todas las leyes',
+    violencia_genero:'Violencia de género',
+    acoso:'Acoso laboral',
+    discriminacion:'Discriminación',
+    matrimonio_igualitario:'Matrimonio igualitario',
+    identidad_genero:'Identidad de género',
+    ley_cupos:'Ley de cupos / paridad',
+    ratificacion_convenios:'Ratificación de convenios',
+  };
+  const temaLabel = temaNames[filtroTema] || filtroTema || 'Todas las leyes';
+  let topHtml = (filtroTema ? '<div class="tema-badge">&#9654; ' + temaLabel + '</div>' : '') +
+    '<div class="filter-label">Filtrar por país</div>' +
+    '<div class="filter-row" id="country-filters"></div>';
+  document.getElementById('sidebar-top').innerHTML = topHtml;
+  buildCountryFilters();
+  renderLaws();
+}
+
+
+function buildCountryFilters() {
+  const map = new Map();
+  LEYES.filter(l => l.codigoPais !== 'INT').forEach(l => { if(!map.has(l.codigoPais)) map.set(l.codigoPais, l.pais); });
+  const sorted = [...map.entries()].sort((a,b) => a[1].localeCompare(b[1],'es'));
+  let html = '<button class="filter-btn' + (filtroPais==='todos'?' active':'') + '" data-filter="pais" data-value="todos">Todos</button>';
+  sorted.forEach(([cod,nombre]) => {
+    html += '<button class="filter-btn' + (filtroPais===cod?' active':'') + '" data-filter="pais" data-value="' + cod + '">' + nombre + '</button>';
+  });
+  html += '<button class="filter-btn' + (filtroPais==='INT'?' active':'') + '" data-filter="pais" data-value="INT">Internacional</button>';
+  const cont = document.getElementById('country-filters');
+  cont.innerHTML = html;
+  cont.addEventListener('click', e => {
+    if(!e.target.classList.contains('filter-btn')) return;
+    filtroPais = e.target.dataset.value;
+    selectedCountry = (filtroPais!=='todos' && filtroPais!=='INT') ? filtroPais : null;
+    syncCountryFilterBtns(filtroPais);
+    updateMapColors();
+    renderLaws();
+  });
+}
+
+function syncCountryFilterBtns(val) {
+  document.querySelectorAll("[data-filter='pais']").forEach(b => b.classList.toggle('active', b.dataset.value===val));
+}
+
+function renderLaws() {
+  const leyes = getLeyesFiltradas();
+  document.getElementById('list-count').textContent = leyes.length + ' norma' + (leyes.length!==1?'s':'');
+  const cont = document.getElementById('list-container');
+  if(!leyes.length) {
+    let emptyMsg = '<div class="empty-list">No hay normas con este filtro.</div>';
+    if(filtroTema === 'matrimonio_igualitario' || filtroTema === 'identidad_genero') {
+      emptyMsg += '<div class="empty-list-hint">Para ver el estado del reconocimiento legal por país, usá la capa <strong>Diversidad e identidad</strong> en el panel izquierdo.</div>';
+    }
+    if(filtroTema === 'ley_cupos') {
+      emptyMsg += '<div class="empty-list-hint">Para ver el tipo de cuota por país, usá la capa <strong>Cuotas y ley de cupos</strong> en el panel izquierdo.</div>';
+    }
+    cont.innerHTML = emptyMsg;
+    return;
+  }
+  const grupos = {};
+  leyes.forEach(l => { if(!grupos[l.pais]) grupos[l.pais] = []; grupos[l.pais].push(l); });
+  const orden = Object.keys(grupos).sort((a,b) => a==='Internacional'?1 : b==='Internacional'?-1 : a.localeCompare(b,'es'));
+  let html = '';
+  orden.forEach(pais => {
+    const intl = pais === 'Internacional';
+    html += '<div class="country-group"><div class="group-header ' + (intl?'intl':'') + '">' + (intl?'&#127758; ':'') + pais + '</div>';
+    grupos[pais].forEach(l => {
+      const sel = selectedLey && selectedLey.id === l.id;
+      html += '<div class="law-card' + (sel?' selected':'') + '" onclick="selectLey(\'' + l.id + '\')">' +
+        '<div class="law-card-name">' + l.nombre + '</div>' +
+        '<div class="law-card-meta"><span class="law-year">' + l.anio + '</span>' +
+        '<span class="badge ' + badgeClass(l.tipo) + '">' + badgeLabel(l.tipo) + '</span></div>' +
+        '</div>';
+    });
+    html += '</div>';
+  });
+  cont.innerHTML = html;
+}
+
+function renderCapaSidebar() {
+  const meta = LAYER_META[capaActiva] || {label:capaActiva,desc:'',fuente:''};
+  document.getElementById('sidebar-top').innerHTML =
+    '<div class="capa-info-title">' + meta.label + '</div>' +
+    '<div class="capa-info-desc">' + meta.desc + '</div>' +
+    (meta.fuente ? '<div class="capa-info-src">' + meta.fuente + '</div>' : '');
+
+  const allCods = Object.keys(COUNTRY_NAMES).filter(c => c !== 'MLV');
+  const sortedCods = sortCapaItems(allCods);
+  document.getElementById('list-count').textContent = allCods.length + ' países';
+
+  let html = '';
+  sortedCods.forEach(cod => {
+    const d = CAPA_DATA[capaActiva]?.[cod];
+    const noData = d == null && capaActiva !== 'c190' && capaActiva !== 'cdn' && capaActiva !== 'cuotas';
+    const color = getCountryColor(cod) || '#C8C4BB';
+    const isSel = cod === selectedCountry;
+    const {v,unit} = getCapaItemValue(cod, d);
+    html += '<div class="capa-item' + (isSel?' selected':'') + (noData?' no-data':'') + '"' +
+      (noData ? '' : ' onclick="selectCapaPais(\'' + cod + '\')"') + '>' +
+      '<div class="capa-dot" style="background:' + color + '"></div>' +
+      '<div class="capa-item-name">' + COUNTRY_NAMES[cod] + '</div>' +
+      (noData
+        ? '<span style="font-size:10px;color:var(--text3);font-style:italic">Sin datos</span>'
+        : '<div><span class="capa-item-val">' + v + '</span><span class="capa-item-unit">' + unit + '</span></div>') +
+      '</div>';
+  });
+  document.getElementById('list-container').innerHTML = html;
+}
+
+function sortCapaItems(cods) {
+  const val = c => {
+    const d = CAPA_DATA[capaActiva]?.[c];
+    if(!d) return -Infinity;
+    if(capaActiva==='participacion') return d.valor;
+    if(capaActiva==='femicidios') return d.tasa;
+    if(capaActiva==='lgbtq') return d.nivel;
+    if(capaActiva==='c190') return d ? (d.anio ? 2 : 1) : 0;
+    if(capaActiva==='cdn') return d ? 1 : 0;
+    if(capaActiva==='brecha') return -d.valor;
+    if(capaActiva==='parlamento') return d.valor;
+    if(capaActiva==='licencias') return d.paternidad;
+    if(capaActiva==='cuotas') return d.tipo==='paridad'?2 : d.tipo==='cuota'?1 : 0;
+    if(capaActiva==='idg') return -d.valor;
+    if(capaActiva==='tnr') return d.brecha;
+    if(capaActiva==='ocupacion') return d.mujeres;
+    if(capaActiva==='fem_pobreza') return d.indice;
+    if(capaActiva==='tnr_tiempo') return d.mujeres;
+    if(capaActiva==='sin_ingresos') return d.mujeres;
+    if(capaActiva==='part_juv' || capaActiva==='part_mayor' || capaActiva==='emp_juv' || capaActiva==='emp_mayor') return d.valor;
+    if(capaActiva==='desem_juv' || capaActiva==='desem_mayor') return -d.valor;
+    return 0;
+  };
+  return [...cods].sort((a,b) => {
+    const va = val(a), vb = val(b);
+    if(va===-Infinity && vb===-Infinity) return COUNTRY_NAMES[a].localeCompare(COUNTRY_NAMES[b],'es');
+    if(va===-Infinity) return 1;
+    if(vb===-Infinity) return -1;
+    return vb - va;
+  });
+}
+
+function getCapaItemValue(cod, d) {
+  if(!d && capaActiva!=='c190' && capaActiva!=='cdn' && capaActiva!=='cuotas') return {v:'',unit:''};
+  if(capaActiva==='participacion') return {v:d.valor+'%',unit:''};
+  if(capaActiva==='femicidios') return {v:d.tasa.toFixed(2),unit:'/100k'};
+  if(capaActiva==='lgbtq') return {v:LGBTQ_LABELS[d.nivel].split('+')[0].trim(),unit:''};
+  if(capaActiva==='c190') return d ? (d.anio ? {v:'&#10003; '+d.anio,unit:''} : {v:'En discusión',unit:''}) : {v:'No ratificado',unit:''};
+  if(capaActiva==='cdn') return d ? {v:'&#10003; '+d.anio,unit:''} : {v:'No ratificado',unit:''};
+  if(capaActiva==='brecha') return {v:d.valor+'%',unit:''};
+  if(capaActiva==='parlamento') return {v:d.valor+'%',unit:''};
+  if(capaActiva==='licencias') return {v:'M:'+d.maternidad+'d P:'+d.paternidad+'d',unit:''};
+  if(capaActiva==='cuotas') return d ? {v:d.tipo==='ninguna'?'Sin cuota':(d.porcentaje+'%'),unit:''} : {v:'Sin datos',unit:''};
+  if(capaActiva==='idg') return {v:d.valor.toFixed(3),unit:''};
+  if(capaActiva==='tnr') return {v:d.brecha.toFixed(1)+'h',unit:' brecha'};
+  if(capaActiva==='ocupacion') return {v:d.mujeres+'%',unit:''};
+  if(capaActiva==='fem_pobreza') return {v:d.indice,unit:''};
+  if(capaActiva==='tnr_tiempo') return {v:d.mujeres+'%',unit:' mujeres'};
+  if(capaActiva==='sin_ingresos') return {v:d.mujeres+'%',unit:''};
+  if(capaActiva==='part_juv' || capaActiva==='part_mayor' || capaActiva==='emp_juv' || capaActiva==='emp_mayor' || capaActiva==='desem_juv' || capaActiva==='desem_mayor') return {v:d.valor+'%',unit:''};
+  return {v:'',unit:''};
+}
+
+function selectCapaPais(cod) {
+  selectedCountry = selectedCountry === cod ? null : cod;
+  updateMapColors();
+  renderCapaSidebar();
+  renderCapaDetail(selectedCountry);
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// DETALLE
+// ════════════════════════════════════════════════════════════════════════════
+
+function selectLey(id) {
+  selectedLey = LEYES.find(l => l.id === id) || null;
+  renderLaws();
+  renderLeyDetail();
+}
+
+function renderDetail() {
+  if(capaActiva === 'legislacion') renderLeyDetail();
+  else renderCapaDetail(selectedCountry);
+}
+
+function renderLeyDetail() {
+  const panel = document.getElementById('detail-panel');
+  if(!selectedLey) { panel.innerHTML = '<div class="detail-empty">Seleccioná una norma para ver su detalle</div>'; return; }
+  const l = selectedLey;
+  panel.innerHTML = '<div class="detail-header">' +
+    '<div class="detail-title">' + l.nombre + '</div>' +
+    '<button class="detail-close" onclick="clearSelection()" title="Cerrar">&#10005;</button>' +
+    '</div>' +
+    '<div class="detail-meta">' +
+    '<span class="detail-pais">' + l.pais + '</span>' +
+    '<span class="law-year">' + l.anio + '</span>' +
+    '<span class="badge ' + badgeClass(l.tipo) + '">' + badgeLabel(l.tipo) + '</span>' +
+    '</div>' +
+    '<div class="detail-desc">' + l.descripcion + '</div>' +
+    (l.link ? '<a class="detail-link" href="' + l.link + '" target="_blank" rel="noopener noreferrer">Ver texto oficial &#8599;</a>' : '');
+}
+
+function renderCapaDetail(cod) {
+  const panel = document.getElementById('detail-panel');
+  if(!cod) { panel.innerHTML = '<div class="detail-empty">Seleccioná un país en el mapa o en la lista</div>'; return; }
+  const d = CAPA_DATA[capaActiva]?.[cod];
+  const name = COUNTRY_NAMES[cod] || cod;
+  const meta = LAYER_META[capaActiva] || {};
+  let inner = '<div class="detail-header"><div class="cd-name">' + name + '</div>' +
+    '<button class="detail-close" onclick="clearCapaDetail()" title="Cerrar">&#10005;</button></div>';
+  if(!d && capaActiva !== 'c190' && capaActiva !== 'cdn' && capaActiva !== 'cuotas') {
+    inner += '<div class="detail-empty" style="text-align:left;padding:0">Sin datos disponibles para este país.</div>';
+  } else {
+    if(capaActiva==='participacion' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Tasa de participación femenina</span><span class="cd-val">' + d.valor + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Porcentaje de mujeres en edad activa que integran la fuerza laboral (empleadas o buscando empleo activamente).</div>';
+    }
+    if(capaActiva==='femicidios' && d) {
+      if(d.valor) inner += '<div class="cd-row"><span class="cd-label">Casos registrados</span><span class="cd-val">' + d.valor + '</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Tasa (por 100.000 mujeres)</span><span class="cd-val">' + d.tasa + '</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+    }
+    if(capaActiva==='lgbtq' && d != null) {
+      inner += '<div class="cd-row"><span class="cd-label">Nivel de reconocimiento</span><span class="cd-val">' + LGBTQ_LABELS[d.nivel] + '</span></div>';
+      if(d.anio) inner += '<div class="cd-row"><span class="cd-label">Año de aprobación</span><span class="cd-val">' + d.anio + '</span></div>';
+      if(d.nota) inner += '<div class="cd-note">' + d.nota + '</div>';
+    }
+    if(capaActiva==='c190') {
+      const estadoTxt = d ? (d.anio ? 'Ratificado &#10003;' : 'En discusión legislativa') : 'No ratificado';
+      inner += '<div class="cd-row"><span class="cd-label">Estado</span><span class="cd-val">' + estadoTxt + '</span></div>';
+      if(d && d.anio) inner += '<div class="cd-row"><span class="cd-label">Año de ratificación</span><span class="cd-val">' + d.anio + '</span></div>';
+      if(d && !d.anio) inner += '<div class="cd-note">El Convenio 190 está siendo debatido en el Congreso o poder legislativo de este país, pero aún no fue ratificado.</div>';
+    }
+    if(capaActiva==='cdn') {
+      inner += '<div class="cd-row"><span class="cd-label">Estado</span><span class="cd-val">' + (d?'Ratificado &#10003;':'No ratificado') + '</span></div>';
+      if(d) inner += '<div class="cd-row"><span class="cd-label">Año de ratificación</span><span class="cd-val">' + d.anio + '</span></div>';
+    }
+    if(capaActiva==='brecha' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Brecha salarial de género</span><span class="cd-val">' + d.valor + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Las mujeres ganan un ' + d.valor + '% menos que los varones en empleos equivalentes.</div>';
+    }
+    if(capaActiva==='parlamento' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Mujeres en el parlamento</span><span class="cd-val">' + d.valor + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+    }
+    if(capaActiva==='licencias' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Licencia de maternidad</span><span class="cd-val">' + d.maternidad + ' días</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Licencia de paternidad</span><span class="cd-val">' + d.paternidad + ' días</span></div>';
+      if(d.nota) inner += '<div class="cd-note">' + d.nota + '</div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+    }
+    if(capaActiva==='cuotas' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Tipo</span><span class="cd-val">' + CUOTA_LABELS[d.tipo] + '</span></div>';
+      if(d.porcentaje>0) inner += '<div class="cd-row"><span class="cd-label">Porcentaje establecido</span><span class="cd-val">' + d.porcentaje + '%</span></div>';
+      if(d.anio) inner += '<div class="cd-row"><span class="cd-label">Año de la ley</span><span class="cd-val">' + d.anio + '</span></div>';
+    }
+    if(capaActiva==='idg' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Índice IDG</span><span class="cd-val">' + d.valor.toFixed(3) + '</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Ranking mundial</span><span class="cd-val">#' + d.ranking + '</span></div>';
+      inner += '<div class="cd-note">Cuanto menor el índice, mayor igualdad de género. Referencia: Noruega 0.016 · Promedio global 0.462.</div>';
+    }
+    if(capaActiva==='tnr' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Horas semanales — mujeres</span><span class="cd-val">' + d.mujeres + ' h</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Horas semanales — varones</span><span class="cd-val">' + d.varones + ' h</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Brecha (mujeres − varones)</span><span class="cd-val">+' + d.brecha + ' h/semana</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Las mujeres dedican ' + d.brecha + ' horas semanales más que los varones al trabajo doméstico y de cuidados no remunerado.</div>';
+    }
+    if(capaActiva==='ocupacion' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Tasa de ocupación — mujeres</span><span class="cd-val">' + d.mujeres + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Tasa de ocupación — varones</span><span class="cd-val">' + d.varones + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Brecha de género</span><span class="cd-val">' + (d.varones - d.mujeres).toFixed(1) + ' puntos porcentuales</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Porcentaje de personas ocupadas (con empleo) sobre el total de población en edad activa, por género.</div>';
+    }
+    if(capaActiva==='fem_pobreza' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Índice de feminidad de la pobreza</span><span class="cd-val">' + d.indice + '</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Por cada 100 varones en situación de pobreza, hay ' + d.indice + ' mujeres en la misma situación. Un valor superior a 100 indica mayor feminización de la pobreza.</div>';
+    }
+    if(capaActiva==='tnr_tiempo' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">% tiempo TNR — mujeres</span><span class="cd-val">' + d.mujeres + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">% tiempo TNR — varones</span><span class="cd-val">' + d.varones + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Brecha</span><span class="cd-val">+' + d.brecha.toFixed(1) + ' puntos porcentuales</span></div>';
+      var tnrH = d.hs_mujeres ? d : (CAPA_DATA.tnr[selectedCountry]||null);
+      if(tnrH) {
+        inner += '<div class="cd-row"><span class="cd-label">Horas semanales — mujeres</span><span class="cd-val">' + tnrH.mujeres + ' h</span></div>';
+        inner += '<div class="cd-row"><span class="cd-label">Horas semanales — varones</span><span class="cd-val">' + tnrH.varones + ' h</span></div>';
+      }
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Proporción del tiempo total que cada género dedica al trabajo doméstico y de cuidados no remunerado.</div>';
+    }
+    if(capaActiva==='sin_ingresos' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Mujeres sin ingresos propios</span><span class="cd-val">' + d.mujeres + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Varones sin ingresos propios</span><span class="cd-val">' + d.varones + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Brecha</span><span class="cd-val">' + (d.mujeres - d.varones) + ' puntos porcentuales</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Porcentaje de personas mayores de 15 años sin ningún tipo de ingreso propio (laboral ni no laboral). Indicador clave de dependencia económica y autonomía.</div>';
+    }
+    if(capaActiva==='informalidad' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Informalidad — mujeres</span><span class="cd-val">' + d.mujeres + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Informalidad — varones</span><span class="cd-val">' + d.varones + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Brecha (mujeres − varones)</span><span class="cd-val">' + (d.mujeres - d.varones).toFixed(1) + ' puntos porcentuales</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Porcentaje de personas empleadas en condiciones informales (sin protección social, contratos precarios o trabajo no registrado). Valores positivos indican mayor informalidad femenina.</div>';
+    }
+    if(capaActiva==='actividad_hijos' && d) {
+      inner += '<div class="cd-row"><span class="cd-label">Tasa de actividad — mujeres</span><span class="cd-val">' + d.mujeres + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Tasa de actividad — varones</span><span class="cd-val">' + d.varones + '%</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Brecha de género</span><span class="cd-val">' + (d.varones - d.mujeres).toFixed(1) + ' puntos porcentuales</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">Tasa de actividad laboral de personas con 3 hijos o más. Mientras los varones mantienen tasas cercanas al 95–99%, las mujeres caen drásticamente, evidenciando el impacto desigual de las responsabilidades de cuidado en el empleo femenino.</div>';
+    }
+    if((capaActiva==='part_juv'||capaActiva==='part_mayor'||capaActiva==='emp_juv'||capaActiva==='emp_mayor'||capaActiva==='desem_juv'||capaActiva==='desem_mayor') && d) {
+      const PARES = {
+        part_juv:['part_juv','part_mayor','Jóvenes (15-24)','55-64 años'], part_mayor:['part_juv','part_mayor','Jóvenes (15-24)','55-64 años'],
+        emp_juv:['emp_juv','emp_mayor','Jóvenes (15-24)','55-64 años'], emp_mayor:['emp_juv','emp_mayor','Jóvenes (15-24)','55-64 años'],
+        desem_juv:['desem_juv','desem_mayor','Jóvenes (15-24)','55-64 años'], desem_mayor:['desem_juv','desem_mayor','Jóvenes (15-24)','55-64 años'],
+      };
+      const [idJuv, idMayor, lblJuv, lblMayor] = PARES[capaActiva];
+      const dJuv = CAPA_DATA[idJuv]?.[cod], dMayor = CAPA_DATA[idMayor]?.[cod];
+      if(dJuv) inner += '<div class="cd-row"><span class="cd-label">' + lblJuv + '</span><span class="cd-val">' + dJuv.valor + '% (' + dJuv.anio + ')</span></div>';
+      if(dMayor) inner += '<div class="cd-row"><span class="cd-label">' + lblMayor + '</span><span class="cd-val">' + dMayor.valor + '% (' + dMayor.anio + ')</span></div>';
+      if(dJuv && dMayor) inner += '<div class="cd-note">Brecha generacional: ' + Math.abs(dJuv.valor-dMayor.valor).toFixed(1) + ' puntos porcentuales entre jóvenes y mujeres de 55-64 años. Los años de referencia pueden diferir entre ambos tramos según el país.</div>';
+    }
+  }
+  if(meta.fuente) inner += '<div class="cd-src">' + meta.fuente + '</div>';
+  panel.innerHTML = inner;
+}
+
+function clearSelection() {
+  selectedLey = null;
+  renderLaws();
+  renderLeyDetail();
+}
+
+function clearCapaDetail() {
+  selectedCountry = null;
+  updateMapColors();
+  renderCapaSidebar();
+  renderCapaDetail(null);
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════════════════
+buildLeftPanel();
+renderDetail();
+
+let worldData = null;
+d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+  .then(world => { worldData = world; initMap(world); })
+  .catch(err => {
+    document.getElementById('map-loading').innerHTML =
+      '<div style="color:#C62828;font-size:13px;text-align:center;padding:20px">&#9888; No se pudo cargar el mapa.<br><span style="color:#888;font-size:11px">Verificá la conexión a internet.</span></div>';
+    console.error(err);
+  });
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if(worldData) initMap(worldData); }, 200);
+});
+</script>
+</body>
+</html>
