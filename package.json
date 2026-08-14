@@ -1,0 +1,11 @@
+{
+  "name": "mapa-legislativo-grow",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "serve": "14.2.1"
+  },
+  "scripts": {
+    "start": "serve -s . -l $PORT"
+  }
+}
