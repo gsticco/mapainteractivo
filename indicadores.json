@@ -1,0 +1,1847 @@
+{
+  "participacion": {
+    "ARG": {
+      "valor": 51.7,
+      "anio": 2025
+    },
+    "BOL": {
+      "valor": 58.0,
+      "anio": 2021
+    },
+    "BRA": {
+      "valor": 53.0,
+      "anio": 2024
+    },
+    "CHL": {
+      "valor": 52.0,
+      "anio": 2023
+    },
+    "COL": {
+      "valor": 51.7,
+      "anio": 2024
+    },
+    "CRI": {
+      "valor": 41.0,
+      "anio": 2024
+    },
+    "ECU": {
+      "valor": 52.4,
+      "anio": 2024
+    },
+    "SLV": {
+      "valor": 46.7,
+      "anio": 2024
+    },
+    "GTM": {
+      "valor": 40.4,
+      "anio": 2024
+    },
+    "HND": {
+      "valor": 40.0,
+      "anio": 2023
+    },
+    "MEX": {
+      "valor": 47.0,
+      "anio": 2023
+    },
+    "NIC": {
+      "valor": 50.1,
+      "anio": 2024
+    },
+    "PAN": {
+      "valor": 52.7,
+      "anio": 2024
+    },
+    "PRY": {
+      "valor": 60.0,
+      "anio": 2023
+    },
+    "PER": {
+      "valor": 67.0,
+      "anio": 2022
+    },
+    "URY": {
+      "valor": 54.6,
+      "anio": 2022
+    },
+    "VEN": {
+      "valor": 37.7,
+      "anio": 2024
+    }
+  },
+  "femicidios": {
+    "ARG": {
+      "tasa": 1.0,
+      "anio": 2024
+    },
+    "BOL": {
+      "tasa": 1.4,
+      "anio": 2024
+    },
+    "BRA": {
+      "tasa": 1.3,
+      "anio": 2024
+    },
+    "CHL": {
+      "tasa": 0.4,
+      "anio": 2024
+    },
+    "COL": {
+      "tasa": 0.8,
+      "anio": 2024
+    },
+    "CRI": {
+      "tasa": 1.3,
+      "anio": 2024
+    },
+    "ECU": {
+      "tasa": 0.9,
+      "anio": 2024
+    },
+    "SLV": {
+      "valor": 74,
+      "tasa": 2.18,
+      "anio": 2023
+    },
+    "GTM": {
+      "tasa": 1.9,
+      "anio": 2024
+    },
+    "HND": {
+      "tasa": 4.3,
+      "anio": 2024
+    },
+    "MEX": {
+      "tasa": 1.3,
+      "anio": 2024
+    },
+    "NIC": {
+      "valor": 71,
+      "tasa": 1.95,
+      "anio": 2022
+    },
+    "PAN": {
+      "tasa": 1.0,
+      "anio": 2024
+    },
+    "PRY": {
+      "tasa": 0.8,
+      "anio": 2024
+    },
+    "PER": {
+      "tasa": 0.9,
+      "anio": 2024
+    },
+    "URY": {
+      "tasa": 1.3,
+      "anio": 2024
+    }
+  },
+  "lgbtq": {
+    "ARG": {
+      "nivel": 3,
+      "anio": 2010,
+      "nota": "Matrimonio igualitario (2010) e Ley de Identidad de Género (2012)"
+    },
+    "BOL": {
+      "nivel": 1,
+      "nota": "Constitución prohíbe discriminación por orientación sexual"
+    },
+    "BRA": {
+      "nivel": 2,
+      "anio": 2013,
+      "nota": "Matrimonio igualitario por decisión del STF (2013)"
+    },
+    "CHL": {
+      "nivel": 2,
+      "anio": 2022,
+      "nota": "Matrimonio igualitario (2022). Unión civil desde 2015"
+    },
+    "COL": {
+      "nivel": 2,
+      "anio": 2016,
+      "nota": "Matrimonio igualitario por sentencia de la Corte Constitucional (2016)"
+    },
+    "CRI": {
+      "nivel": 2,
+      "anio": 2020,
+      "nota": "Matrimonio igualitario por resolución de la Sala IV (2020)"
+    },
+    "ECU": {
+      "nivel": 2,
+      "anio": 2019,
+      "nota": "Matrimonio igualitario por sentencia de la Corte Constitucional (2019)"
+    },
+    "SLV": {
+      "nivel": 0,
+      "nota": "La Constitución define el matrimonio como heterosexual"
+    },
+    "GTM": {
+      "nivel": 0,
+      "nota": "Sin legislación de protección específica"
+    },
+    "HND": {
+      "nivel": 0,
+      "nota": "La Constitución prohíbe expresamente el matrimonio igualitario"
+    },
+    "MEX": {
+      "nivel": 2,
+      "anio": 2022,
+      "nota": "Reconocimiento federal y en todos los estados desde 2022"
+    },
+    "NIC": {
+      "nivel": 0,
+      "nota": "Sin legislación de protección específica"
+    },
+    "PAN": {
+      "nivel": 0,
+      "nota": "Sin legislación de protección específica"
+    },
+    "PRY": {
+      "nivel": 0,
+      "nota": "Sin legislación de protección específica"
+    },
+    "PER": {
+      "nivel": 1,
+      "nota": "Decretos anti-discriminación, sin reconocimiento de uniones"
+    },
+    "URY": {
+      "nivel": 3,
+      "anio": 2013,
+      "nota": "Matrimonio igualitario (2013) y Ley de Identidad de Género (2018)"
+    },
+    "VEN": {
+      "nivel": 1,
+      "nota": "La Constitución prohíbe discriminación por orientación sexual"
+    },
+    "GUY": {
+      "nivel": 1,
+      "nota": "Despenalización de relaciones entre personas del mismo sexo (2023)"
+    },
+    "SUR": {
+      "nivel": 0,
+      "nota": "Sin legislación específica"
+    },
+    "BLZ": {
+      "nivel": 1,
+      "nota": "Despenalización de relaciones entre personas del mismo sexo (2019)"
+    }
+  },
+  "c190": {
+    "ARG": {
+      "anio": 2021
+    },
+    "URY": {
+      "anio": 2020
+    },
+    "ECU": {
+      "anio": 2021
+    },
+    "MEX": {
+      "anio": 2022
+    },
+    "CHL": {
+      "anio": 2023
+    },
+    "PAN": {
+      "anio": 2022
+    },
+    "PER": {
+      "anio": 2022
+    },
+    "SLV": {
+      "anio": 2022
+    },
+    "COL": {
+      "anio": 2025
+    },
+    "CRI": {
+      "anio": 2025
+    },
+    "BOL": {
+      "estado": "discusion"
+    },
+    "BRA": {
+      "estado": "discusion"
+    },
+    "PRY": {
+      "estado": "discusion"
+    },
+    "GTM": {
+      "estado": "discusion"
+    },
+    "HND": {
+      "estado": "discusion"
+    },
+    "NIC": {
+      "estado": "discusion"
+    },
+    "VEN": {
+      "estado": "discusion"
+    }
+  },
+  "cdn": {
+    "MEX": {
+      "anio": 1990
+    },
+    "GTM": {
+      "anio": 1990
+    },
+    "BLZ": {
+      "anio": 1990
+    },
+    "HND": {
+      "anio": 1990
+    },
+    "SLV": {
+      "anio": 1990
+    },
+    "NIC": {
+      "anio": 1990
+    },
+    "CRI": {
+      "anio": 1990
+    },
+    "PAN": {
+      "anio": 1990
+    },
+    "COL": {
+      "anio": 1991
+    },
+    "VEN": {
+      "anio": 1990
+    },
+    "GUY": {
+      "anio": 1991
+    },
+    "SUR": {
+      "anio": 1993
+    },
+    "ECU": {
+      "anio": 1990
+    },
+    "PER": {
+      "anio": 1990
+    },
+    "BOL": {
+      "anio": 1990
+    },
+    "BRA": {
+      "anio": 1990
+    },
+    "PRY": {
+      "anio": 1990
+    },
+    "URY": {
+      "anio": 1990
+    },
+    "ARG": {
+      "anio": 1990
+    },
+    "CHL": {
+      "anio": 1990
+    }
+  },
+  "brecha": {
+    "ARG": {
+      "valor": 25,
+      "anio": 2023
+    },
+    "BOL": {
+      "valor": 22,
+      "anio": 2022
+    },
+    "BRA": {
+      "valor": 19,
+      "anio": 2023
+    },
+    "CHL": {
+      "valor": 22,
+      "anio": 2023
+    },
+    "COL": {
+      "valor": 6,
+      "anio": 2023
+    },
+    "CRI": {
+      "valor": 9,
+      "anio": 2023
+    },
+    "ECU": {
+      "valor": 15,
+      "anio": 2023
+    },
+    "SLV": {
+      "valor": 18,
+      "anio": 2023
+    },
+    "GTM": {
+      "valor": 28,
+      "anio": 2022
+    },
+    "HND": {
+      "valor": 20,
+      "anio": 2023
+    },
+    "MEX": {
+      "valor": 18,
+      "anio": 2023
+    },
+    "NIC": {
+      "valor": 15,
+      "anio": 2022
+    },
+    "PAN": {
+      "valor": 19,
+      "anio": 2023
+    },
+    "PRY": {
+      "valor": 33,
+      "anio": 2023
+    },
+    "PER": {
+      "valor": 28,
+      "anio": 2023
+    },
+    "URY": {
+      "valor": 19,
+      "anio": 2023
+    },
+    "VEN": {
+      "valor": 26,
+      "anio": 2022
+    }
+  },
+  "parlamento": {
+    "ARG": {
+      "valor": 41,
+      "anio": 2026
+    },
+    "BOL": {
+      "valor": 51,
+      "anio": 2026
+    },
+    "BRA": {
+      "valor": 17,
+      "anio": 2026
+    },
+    "CHL": {
+      "valor": 35,
+      "anio": 2026
+    },
+    "COL": {
+      "valor": 29,
+      "anio": 2026
+    },
+    "CRI": {
+      "valor": 49,
+      "anio": 2026
+    },
+    "ECU": {
+      "valor": 43,
+      "anio": 2026
+    },
+    "SLV": {
+      "valor": 32,
+      "anio": 2026
+    },
+    "GTM": {
+      "valor": 20,
+      "anio": 2026
+    },
+    "HND": {
+      "valor": 30,
+      "anio": 2026
+    },
+    "MEX": {
+      "valor": 50,
+      "anio": 2026
+    },
+    "NIC": {
+      "valor": 55,
+      "anio": 2026
+    },
+    "PAN": {
+      "valor": 22,
+      "anio": 2026
+    },
+    "PRY": {
+      "valor": 24,
+      "anio": 2026
+    },
+    "PER": {
+      "valor": 42,
+      "anio": 2026
+    },
+    "URY": {
+      "valor": 30,
+      "anio": 2026
+    },
+    "VEN": {
+      "valor": 32,
+      "anio": 2026
+    },
+    "GUY": {
+      "valor": 36,
+      "anio": 2026
+    },
+    "SUR": {
+      "valor": 31,
+      "anio": 2026
+    },
+    "BLZ": {
+      "valor": 13,
+      "anio": 2026
+    }
+  },
+  "licencias": {
+    "ARG": {
+      "maternidad": 91,
+      "paternidad": 2,
+      "anio": 2024
+    },
+    "BOL": {
+      "maternidad": 91,
+      "paternidad": 3,
+      "anio": 2024
+    },
+    "BRA": {
+      "maternidad": 119,
+      "paternidad": 20,
+      "nota": "20 días para empresas adheridas al Programa Empresa Cidadã",
+      "anio": 2024
+    },
+    "CHL": {
+      "maternidad": 126,
+      "paternidad": 5,
+      "nota": "Incluye postnatal de 84 días + 12 semanas de permiso parental",
+      "anio": 2024
+    },
+    "COL": {
+      "maternidad": 98,
+      "paternidad": 14,
+      "anio": 2024
+    },
+    "CRI": {
+      "maternidad": 119,
+      "paternidad": 8,
+      "anio": 2024
+    },
+    "ECU": {
+      "maternidad": 84,
+      "paternidad": 10,
+      "anio": 2024
+    },
+    "SLV": {
+      "maternidad": 112,
+      "paternidad": 3,
+      "anio": 2024
+    },
+    "GTM": {
+      "maternidad": 84,
+      "paternidad": 2,
+      "anio": 2024
+    },
+    "HND": {
+      "maternidad": 70,
+      "paternidad": 0,
+      "anio": 2024
+    },
+    "MEX": {
+      "maternidad": 84,
+      "paternidad": 5,
+      "anio": 2024
+    },
+    "NIC": {
+      "maternidad": 84,
+      "paternidad": 5,
+      "anio": 2024
+    },
+    "PAN": {
+      "maternidad": 98,
+      "paternidad": 3,
+      "anio": 2024
+    },
+    "PRY": {
+      "maternidad": 126,
+      "paternidad": 14,
+      "anio": 2024
+    },
+    "PER": {
+      "maternidad": 98,
+      "paternidad": 10,
+      "anio": 2024
+    },
+    "URY": {
+      "maternidad": 84,
+      "paternidad": 13,
+      "anio": 2024
+    },
+    "VEN": {
+      "maternidad": 182,
+      "paternidad": 14,
+      "anio": 2024
+    }
+  },
+  "cuotas": {
+    "ARG": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2017
+    },
+    "BOL": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2010
+    },
+    "BRA": {
+      "tipo": "cuota",
+      "porcentaje": 30,
+      "anio": 1997
+    },
+    "CHL": {
+      "tipo": "cuota",
+      "porcentaje": 40,
+      "anio": 2015
+    },
+    "COL": {
+      "tipo": "cuota",
+      "porcentaje": 30,
+      "anio": 2011
+    },
+    "CRI": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2009
+    },
+    "ECU": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2020
+    },
+    "SLV": {
+      "tipo": "cuota",
+      "porcentaje": 30,
+      "anio": 2013
+    },
+    "GTM": {
+      "tipo": "ninguna",
+      "porcentaje": 0
+    },
+    "HND": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2012
+    },
+    "MEX": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2019
+    },
+    "NIC": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2012
+    },
+    "PAN": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2021
+    },
+    "PRY": {
+      "tipo": "cuota",
+      "porcentaje": 20,
+      "anio": 1996
+    },
+    "PER": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 2020
+    },
+    "URY": {
+      "tipo": "cuota",
+      "porcentaje": 33,
+      "anio": 2009
+    },
+    "VEN": {
+      "tipo": "paridad",
+      "porcentaje": 50,
+      "anio": 1997
+    }
+  },
+  "idg": {
+    "ARG": {
+      "valor": 0.305,
+      "ranking": 51
+    },
+    "BOL": {
+      "valor": 0.402,
+      "ranking": 89
+    },
+    "BRA": {
+      "valor": 0.373,
+      "ranking": 79
+    },
+    "CHL": {
+      "valor": 0.272,
+      "ranking": 44
+    },
+    "COL": {
+      "valor": 0.36,
+      "ranking": 75
+    },
+    "CRI": {
+      "valor": 0.28,
+      "ranking": 46
+    },
+    "ECU": {
+      "valor": 0.332,
+      "ranking": 62
+    },
+    "SLV": {
+      "valor": 0.362,
+      "ranking": 76
+    },
+    "GTM": {
+      "valor": 0.477,
+      "ranking": 111
+    },
+    "HND": {
+      "valor": 0.43,
+      "ranking": 101
+    },
+    "MEX": {
+      "valor": 0.325,
+      "ranking": 59
+    },
+    "NIC": {
+      "valor": 0.445,
+      "ranking": 105
+    },
+    "PAN": {
+      "valor": 0.474,
+      "ranking": 110
+    },
+    "PRY": {
+      "valor": 0.418,
+      "ranking": 96
+    },
+    "PER": {
+      "valor": 0.371,
+      "ranking": 80
+    },
+    "URY": {
+      "valor": 0.246,
+      "ranking": 37
+    },
+    "VEN": {
+      "valor": 0.483,
+      "ranking": 113
+    },
+    "GUY": {
+      "valor": 0.498,
+      "ranking": 116
+    },
+    "SUR": {
+      "valor": 0.452,
+      "ranking": 107
+    },
+    "BLZ": {
+      "valor": 0.391,
+      "ranking": 84
+    }
+  },
+  "tnr": {
+    "ARG": {
+      "mujeres": 43.0,
+      "varones": 25.7,
+      "brecha": 17.3,
+      "anio": 2021
+    },
+    "BOL": {
+      "mujeres": 35.0,
+      "varones": 12.0,
+      "brecha": 23.0,
+      "anio": 2022
+    },
+    "BRA": {
+      "mujeres": 21.3,
+      "varones": 11.7,
+      "brecha": 9.6,
+      "anio": 2023
+    },
+    "CHL": {
+      "mujeres": 35.6,
+      "varones": 15.5,
+      "brecha": 20.1,
+      "anio": 2023
+    },
+    "COL": {
+      "mujeres": 34.1,
+      "varones": 12.4,
+      "brecha": 21.7,
+      "anio": 2023
+    },
+    "CRI": {
+      "mujeres": 35.2,
+      "varones": 18.0,
+      "brecha": 17.2,
+      "anio": 2023
+    },
+    "ECU": {
+      "mujeres": 31.5,
+      "varones": 11.3,
+      "brecha": 20.2,
+      "anio": 2023
+    },
+    "SLV": {
+      "mujeres": 36.0,
+      "varones": 14.0,
+      "brecha": 22.0,
+      "anio": 2023
+    },
+    "GTM": {
+      "mujeres": 39.0,
+      "varones": 12.0,
+      "brecha": 27.0,
+      "anio": 2023
+    },
+    "HND": {
+      "mujeres": 37.0,
+      "varones": 12.0,
+      "brecha": 25.0,
+      "anio": 2023
+    },
+    "MEX": {
+      "mujeres": 42.8,
+      "varones": 16.9,
+      "brecha": 25.9,
+      "anio": 2023
+    },
+    "NIC": {
+      "mujeres": 22.9,
+      "varones": 12.1,
+      "brecha": 10.8,
+      "anio": 2023
+    },
+    "PAN": {
+      "mujeres": 33.0,
+      "varones": 13.0,
+      "brecha": 20.0,
+      "anio": 2023
+    },
+    "PRY": {
+      "mujeres": 28.5,
+      "varones": 11.8,
+      "brecha": 16.7,
+      "anio": 2023
+    },
+    "PER": {
+      "mujeres": 39.2,
+      "varones": 16.2,
+      "brecha": 23.0,
+      "anio": 2022
+    },
+    "URY": {
+      "mujeres": 30.0,
+      "varones": 16.0,
+      "brecha": 14.0,
+      "anio": 2023
+    }
+  },
+  "ocupacion": {
+    "ARG": {
+      "mujeres": 48.35,
+      "varones": 65.63,
+      "anio": 2024
+    },
+    "BOL": {
+      "mujeres": 71.02,
+      "varones": 81.97,
+      "anio": 2024
+    },
+    "BRA": {
+      "mujeres": 48.4,
+      "varones": 68.25,
+      "anio": 2024
+    },
+    "CHL": {
+      "mujeres": 47.68,
+      "varones": 66.13,
+      "anio": 2024
+    },
+    "COL": {
+      "mujeres": 45.74,
+      "varones": 70.07,
+      "anio": 2024
+    },
+    "CRI": {
+      "mujeres": 40.84,
+      "varones": 63.74,
+      "anio": 2024
+    },
+    "ECU": {
+      "mujeres": 50.29,
+      "varones": 74.86,
+      "anio": 2024
+    },
+    "GTM": {
+      "mujeres": 49.3,
+      "varones": 83.8,
+      "anio": 2024
+    },
+    "HND": {
+      "mujeres": 38.24,
+      "varones": 70.68,
+      "anio": 2024
+    },
+    "MEX": {
+      "mujeres": 44.97,
+      "varones": 73.91,
+      "anio": 2024
+    },
+    "NIC": {
+      "mujeres": 54.58,
+      "varones": 76.43,
+      "anio": 2024
+    },
+    "PAN": {
+      "mujeres": 45.99,
+      "varones": 69.46,
+      "anio": 2024
+    },
+    "PER": {
+      "mujeres": 57.39,
+      "varones": 74.12,
+      "anio": 2024
+    },
+    "PRY": {
+      "mujeres": 54.83,
+      "varones": 78.39,
+      "anio": 2024
+    },
+    "SLV": {
+      "mujeres": 41.68,
+      "varones": 70.51,
+      "anio": 2024
+    },
+    "URY": {
+      "mujeres": 50.93,
+      "varones": 67.8,
+      "anio": 2024
+    }
+  },
+  "fem_pobreza": {
+    "ARG": {
+      "indice": 116,
+      "anio": 2022
+    },
+    "NIC": {
+      "indice": 103,
+      "anio": 2023
+    },
+    "HND": {
+      "indice": 107,
+      "anio": 2023
+    },
+    "BOL": {
+      "indice": 112,
+      "anio": 2023
+    },
+    "GTM": {
+      "indice": 114,
+      "anio": 2023
+    },
+    "MEX": {
+      "indice": 116,
+      "anio": 2023
+    },
+    "SLV": {
+      "indice": 116,
+      "anio": 2023
+    },
+    "PER": {
+      "indice": 116,
+      "anio": 2023
+    },
+    "COL": {
+      "indice": 122,
+      "anio": 2023
+    },
+    "PRY": {
+      "indice": 122,
+      "anio": 2023
+    },
+    "ECU": {
+      "indice": 122,
+      "anio": 2023
+    },
+    "VEN": {
+      "indice": 123,
+      "anio": 2023
+    },
+    "PAN": {
+      "indice": 125,
+      "anio": 2023
+    },
+    "CHL": {
+      "indice": 130,
+      "anio": 2023
+    },
+    "BRA": {
+      "indice": 132,
+      "anio": 2023
+    },
+    "CRI": {
+      "indice": 136,
+      "anio": 2023
+    },
+    "URY": {
+      "indice": 153,
+      "anio": 2023
+    }
+  },
+  "tnr_tiempo": {
+    "ARG": {
+      "mujeres": 18.4,
+      "varones": 9.3,
+      "brecha": 9.1,
+      "hs_mujeres": 43.0,
+      "hs_varones": 25.7,
+      "anio": 2021
+    },
+    "BOL": {
+      "mujeres": 23.3,
+      "varones": 12.1,
+      "brecha": 11.2,
+      "anio": 2023
+    },
+    "BRA": {
+      "mujeres": 12.0,
+      "varones": 5.3,
+      "brecha": 6.7,
+      "anio": 2023
+    },
+    "CHL": {
+      "mujeres": 20.7,
+      "varones": 11.5,
+      "brecha": 9.2,
+      "anio": 2023
+    },
+    "COL": {
+      "mujeres": 18.9,
+      "varones": 5.9,
+      "brecha": 13.0,
+      "anio": 2023
+    },
+    "CRI": {
+      "mujeres": 20.1,
+      "varones": 9.6,
+      "brecha": 10.5,
+      "anio": 2023
+    },
+    "ECU": {
+      "mujeres": 19.7,
+      "varones": 4.7,
+      "brecha": 15.0,
+      "anio": 2023
+    },
+    "SLV": {
+      "mujeres": 23.2,
+      "varones": 9.2,
+      "brecha": 14.0,
+      "anio": 2023
+    },
+    "GTM": {
+      "mujeres": 22.2,
+      "varones": 3.9,
+      "brecha": 18.3,
+      "anio": 2023
+    },
+    "HND": {
+      "mujeres": 15.5,
+      "varones": 3.0,
+      "brecha": 12.5,
+      "anio": 2023
+    },
+    "MEX": {
+      "mujeres": 20.9,
+      "varones": 8.2,
+      "brecha": 12.7,
+      "anio": 2023
+    },
+    "NIC": {
+      "mujeres": 22.9,
+      "varones": 12.1,
+      "brecha": 10.8,
+      "anio": 2023
+    },
+    "PAN": {
+      "mujeres": 18.0,
+      "varones": 7.6,
+      "brecha": 10.4,
+      "anio": 2023
+    },
+    "PRY": {
+      "mujeres": 15.0,
+      "varones": 4.4,
+      "brecha": 10.6,
+      "anio": 2023
+    },
+    "PER": {
+      "mujeres": 18.8,
+      "varones": 6.5,
+      "brecha": 12.3,
+      "anio": 2023
+    },
+    "URY": {
+      "mujeres": 14.8,
+      "varones": 7.2,
+      "brecha": 7.6,
+      "anio": 2023
+    }
+  },
+  "informalidad": {
+    "ARG": {
+      "mujeres": 41.5,
+      "varones": 41.6,
+      "anio": 2024
+    },
+    "BOL": {
+      "mujeres": 81.0,
+      "varones": 80.0,
+      "anio": 2023
+    },
+    "BRA": {
+      "mujeres": 37.2,
+      "varones": 38.5,
+      "anio": 2024
+    },
+    "CHL": {
+      "mujeres": 22.9,
+      "varones": 23.9,
+      "anio": 2024
+    },
+    "COL": {
+      "mujeres": 49.1,
+      "varones": 53.6,
+      "anio": 2024
+    },
+    "CRI": {
+      "mujeres": 27.0,
+      "varones": 28.2,
+      "anio": 2024
+    },
+    "ECU": {
+      "mujeres": 51.3,
+      "varones": 52.9,
+      "anio": 2023
+    },
+    "SLV": {
+      "mujeres": 68.4,
+      "varones": 63.1,
+      "anio": 2023
+    },
+    "GTM": {
+      "mujeres": 79.2,
+      "varones": 77.5,
+      "anio": 2023
+    },
+    "HND": {
+      "mujeres": 74.8,
+      "varones": 71.2,
+      "anio": 2023
+    },
+    "MEX": {
+      "mujeres": 59.3,
+      "varones": 55.3,
+      "anio": 2024
+    },
+    "NIC": {
+      "mujeres": 64.7,
+      "varones": 66.3,
+      "anio": 2022
+    },
+    "PAN": {
+      "mujeres": 44.5,
+      "varones": 43.1,
+      "anio": 2023
+    },
+    "PRY": {
+      "mujeres": 62.5,
+      "varones": 60.6,
+      "anio": 2023
+    },
+    "PER": {
+      "mujeres": 71.0,
+      "varones": 60.9,
+      "anio": 2024
+    },
+    "URY": {
+      "mujeres": 20.5,
+      "varones": 22.8,
+      "anio": 2024
+    }
+  },
+  "actividad_hijos": {
+    "ARG": {
+      "mujeres": 56.7,
+      "varones": 97.6,
+      "anio": 2025
+    },
+    "BOL": {
+      "mujeres": 57.0,
+      "varones": 99.0,
+      "anio": 2021
+    },
+    "BRA": {
+      "mujeres": 51.4,
+      "varones": 95.2,
+      "anio": 2023
+    },
+    "CHL": {
+      "mujeres": 66.0,
+      "varones": 98.0,
+      "anio": 2024
+    },
+    "COL": {
+      "mujeres": 48.9,
+      "varones": 96.1,
+      "anio": 2023
+    },
+    "CRI": {
+      "mujeres": 39.0,
+      "varones": 94.0,
+      "anio": 2023
+    },
+    "ECU": {
+      "mujeres": 52.1,
+      "varones": 97.3,
+      "anio": 2023
+    },
+    "SLV": {
+      "mujeres": 41.2,
+      "varones": 93.8,
+      "anio": 2022
+    },
+    "GTM": {
+      "mujeres": 35.4,
+      "varones": 98.1,
+      "anio": 2022
+    },
+    "HND": {
+      "mujeres": 40.0,
+      "varones": 94.0,
+      "anio": 2023
+    },
+    "MEX": {
+      "mujeres": 38.0,
+      "varones": 96.8,
+      "anio": 2024
+    },
+    "NIC": {
+      "mujeres": 43.5,
+      "varones": 95.0,
+      "anio": 2021
+    },
+    "PAN": {
+      "mujeres": 46.8,
+      "varones": 94.6,
+      "anio": 2023
+    },
+    "PRY": {
+      "mujeres": 63.9,
+      "varones": 98.7,
+      "anio": 2023
+    },
+    "PER": {
+      "mujeres": 65.0,
+      "varones": 97.0,
+      "anio": 2023
+    },
+    "URY": {
+      "mujeres": 72.5,
+      "varones": 97.5,
+      "anio": 2022
+    },
+    "VEN": {
+      "mujeres": 39.8,
+      "varones": 92.1,
+      "anio": 2021
+    }
+  },
+  "sin_ingresos": {
+    "ARG": {
+      "mujeres": 22,
+      "varones": 17,
+      "anio": 2024
+    },
+    "GTM": {
+      "mujeres": 51,
+      "varones": 14,
+      "anio": 2023
+    },
+    "SLV": {
+      "mujeres": 40,
+      "varones": 13,
+      "anio": 2023
+    },
+    "HND": {
+      "mujeres": 39,
+      "varones": 18,
+      "anio": 2023
+    },
+    "VEN": {
+      "mujeres": 32,
+      "varones": 10,
+      "anio": 2023
+    },
+    "CRI": {
+      "mujeres": 31,
+      "varones": 10,
+      "anio": 2023
+    },
+    "ECU": {
+      "mujeres": 31,
+      "varones": 11,
+      "anio": 2023
+    },
+    "COL": {
+      "mujeres": 30,
+      "varones": 12,
+      "anio": 2023
+    },
+    "BOL": {
+      "mujeres": 28,
+      "varones": 7,
+      "anio": 2023
+    },
+    "PRY": {
+      "mujeres": 27,
+      "varones": 11,
+      "anio": 2023
+    },
+    "PAN": {
+      "mujeres": 25,
+      "varones": 9,
+      "anio": 2023
+    },
+    "MEX": {
+      "mujeres": 25,
+      "varones": 6,
+      "anio": 2023
+    },
+    "PER": {
+      "mujeres": 21,
+      "varones": 10,
+      "anio": 2023
+    },
+    "BRA": {
+      "mujeres": 19,
+      "varones": 11,
+      "anio": 2023
+    },
+    "CHL": {
+      "mujeres": 18,
+      "varones": 9,
+      "anio": 2023
+    },
+    "URY": {
+      "mujeres": 12,
+      "varones": 7,
+      "anio": 2023
+    }
+  },
+  "part_juv": {
+    "ARG": {
+      "valor": 34.5,
+      "anio": 2025
+    },
+    "BLZ": {
+      "valor": 44.4,
+      "anio": 2019
+    },
+    "BOL": {
+      "valor": 59.2,
+      "anio": 2025
+    },
+    "BRA": {
+      "valor": 48.0,
+      "anio": 2025
+    },
+    "CHL": {
+      "valor": 25.7,
+      "anio": 2025
+    },
+    "COL": {
+      "valor": 37.0,
+      "anio": 2025
+    },
+    "CRI": {
+      "valor": 27.4,
+      "anio": 2025
+    },
+    "ECU": {
+      "valor": 32.3,
+      "anio": 2025
+    },
+    "GTM": {
+      "valor": 44.7,
+      "anio": 2024
+    },
+    "GUY": {
+      "valor": 39.3,
+      "anio": 2021
+    },
+    "HND": {
+      "valor": 34.3,
+      "anio": 2025
+    },
+    "MEX": {
+      "valor": 31.9,
+      "anio": 2026
+    },
+    "NIC": {
+      "valor": 32.5,
+      "anio": 2014
+    },
+    "PAN": {
+      "valor": 33.8,
+      "anio": 2025
+    },
+    "PER": {
+      "valor": 48.6,
+      "anio": 2025
+    },
+    "PRY": {
+      "valor": 47.8,
+      "anio": 2025
+    },
+    "SLV": {
+      "valor": 33.9,
+      "anio": 2025
+    },
+    "SUR": {
+      "valor": 28.3,
+      "anio": 2016
+    },
+    "URY": {
+      "valor": 41.6,
+      "anio": 2025
+    },
+    "VEN": {
+      "valor": 28.6,
+      "anio": 2020
+    }
+  },
+  "part_mayor": {
+    "ARG": {
+      "valor": 54.0,
+      "anio": 2025
+    },
+    "BLZ": {
+      "valor": 50.6,
+      "anio": 2019
+    },
+    "BOL": {
+      "valor": 81.8,
+      "anio": 2025
+    },
+    "BRA": {
+      "valor": 43.1,
+      "anio": 2025
+    },
+    "CHL": {
+      "valor": 53.7,
+      "anio": 2025
+    },
+    "COL": {
+      "valor": 44.3,
+      "anio": 2025
+    },
+    "CRI": {
+      "valor": 35.8,
+      "anio": 2025
+    },
+    "ECU": {
+      "valor": 53.7,
+      "anio": 2025
+    },
+    "GTM": {
+      "valor": 44.9,
+      "anio": 2024
+    },
+    "GUY": {
+      "valor": 30.0,
+      "anio": 2021
+    },
+    "HND": {
+      "valor": 37.8,
+      "anio": 2025
+    },
+    "MEX": {
+      "valor": 40.8,
+      "anio": 2026
+    },
+    "NIC": {
+      "valor": 45.8,
+      "anio": 2014
+    },
+    "PAN": {
+      "valor": 52.3,
+      "anio": 2025
+    },
+    "PER": {
+      "valor": 68.9,
+      "anio": 2025
+    },
+    "PRY": {
+      "valor": 56.9,
+      "anio": 2025
+    },
+    "SLV": {
+      "valor": 45.3,
+      "anio": 2025
+    },
+    "SUR": {
+      "valor": 35.5,
+      "anio": 2016
+    },
+    "URY": {
+      "valor": 57.1,
+      "anio": 2025
+    },
+    "VEN": {
+      "valor": 39.0,
+      "anio": 2020
+    }
+  },
+  "emp_juv": {
+    "ARG": {
+      "valor": 27.2,
+      "anio": 2025
+    },
+    "BLZ": {
+      "valor": 31.7,
+      "anio": 2019
+    },
+    "BOL": {
+      "valor": 56.3,
+      "anio": 2025
+    },
+    "BRA": {
+      "valor": 40.4,
+      "anio": 2025
+    },
+    "CHL": {
+      "valor": 19.2,
+      "anio": 2025
+    },
+    "COL": {
+      "valor": 28.7,
+      "anio": 2025
+    },
+    "CRI": {
+      "valor": 20.4,
+      "anio": 2025
+    },
+    "ECU": {
+      "valor": 28.8,
+      "anio": 2025
+    },
+    "GTM": {
+      "valor": 42.5,
+      "anio": 2024
+    },
+    "GUY": {
+      "valor": 24.5,
+      "anio": 2021
+    },
+    "HND": {
+      "valor": 29.7,
+      "anio": 2025
+    },
+    "MEX": {
+      "valor": 29.9,
+      "anio": 2026
+    },
+    "NIC": {
+      "valor": 28.3,
+      "anio": 2014
+    },
+    "PAN": {
+      "valor": 25.6,
+      "anio": 2025
+    },
+    "PER": {
+      "valor": 43.8,
+      "anio": 2025
+    },
+    "PRY": {
+      "valor": 41.1,
+      "anio": 2025
+    },
+    "SLV": {
+      "valor": 30.5,
+      "anio": 2025
+    },
+    "SUR": {
+      "valor": 17.0,
+      "anio": 2016
+    },
+    "URY": {
+      "valor": 29.5,
+      "anio": 2025
+    },
+    "VEN": {
+      "valor": 23.8,
+      "anio": 2020
+    }
+  },
+  "emp_mayor": {
+    "ARG": {
+      "valor": 51.9,
+      "anio": 2025
+    },
+    "BLZ": {
+      "valor": 48.3,
+      "anio": 2019
+    },
+    "BOL": {
+      "valor": 81.2,
+      "anio": 2025
+    },
+    "BRA": {
+      "valor": 41.6,
+      "anio": 2025
+    },
+    "CHL": {
+      "valor": 50.0,
+      "anio": 2025
+    },
+    "COL": {
+      "valor": 42.3,
+      "anio": 2025
+    },
+    "CRI": {
+      "valor": 34.8,
+      "anio": 2025
+    },
+    "ECU": {
+      "valor": 53.3,
+      "anio": 2025
+    },
+    "GTM": {
+      "valor": 44.5,
+      "anio": 2024
+    },
+    "GUY": {
+      "valor": 28.4,
+      "anio": 2021
+    },
+    "HND": {
+      "valor": 37.4,
+      "anio": 2025
+    },
+    "MEX": {
+      "valor": 40.4,
+      "anio": 2026
+    },
+    "NIC": {
+      "valor": 45.8,
+      "anio": 2014
+    },
+    "PAN": {
+      "valor": 50.7,
+      "anio": 2025
+    },
+    "PER": {
+      "valor": 67.1,
+      "anio": 2025
+    },
+    "PRY": {
+      "valor": 55.8,
+      "anio": 2025
+    },
+    "SLV": {
+      "valor": 44.9,
+      "anio": 2025
+    },
+    "SUR": {
+      "valor": 34.3,
+      "anio": 2016
+    },
+    "URY": {
+      "valor": 55.0,
+      "anio": 2025
+    },
+    "VEN": {
+      "valor": 37.0,
+      "anio": 2020
+    }
+  },
+  "desem_juv": {
+    "ARG": {
+      "valor": 21.1,
+      "anio": 2025
+    },
+    "BLZ": {
+      "valor": 28.5,
+      "anio": 2019
+    },
+    "BOL": {
+      "valor": 4.8,
+      "anio": 2025
+    },
+    "BRA": {
+      "valor": 15.8,
+      "anio": 2025
+    },
+    "CHL": {
+      "valor": 25.5,
+      "anio": 2025
+    },
+    "COL": {
+      "valor": 22.4,
+      "anio": 2025
+    },
+    "CRI": {
+      "valor": 25.5,
+      "anio": 2025
+    },
+    "ECU": {
+      "valor": 10.9,
+      "anio": 2025
+    },
+    "GTM": {
+      "valor": 5.1,
+      "anio": 2024
+    },
+    "GUY": {
+      "valor": 37.6,
+      "anio": 2021
+    },
+    "HND": {
+      "valor": 13.4,
+      "anio": 2025
+    },
+    "MEX": {
+      "valor": 6.5,
+      "anio": 2026
+    },
+    "NIC": {
+      "valor": 12.9,
+      "anio": 2014
+    },
+    "PAN": {
+      "valor": 24.3,
+      "anio": 2025
+    },
+    "PER": {
+      "valor": 9.7,
+      "anio": 2025
+    },
+    "PRY": {
+      "valor": 13.9,
+      "anio": 2025
+    },
+    "SLV": {
+      "valor": 10.1,
+      "anio": 2025
+    },
+    "SUR": {
+      "valor": 39.9,
+      "anio": 2016
+    },
+    "URY": {
+      "valor": 29.1,
+      "anio": 2025
+    },
+    "VEN": {
+      "valor": 16.8,
+      "anio": 2020
+    }
+  },
+  "desem_mayor": {
+    "ARG": {
+      "valor": 4.0,
+      "anio": 2025
+    },
+    "BLZ": {
+      "valor": 4.5,
+      "anio": 2019
+    },
+    "BOL": {
+      "valor": 0.7,
+      "anio": 2025
+    },
+    "BRA": {
+      "valor": 3.3,
+      "anio": 2025
+    },
+    "CHL": {
+      "valor": 6.8,
+      "anio": 2025
+    },
+    "COL": {
+      "valor": 4.5,
+      "anio": 2025
+    },
+    "CRI": {
+      "valor": 3.0,
+      "anio": 2025
+    },
+    "ECU": {
+      "valor": 0.7,
+      "anio": 2025
+    },
+    "GTM": {
+      "valor": 0.8,
+      "anio": 2024
+    },
+    "GUY": {
+      "valor": 5.3,
+      "anio": 2021
+    },
+    "HND": {
+      "valor": 0.9,
+      "anio": 2025
+    },
+    "MEX": {
+      "valor": 1.0,
+      "anio": 2026
+    },
+    "NIC": {
+      "valor": 1.4,
+      "anio": 2014
+    },
+    "PAN": {
+      "valor": 3.0,
+      "anio": 2025
+    },
+    "PER": {
+      "valor": 2.6,
+      "anio": 2025
+    },
+    "PRY": {
+      "valor": 1.9,
+      "anio": 2025
+    },
+    "SLV": {
+      "valor": 1.0,
+      "anio": 2025
+    },
+    "SUR": {
+      "valor": 3.4,
+      "anio": 2016
+    },
+    "URY": {
+      "valor": 3.8,
+      "anio": 2025
+    },
+    "VEN": {
+      "valor": 5.2,
+      "anio": 2020
+    }
+  }
+}

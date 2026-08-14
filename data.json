@@ -1,0 +1,430 @@
+[
+  {
+    "id": "AR-001",
+    "nombre": "Ley 26.485 — Protección integral a las mujeres",
+    "pais": "Argentina",
+    "codigoPais": "ARG",
+    "anio": 2009,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero"
+    ],
+    "descripcion": "Ley de protección integral para prevenir, sancionar y erradicar la violencia contra las mujeres en los ámbitos en que se desarrollen sus relaciones interpersonales. Incluye la violencia laboral como tipo específico.",
+    "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/150000-154999/152155/norma.htm"
+  },
+  {
+    "id": "AR-002",
+    "nombre": "Ley 27.499 — Ley Micaela",
+    "pais": "Argentina",
+    "codigoPais": "ARG",
+    "anio": 2019,
+    "tipo": "nacional",
+    "temas": [
+      "acoso",
+      "discriminacion"
+    ],
+    "descripcion": "Establece la capacitación obligatoria en género y violencia contra las mujeres para todas las personas que se desempeñan en los tres poderes del Estado Nacional, en todos sus niveles y jerarquías.",
+    "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/315000-319999/318666/norma.htm"
+  },
+  {
+    "id": "AR-003",
+    "nombre": "Ley 27.580 — Ratificación Convenio 190 OIT",
+    "pais": "Argentina",
+    "codigoPais": "ARG",
+    "anio": 2020,
+    "tipo": "nacional",
+    "temas": [
+      "ratificacion_convenios"
+    ],
+    "descripcion": "Aprueba el Convenio 190 de la OIT sobre la eliminación de la violencia y el acoso en el mundo del trabajo, con carácter de ley nacional.",
+    "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/340000-344999/342664/norma.htm"
+  },
+  {
+    "id": "AR-004",
+    "nombre": "Ley 23.592 — Actos discriminatorios",
+    "pais": "Argentina",
+    "codigoPais": "ARG",
+    "anio": 1988,
+    "tipo": "nacional",
+    "temas": [
+      "discriminacion"
+    ],
+    "descripcion": "Penaliza los actos u omisiones discriminatorios por motivos de raza, religión, nacionalidad, ideología, opinión política, sexo, posición económica, condición social o caracteres físicos.",
+    "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/20000-24999/20465/texact.htm"
+  },
+  {
+    "id": "AR-005",
+    "nombre": "Ley 24.417 — Protección contra la violencia familiar",
+    "pais": "Argentina",
+    "codigoPais": "ARG",
+    "anio": 1994,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero"
+    ],
+    "descripcion": "Primera ley nacional de protección contra la violencia familiar. Establece medidas cautelares de urgencia, intervención judicial y asistencia a víctimas de violencia en el ámbito doméstico.",
+    "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/0-4999/804/norma.htm"
+  },
+  {
+    "id": "AR-006",
+    "nombre": "Ley 27.736 — Ley Olimpia (violencia digital)",
+    "pais": "Argentina",
+    "codigoPais": "ARG",
+    "anio": 2023,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero",
+      "discriminacion"
+    ],
+    "descripcion": "Tipifica como delito la difusión no consentida de imágenes íntimas. Modifica el Código Penal incorporando penas de prisión e inhabilitación.",
+    "link": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/380000-384999/382790/norma.htm"
+  },
+  {
+    "id": "BO-001",
+    "nombre": "Ley 348 — Integral para una vida libre de violencia",
+    "pais": "Bolivia",
+    "codigoPais": "BOL",
+    "anio": 2013,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero"
+    ],
+    "descripcion": "Ley integral que garantiza a las mujeres el derecho a una vida libre de violencia. Define 16 formas de violencia incluyendo la laboral y política, crea el Sistema Integral Plurinacional de Prevención.",
+    "link": "https://drive.google.com/file/d/1p_RXRxMRReK8mb8yuSWYIOB5wbRCxVsT/view?usp=sharing"
+  },
+  {
+    "id": "BO-002",
+    "nombre": "Ley 243 — Contra el acoso y violencia política",
+    "pais": "Bolivia",
+    "codigoPais": "BOL",
+    "anio": 2012,
+    "tipo": "nacional",
+    "temas": [
+      "acoso",
+      "violencia_genero"
+    ],
+    "descripcion": "Protege a las mujeres en el ejercicio de la función político-pública. Define el acoso político, establece medidas de protección y sanciones.",
+    "link": "https://drive.google.com/file/d/1p_RXRxMRReK8mb8yuSWYIOB5wbRCxVsT/view?usp=sharing"
+  },
+  {
+    "id": "BR-001",
+    "nombre": "Lei 14.457 — Programa Emprega + Mulheres",
+    "pais": "Brasil",
+    "codigoPais": "BRA",
+    "anio": 2022,
+    "tipo": "nacional",
+    "temas": [
+      "acoso",
+      "discriminacion"
+    ],
+    "descripcion": "Instituye el Programa Emprega + Mulheres e incorpora disposiciones sobre acoso sexual y violencia en el trabajo. Obliga a empresas con más de 20 personas a adoptar medidas de prevención.",
+    "link": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14457.htm"
+  },
+  {
+    "id": "BR-002",
+    "nombre": "Lei 9.029 — Proibição de práticas discriminatórias",
+    "pais": "Brasil",
+    "codigoPais": "BRA",
+    "anio": 1995,
+    "tipo": "nacional",
+    "temas": [
+      "discriminacion"
+    ],
+    "descripcion": "Prohíbe prácticas discriminatorias para el acceso o mantenimiento del empleo por motivo de sexo, origen, raza, color, estado civil u otros.",
+    "link": "https://www.planalto.gov.br/ccivil_03/leis/l9029.htm"
+  },
+  {
+    "id": "CL-001",
+    "nombre": "Ley 20.005 — Acoso sexual laboral",
+    "pais": "Chile",
+    "codigoPais": "CHL",
+    "anio": 2005,
+    "tipo": "nacional",
+    "temas": [
+      "acoso"
+    ],
+    "descripcion": "Tipifica y sanciona el acoso sexual laboral. Modifica el Código del Trabajo incorporando el concepto, el procedimiento de investigación interna obligatorio y sanciones.",
+    "link": "https://www.bcn.cl/leychile/navegar?idNorma=236425"
+  },
+  {
+    "id": "CL-002",
+    "nombre": "Ley 20.607 — Acoso laboral (mobbing)",
+    "pais": "Chile",
+    "codigoPais": "CHL",
+    "anio": 2012,
+    "tipo": "nacional",
+    "temas": [
+      "acoso"
+    ],
+    "descripcion": "Sanciona el acoso laboral o mobbing. Define la conducta como hostigamiento reiterado que atenta contra la dignidad, integridad y permanencia en el empleo.",
+    "link": "https://www.bcn.cl/leychile/navegar?idNorma=1042709"
+  },
+  {
+    "id": "CL-003",
+    "nombre": "Ley 21.153 — Acoso sexual en espacios públicos",
+    "pais": "Chile",
+    "codigoPais": "CHL",
+    "anio": 2019,
+    "tipo": "nacional",
+    "temas": [
+      "acoso",
+      "discriminacion"
+    ],
+    "descripcion": "Amplía la tipificación del acoso sexual incluyendo espacios públicos y entornos digitales. Refuerza la protección en contextos educativos y laborales.",
+    "link": "https://www.bcn.cl/leychile/navegar?idNorma=1131140"
+  },
+  {
+    "id": "CO-001",
+    "nombre": "Ley 1257 — Violencias contra mujeres",
+    "pais": "Colombia",
+    "codigoPais": "COL",
+    "anio": 2008,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero",
+      "discriminacion"
+    ],
+    "descripcion": "Dicta normas de sensibilización, prevención y sanción de formas de violencia y discriminación contra las mujeres, incluyendo la violencia económica y laboral.",
+    "link": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=34054"
+  },
+  {
+    "id": "CO-002",
+    "nombre": "Ley 1010 — Acoso laboral",
+    "pais": "Colombia",
+    "codigoPais": "COL",
+    "anio": 2006,
+    "tipo": "nacional",
+    "temas": [
+      "acoso"
+    ],
+    "descripcion": "Define, previene, corrige y sanciona el acoso laboral. Establece tipos de conducta acosadora, mecanismos preventivos obligatorios y medidas sancionatorias.",
+    "link": "https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=18843"
+  },
+  {
+    "id": "CO-003",
+    "nombre": "Ley 2365/2024 — Acoso sexual en el ámbito laboral",
+    "pais": "Colombia",
+    "codigoPais": "COL",
+    "anio": 2024,
+    "tipo": "nacional",
+    "temas": [
+      "acoso",
+      "violencia_genero"
+    ],
+    "descripcion": "Adopta medidas de prevención, protección y atención del acoso sexual en el ámbito laboral y en instituciones de educación superior. Establece obligaciones a empleadores, mecanismos de queja, garantías de estabilidad laboral para las víctimas y un Plan Transversal para la Eliminación del Acoso Sexual.",
+    "link": "https://www.secretariasenado.gov.co/senado/basedoc/ley_2365_2024.html"
+  },
+  {
+    "id": "CR-002",
+    "nombre": "Ley 7142/1990 — Promoción de la Igualdad Social de la Mujer",
+    "pais": "Costa Rica",
+    "codigoPais": "CRI",
+    "anio": 1990,
+    "tipo": "nacional",
+    "temas": [
+      "discriminacion",
+      "ley_cupos"
+    ],
+    "descripcion": "Establece medidas para promover la igualdad real y efectiva entre mujeres y hombres en Costa Rica. Define políticas en materia laboral, educativa y política, incluyendo el acceso equitativo al mercado de trabajo y la prohibición de discriminación por razón de sexo.",
+    "link": "https://www.pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=12739"
+  },
+  {
+    "id": "CR-001",
+    "nombre": "Ley 7476 — Hostigamiento sexual en el empleo",
+    "pais": "Costa Rica",
+    "codigoPais": "CRI",
+    "anio": 1995,
+    "tipo": "nacional",
+    "temas": [
+      "acoso"
+    ],
+    "descripcion": "Pionera en América Latina: prohíbe y sanciona el hostigamiento sexual en relaciones laborales y de docencia. Crea obligaciones al empleador y mecanismos de denuncia.",
+    "link": "https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_resultado_simple.aspx?param1=NER&param2=1&param3=FECHA&param4=DESC&param5=7476"
+  },
+  {
+    "id": "EC-001",
+    "nombre": "Ley Orgánica Integral para Prevenir y Erradicar la Violencia",
+    "pais": "Ecuador",
+    "codigoPais": "ECU",
+    "anio": 2018,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero"
+    ],
+    "descripcion": "Ley integral que reconoce la violencia contra la mujer como problema de salud pública. Define tipos de violencia incluyendo la laboral, crea el Sistema Nacional para Prevenir y Erradicar la Violencia.",
+    "link": "https://drive.google.com/file/d/1vVAMENqdMK95_YUR45fgqVchikdslhPu/view?usp=drive_link"
+  },
+  {
+    "id": "MX-001",
+    "nombre": "Ley General de Acceso a una Vida Libre de Violencia",
+    "pais": "México",
+    "codigoPais": "MEX",
+    "anio": 2007,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero"
+    ],
+    "descripcion": "Coordina federación, estados y municipios para prevenir, sancionar y erradicar la violencia contra las mujeres. Define la violencia laboral e introduce la alerta de violencia de género.",
+    "link": "https://drive.google.com/file/d/1vbnrsA9XO7qP8L3YqbfSlMzBJPxAr-ZL/view?usp=sharing"
+  },
+  {
+    "id": "MX-002",
+    "nombre": "NOM-035-STPS-2018 — Factores de riesgo psicosocial",
+    "pais": "México",
+    "codigoPais": "MEX",
+    "anio": 2018,
+    "tipo": "nacional",
+    "temas": [
+      "acoso"
+    ],
+    "descripcion": "Norma oficial que establece los elementos para identificar, analizar y prevenir los factores de riesgo psicosocial, incluyendo la violencia laboral, en centros de trabajo.",
+    "link": "https://www.dof.gob.mx/nota_detalle.php?codigo=5541828&fecha=23/10/2018"
+  },
+  {
+    "id": "MX-003",
+    "nombre": "Ley General para la Igualdad entre Mujeres y Hombres",
+    "pais": "México",
+    "codigoPais": "MEX",
+    "anio": 2006,
+    "tipo": "nacional",
+    "temas": [
+      "discriminacion",
+      "ley_cupos"
+    ],
+    "descripcion": "Regula y garantiza la igualdad entre mujeres y hombres. Define la política nacional en materia de igualdad y establece la transversalización de género en el Estado.",
+    "link": "https://www.gob.mx/indesol/documentos/ley-general-para-la-igualdad-entre-mujeres-y-hombres-24-03-2016"
+  },
+  {
+    "id": "MX-004",
+    "nombre": "Ley Federal para Prevenir y Eliminar la Discriminación",
+    "pais": "México",
+    "codigoPais": "MEX",
+    "anio": 2003,
+    "tipo": "nacional",
+    "temas": [
+      "discriminacion"
+    ],
+    "descripcion": "Prohíbe la discriminación por razón de sexo, género u otras condiciones. Crea el CONAPRED y establece medidas positivas para la igualdad.",
+    "link": "https://www.gob.mx/indesol/documentos/ley-federal-para-prevenir-y-eliminar-la-discriminacion-58120"
+  },
+  {
+    "id": "UY-001",
+    "nombre": "Ley 18.561 — Acoso sexual",
+    "pais": "Uruguay",
+    "codigoPais": "URY",
+    "anio": 2009,
+    "tipo": "nacional",
+    "temas": [
+      "acoso"
+    ],
+    "descripcion": "Declara de interés general las acciones para prevenir y sancionar el acoso sexual en relaciones laborales y en la enseñanza. Define acoso sexual, mecanismos de denuncia y sanciones.",
+    "link": "https://www.impo.com.uy/bases/leyes/18561-2009"
+  },
+  {
+    "id": "UY-002",
+    "nombre": "Ley 19.580 — Violencia basada en género",
+    "pais": "Uruguay",
+    "codigoPais": "URY",
+    "anio": 2017,
+    "tipo": "nacional",
+    "temas": [
+      "violencia_genero"
+    ],
+    "descripcion": "Ley integral contra la violencia basada en género. Define tipos y modalidades incluyendo la violencia laboral, establece derechos de las víctimas y medidas de prevención.",
+    "link": "https://www.impo.com.uy/bases/leyes/19580-2017"
+  },
+  {
+    "id": "UY-003",
+    "nombre": "Ley 19.849 — Ratificación Convenio 190 OIT",
+    "pais": "Uruguay",
+    "codigoPais": "URY",
+    "anio": 2019,
+    "tipo": "nacional",
+    "temas": [
+      "ratificacion_convenios"
+    ],
+    "descripcion": "Aprueba el Convenio 190 de la OIT. Uruguay fue el primer país del mundo en ratificarlo.",
+    "link": "https://www.impo.com.uy/bases/leyes/19849-2019"
+  },
+  {
+    "id": "INT-001",
+    "nombre": "Convenio 190 OIT — Violencia y acoso en el trabajo",
+    "pais": "Internacional",
+    "codigoPais": "INT",
+    "anio": 2019,
+    "tipo": "convenio_internacional",
+    "temas": [
+      "ratificacion_convenios",
+      "acoso"
+    ],
+    "descripcion": "Primer tratado internacional vinculante que reconoce el derecho a un mundo del trabajo libre de violencia y acoso. Define violencia y acoso de género, establece principios y obligaciones para los Estados.",
+    "link": "https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C190"
+  },
+  {
+    "id": "INT-002",
+    "nombre": "Recomendación 206 OIT — Violencia y acoso",
+    "pais": "Internacional",
+    "codigoPais": "INT",
+    "anio": 2019,
+    "tipo": "convenio_internacional",
+    "temas": [
+      "ratificacion_convenios",
+      "acoso"
+    ],
+    "descripcion": "Complementa el Convenio 190 con orientaciones prácticas. Incluye directrices sobre políticas nacionales, protección de grupos vulnerables y mecanismos de control.",
+    "link": "https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:R206"
+  },
+  {
+    "id": "INT-003",
+    "nombre": "CEDAW — Eliminación de la discriminación contra la mujer",
+    "pais": "Internacional",
+    "codigoPais": "INT",
+    "anio": 1979,
+    "tipo": "supranacional",
+    "temas": [
+      "discriminacion",
+      "violencia_genero"
+    ],
+    "descripcion": "Carta internacional de los derechos humanos de las mujeres. Obliga a los Estados a garantizar igualdad de derechos en todas las esferas incluida la laboral.",
+    "link": "https://www.ohchr.org/es/instruments-mechanisms/instruments/convention-elimination-all-forms-discrimination-against-women"
+  },
+  {
+    "id": "INT-004",
+    "nombre": "Convención de Belém do Pará — OEA",
+    "pais": "Internacional",
+    "codigoPais": "INT",
+    "anio": 1994,
+    "tipo": "supranacional",
+    "temas": [
+      "violencia_genero"
+    ],
+    "descripcion": "Convención Interamericana para prevenir, sancionar y erradicar la violencia contra la mujer. Incluye la violencia en el ámbito laboral.",
+    "link": "https://www.oas.org/juridico/spanish/tratados/a-61.html"
+  },
+  {
+    "id": "INT-005",
+    "nombre": "Convenio 111 OIT — Discriminación en el empleo",
+    "pais": "Internacional",
+    "codigoPais": "INT",
+    "anio": 1958,
+    "tipo": "convenio_internacional",
+    "temas": [
+      "discriminacion"
+    ],
+    "descripcion": "Convenio fundamental de la OIT que prohíbe la discriminación por motivos de raza, color, sexo, religión u otros en el empleo y la ocupación.",
+    "link": "https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C111"
+  },
+  {
+    "id": "INT-006",
+    "nombre": "Declaración Universal de los Derechos Humanos",
+    "pais": "Internacional",
+    "codigoPais": "INT",
+    "anio": 1948,
+    "tipo": "supranacional",
+    "temas": [
+      "discriminacion"
+    ],
+    "descripcion": "Proclamada por la Asamblea General de la ONU. Establece los derechos fundamentales inalienables de todas las personas, sin distinción de sexo u otra condición, como base del derecho internacional de los derechos humanos.",
+    "link": "https://www.un.org/es/about-us/universal-declaration-of-human-rights"
+  }
+]

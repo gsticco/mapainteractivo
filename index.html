@@ -247,51 +247,7 @@
 // ════════════════════════════════════════════════════════════════════════════
 // LEGISLACIÓN (con temas)
 // ════════════════════════════════════════════════════════════════════════════
-const LEYES = [
-  // ——— ARGENTINA ———
-  {id:"AR-001",nombre:"Ley 26.485 — Protección integral a las mujeres",pais:"Argentina",codigoPais:"ARG",anio:2009,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley de protección integral para prevenir, sancionar y erradicar la violencia contra las mujeres en los ámbitos en que se desarrollen sus relaciones interpersonales. Incluye la violencia laboral como tipo específico.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/150000-154999/152155/norma.htm"},
-  {id:"AR-002",nombre:"Ley 27.499 — Ley Micaela",pais:"Argentina",codigoPais:"ARG",anio:2019,tipo:"nacional",temas:["acoso","discriminacion"],descripcion:"Establece la capacitación obligatoria en género y violencia contra las mujeres para todas las personas que se desempeñan en los tres poderes del Estado Nacional, en todos sus niveles y jerarquías.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/315000-319999/318666/norma.htm"},
-  {id:"AR-003",nombre:"Ley 27.580 — Ratificación Convenio 190 OIT",pais:"Argentina",codigoPais:"ARG",anio:2020,tipo:"nacional",temas:["ratificacion_convenios"],descripcion:"Aprueba el Convenio 190 de la OIT sobre la eliminación de la violencia y el acoso en el mundo del trabajo, con carácter de ley nacional.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/340000-344999/342664/norma.htm"},
-  {id:"AR-004",nombre:"Ley 23.592 — Actos discriminatorios",pais:"Argentina",codigoPais:"ARG",anio:1988,tipo:"nacional",temas:["discriminacion"],descripcion:"Penaliza los actos u omisiones discriminatorios por motivos de raza, religión, nacionalidad, ideología, opinión política, sexo, posición económica, condición social o caracteres físicos.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/20000-24999/20465/texact.htm"},
-  {id:"AR-005",nombre:"Ley 24.417 — Protección contra la violencia familiar",pais:"Argentina",codigoPais:"ARG",anio:1994,tipo:"nacional",temas:["violencia_genero"],descripcion:"Primera ley nacional de protección contra la violencia familiar. Establece medidas cautelares de urgencia, intervención judicial y asistencia a víctimas de violencia en el ámbito doméstico.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/0-4999/804/norma.htm"},
-  {id:"AR-006",nombre:"Ley 27.736 — Ley Olimpia (violencia digital)",pais:"Argentina",codigoPais:"ARG",anio:2023,tipo:"nacional",temas:["violencia_genero","discriminacion"],descripcion:"Tipifica como delito la difusión no consentida de imágenes íntimas. Modifica el Código Penal incorporando penas de prisión e inhabilitación.",link:"https://servicios.infoleg.gob.ar/infolegInternet/anexos/380000-384999/382790/norma.htm"},
-  // ——— BOLIVIA ———
-  {id:"BO-001",nombre:"Ley 348 — Integral para una vida libre de violencia",pais:"Bolivia",codigoPais:"BOL",anio:2013,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley integral que garantiza a las mujeres el derecho a una vida libre de violencia. Define 16 formas de violencia incluyendo la laboral y política, crea el Sistema Integral Plurinacional de Prevención.",link:"https://drive.google.com/file/d/1p_RXRxMRReK8mb8yuSWYIOB5wbRCxVsT/view?usp=sharing"},
-  {id:"BO-002",nombre:"Ley 243 — Contra el acoso y violencia política",pais:"Bolivia",codigoPais:"BOL",anio:2012,tipo:"nacional",temas:["acoso","violencia_genero"],descripcion:"Protege a las mujeres en el ejercicio de la función político-pública. Define el acoso político, establece medidas de protección y sanciones.",link:"https://drive.google.com/file/d/1p_RXRxMRReK8mb8yuSWYIOB5wbRCxVsT/view?usp=sharing"},
-  // ——— BRASIL ———
-  {id:"BR-001",nombre:"Lei 14.457 — Programa Emprega + Mulheres",pais:"Brasil",codigoPais:"BRA",anio:2022,tipo:"nacional",temas:["acoso","discriminacion"],descripcion:"Instituye el Programa Emprega + Mulheres e incorpora disposiciones sobre acoso sexual y violencia en el trabajo. Obliga a empresas con más de 20 personas a adoptar medidas de prevención.",link:"https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14457.htm"},
-  {id:"BR-002",nombre:"Lei 9.029 — Proibição de práticas discriminatórias",pais:"Brasil",codigoPais:"BRA",anio:1995,tipo:"nacional",temas:["discriminacion"],descripcion:"Prohíbe prácticas discriminatorias para el acceso o mantenimiento del empleo por motivo de sexo, origen, raza, color, estado civil u otros.",link:"https://www.planalto.gov.br/ccivil_03/leis/l9029.htm"},
-  // ——— CHILE ———
-  {id:"CL-001",nombre:"Ley 20.005 — Acoso sexual laboral",pais:"Chile",codigoPais:"CHL",anio:2005,tipo:"nacional",temas:["acoso"],descripcion:"Tipifica y sanciona el acoso sexual laboral. Modifica el Código del Trabajo incorporando el concepto, el procedimiento de investigación interna obligatorio y sanciones.",link:"https://www.bcn.cl/leychile/navegar?idNorma=236425"},
-  {id:"CL-002",nombre:"Ley 20.607 — Acoso laboral (mobbing)",pais:"Chile",codigoPais:"CHL",anio:2012,tipo:"nacional",temas:["acoso"],descripcion:"Sanciona el acoso laboral o mobbing. Define la conducta como hostigamiento reiterado que atenta contra la dignidad, integridad y permanencia en el empleo.",link:"https://www.bcn.cl/leychile/navegar?idNorma=1042709"},
-  {id:"CL-003",nombre:"Ley 21.153 — Acoso sexual en espacios públicos",pais:"Chile",codigoPais:"CHL",anio:2019,tipo:"nacional",temas:["acoso","discriminacion"],descripcion:"Amplía la tipificación del acoso sexual incluyendo espacios públicos y entornos digitales. Refuerza la protección en contextos educativos y laborales.",link:"https://www.bcn.cl/leychile/navegar?idNorma=1131140"},
-  // ——— COLOMBIA ———
-  {id:"CO-001",nombre:"Ley 1257 — Violencias contra mujeres",pais:"Colombia",codigoPais:"COL",anio:2008,tipo:"nacional",temas:["violencia_genero","discriminacion"],descripcion:"Dicta normas de sensibilización, prevención y sanción de formas de violencia y discriminación contra las mujeres, incluyendo la violencia económica y laboral.",link:"https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=34054"},
-  {id:"CO-002",nombre:"Ley 1010 — Acoso laboral",pais:"Colombia",codigoPais:"COL",anio:2006,tipo:"nacional",temas:["acoso"],descripcion:"Define, previene, corrige y sanciona el acoso laboral. Establece tipos de conducta acosadora, mecanismos preventivos obligatorios y medidas sancionatorias.",link:"https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=18843"},
-  {id:"CO-003",nombre:"Ley 2365/2024 — Acoso sexual en el ámbito laboral",pais:"Colombia",codigoPais:"COL",anio:2024,tipo:"nacional",temas:["acoso","violencia_genero"],descripcion:"Adopta medidas de prevención, protección y atención del acoso sexual en el ámbito laboral y en instituciones de educación superior. Establece obligaciones a empleadores, mecanismos de queja, garantías de estabilidad laboral para las víctimas y un Plan Transversal para la Eliminación del Acoso Sexual.",link:"https://www.secretariasenado.gov.co/senado/basedoc/ley_2365_2024.html"},
-  // ——— COSTA RICA ———
-
-  {id:"CR-002",nombre:"Ley 7142/1990 — Promoción de la Igualdad Social de la Mujer",pais:"Costa Rica",codigoPais:"CRI",anio:1990,tipo:"nacional",temas:["discriminacion","ley_cupos"],descripcion:"Establece medidas para promover la igualdad real y efectiva entre mujeres y hombres en Costa Rica. Define políticas en materia laboral, educativa y política, incluyendo el acceso equitativo al mercado de trabajo y la prohibición de discriminación por razón de sexo.",link:"https://www.pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=12739"},
-  {id:"CR-001",nombre:"Ley 7476 — Hostigamiento sexual en el empleo",pais:"Costa Rica",codigoPais:"CRI",anio:1995,tipo:"nacional",temas:["acoso"],descripcion:"Pionera en América Latina: prohíbe y sanciona el hostigamiento sexual en relaciones laborales y de docencia. Crea obligaciones al empleador y mecanismos de denuncia.",link:"https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_resultado_simple.aspx?param1=NER&param2=1&param3=FECHA&param4=DESC&param5=7476"},
-  // ——— ECUADOR ———
-  {id:"EC-001",nombre:"Ley Orgánica Integral para Prevenir y Erradicar la Violencia",pais:"Ecuador",codigoPais:"ECU",anio:2018,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley integral que reconoce la violencia contra la mujer como problema de salud pública. Define tipos de violencia incluyendo la laboral, crea el Sistema Nacional para Prevenir y Erradicar la Violencia.",link:"https://drive.google.com/file/d/1vVAMENqdMK95_YUR45fgqVchikdslhPu/view?usp=drive_link"},
-  // ——— MÉXICO ———
-  {id:"MX-001",nombre:"Ley General de Acceso a una Vida Libre de Violencia",pais:"México",codigoPais:"MEX",anio:2007,tipo:"nacional",temas:["violencia_genero"],descripcion:"Coordina federación, estados y municipios para prevenir, sancionar y erradicar la violencia contra las mujeres. Define la violencia laboral e introduce la alerta de violencia de género.",link:"https://drive.google.com/file/d/1vbnrsA9XO7qP8L3YqbfSlMzBJPxAr-ZL/view?usp=sharing"},
-  {id:"MX-002",nombre:"NOM-035-STPS-2018 — Factores de riesgo psicosocial",pais:"México",codigoPais:"MEX",anio:2018,tipo:"nacional",temas:["acoso"],descripcion:"Norma oficial que establece los elementos para identificar, analizar y prevenir los factores de riesgo psicosocial, incluyendo la violencia laboral, en centros de trabajo.",link:"https://www.dof.gob.mx/nota_detalle.php?codigo=5541828&fecha=23/10/2018"},
-  {id:"MX-003",nombre:"Ley General para la Igualdad entre Mujeres y Hombres",pais:"México",codigoPais:"MEX",anio:2006,tipo:"nacional",temas:["discriminacion","ley_cupos"],descripcion:"Regula y garantiza la igualdad entre mujeres y hombres. Define la política nacional en materia de igualdad y establece la transversalización de género en el Estado.",link:"https://www.gob.mx/indesol/documentos/ley-general-para-la-igualdad-entre-mujeres-y-hombres-24-03-2016"},
-  {id:"MX-004",nombre:"Ley Federal para Prevenir y Eliminar la Discriminación",pais:"México",codigoPais:"MEX",anio:2003,tipo:"nacional",temas:["discriminacion"],descripcion:"Prohíbe la discriminación por razón de sexo, género u otras condiciones. Crea el CONAPRED y establece medidas positivas para la igualdad.",link:"https://www.gob.mx/indesol/documentos/ley-federal-para-prevenir-y-eliminar-la-discriminacion-58120"},
-  // ——— URUGUAY ———
-  {id:"UY-001",nombre:"Ley 18.561 — Acoso sexual",pais:"Uruguay",codigoPais:"URY",anio:2009,tipo:"nacional",temas:["acoso"],descripcion:"Declara de interés general las acciones para prevenir y sancionar el acoso sexual en relaciones laborales y en la enseñanza. Define acoso sexual, mecanismos de denuncia y sanciones.",link:"https://www.impo.com.uy/bases/leyes/18561-2009"},
-  {id:"UY-002",nombre:"Ley 19.580 — Violencia basada en género",pais:"Uruguay",codigoPais:"URY",anio:2017,tipo:"nacional",temas:["violencia_genero"],descripcion:"Ley integral contra la violencia basada en género. Define tipos y modalidades incluyendo la violencia laboral, establece derechos de las víctimas y medidas de prevención.",link:"https://www.impo.com.uy/bases/leyes/19580-2017"},
-  {id:"UY-003",nombre:"Ley 19.849 — Ratificación Convenio 190 OIT",pais:"Uruguay",codigoPais:"URY",anio:2019,tipo:"nacional",temas:["ratificacion_convenios"],descripcion:"Aprueba el Convenio 190 de la OIT. Uruguay fue el primer país del mundo en ratificarlo.",link:"https://www.impo.com.uy/bases/leyes/19849-2019"},
-  // ——— INTERNACIONAL ———
-  {id:"INT-001",nombre:"Convenio 190 OIT — Violencia y acoso en el trabajo",pais:"Internacional",codigoPais:"INT",anio:2019,tipo:"convenio_internacional",temas:["ratificacion_convenios","acoso"],descripcion:"Primer tratado internacional vinculante que reconoce el derecho a un mundo del trabajo libre de violencia y acoso. Define violencia y acoso de género, establece principios y obligaciones para los Estados.",link:"https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C190"},
-  {id:"INT-002",nombre:"Recomendación 206 OIT — Violencia y acoso",pais:"Internacional",codigoPais:"INT",anio:2019,tipo:"convenio_internacional",temas:["ratificacion_convenios","acoso"],descripcion:"Complementa el Convenio 190 con orientaciones prácticas. Incluye directrices sobre políticas nacionales, protección de grupos vulnerables y mecanismos de control.",link:"https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:R206"},
-  {id:"INT-003",nombre:"CEDAW — Eliminación de la discriminación contra la mujer",pais:"Internacional",codigoPais:"INT",anio:1979,tipo:"supranacional",temas:["discriminacion","violencia_genero"],descripcion:"Carta internacional de los derechos humanos de las mujeres. Obliga a los Estados a garantizar igualdad de derechos en todas las esferas incluida la laboral.",link:"https://www.ohchr.org/es/instruments-mechanisms/instruments/convention-elimination-all-forms-discrimination-against-women"},
-  {id:"INT-004",nombre:"Convención de Belém do Pará — OEA",pais:"Internacional",codigoPais:"INT",anio:1994,tipo:"supranacional",temas:["violencia_genero"],descripcion:"Convención Interamericana para prevenir, sancionar y erradicar la violencia contra la mujer. Incluye la violencia en el ámbito laboral.",link:"https://www.oas.org/juridico/spanish/tratados/a-61.html"},
-  {id:"INT-005",nombre:"Convenio 111 OIT — Discriminación en el empleo",pais:"Internacional",codigoPais:"INT",anio:1958,tipo:"convenio_internacional",temas:["discriminacion"],descripcion:"Convenio fundamental de la OIT que prohíbe la discriminación por motivos de raza, color, sexo, religión u otros en el empleo y la ocupación.",link:"https://www.ilo.org/dyn/normlex/es/f?p=NORMLEXPUB:12100:0::NO::P12100_ILO_CODE:C111"},
-  {id:"INT-006",nombre:"Declaración Universal de los Derechos Humanos",pais:"Internacional",codigoPais:"INT",anio:1948,tipo:"supranacional",temas:["discriminacion"],descripcion:"Proclamada por la Asamblea General de la ONU. Establece los derechos fundamentales inalienables de todas las personas, sin distinción de sexo u otra condición, como base del derecho internacional de los derechos humanos.",link:"https://www.un.org/es/about-us/universal-declaration-of-human-rights"},
-];
+let LEYES = [];
 
 // ════════════════════════════════════════════════════════════════════════════
 // CATEGORÍAS DEL PANEL IZQUIERDO
@@ -406,295 +362,7 @@ const COUNTRY_ALIAS = { MLV:"ARG" };
 // ════════════════════════════════════════════════════════════════════════════
 // DATOS POR CAPA
 // ════════════════════════════════════════════════════════════════════════════
-const CAPA_DATA = {
-  participacion:{
-    ARG:{valor:51.7,anio:2025},BOL:{valor:58.0,anio:2021},BRA:{valor:53.0,anio:2024},
-    CHL:{valor:52.0,anio:2023},COL:{valor:51.7,anio:2024},CRI:{valor:41.0,anio:2024},
-    ECU:{valor:52.4,anio:2024},SLV:{valor:46.7,anio:2024},GTM:{valor:40.4,anio:2024},
-    HND:{valor:40.0,anio:2023},MEX:{valor:47.0,anio:2023},NIC:{valor:50.1,anio:2024},
-    PAN:{valor:52.7,anio:2024},PRY:{valor:60.0,anio:2023},PER:{valor:67.0,anio:2022},
-    URY:{valor:54.6,anio:2022},VEN:{valor:37.7,anio:2024},
-  },
-  femicidios:{
-    ARG:{tasa:1.0,anio:2024},BOL:{tasa:1.4,anio:2024},
-    BRA:{tasa:1.3,anio:2024},CHL:{tasa:0.4,anio:2024},
-    COL:{tasa:0.8,anio:2024},CRI:{tasa:1.3,anio:2024},
-    ECU:{tasa:0.9,anio:2024},SLV:{valor:74,tasa:2.18,anio:2023},
-    GTM:{tasa:1.9,anio:2024},HND:{tasa:4.3,anio:2024},
-    MEX:{tasa:1.3,anio:2024},NIC:{valor:71,tasa:1.95,anio:2022},
-    PAN:{tasa:1.0,anio:2024},PRY:{tasa:0.8,anio:2024},
-    PER:{tasa:0.9,anio:2024},URY:{tasa:1.3,anio:2024},
-  },
-  lgbtq:{
-    ARG:{nivel:3,anio:2010,nota:"Matrimonio igualitario (2010) e Ley de Identidad de Género (2012)"},
-    BOL:{nivel:1,nota:"Constitución prohíbe discriminación por orientación sexual"},
-    BRA:{nivel:2,anio:2013,nota:"Matrimonio igualitario por decisión del STF (2013)"},
-    CHL:{nivel:2,anio:2022,nota:"Matrimonio igualitario (2022). Unión civil desde 2015"},
-    COL:{nivel:2,anio:2016,nota:"Matrimonio igualitario por sentencia de la Corte Constitucional (2016)"},
-    CRI:{nivel:2,anio:2020,nota:"Matrimonio igualitario por resolución de la Sala IV (2020)"},
-    ECU:{nivel:2,anio:2019,nota:"Matrimonio igualitario por sentencia de la Corte Constitucional (2019)"},
-    SLV:{nivel:0,nota:"La Constitución define el matrimonio como heterosexual"},
-    GTM:{nivel:0,nota:"Sin legislación de protección específica"},
-    HND:{nivel:0,nota:"La Constitución prohíbe expresamente el matrimonio igualitario"},
-    MEX:{nivel:2,anio:2022,nota:"Reconocimiento federal y en todos los estados desde 2022"},
-    NIC:{nivel:0,nota:"Sin legislación de protección específica"},
-    PAN:{nivel:0,nota:"Sin legislación de protección específica"},
-    PRY:{nivel:0,nota:"Sin legislación de protección específica"},
-    PER:{nivel:1,nota:"Decretos anti-discriminación, sin reconocimiento de uniones"},
-    URY:{nivel:3,anio:2013,nota:"Matrimonio igualitario (2013) y Ley de Identidad de Género (2018)"},
-    VEN:{nivel:1,nota:"La Constitución prohíbe discriminación por orientación sexual"},
-    GUY:{nivel:1,nota:"Despenalización de relaciones entre personas del mismo sexo (2023)"},
-    SUR:{nivel:0,nota:"Sin legislación específica"},
-    BLZ:{nivel:1,nota:"Despenalización de relaciones entre personas del mismo sexo (2019)"},
-  },
-  c190:{
-    ARG:{anio:2021},URY:{anio:2020},ECU:{anio:2021},MEX:{anio:2022},CHL:{anio:2023},
-    PAN:{anio:2022},PER:{anio:2022},SLV:{anio:2022},COL:{anio:2025},CRI:{anio:2025},
-    BOL:{estado:"discusion"},BRA:{estado:"discusion"},PRY:{estado:"discusion"},GTM:{estado:"discusion"},
-    HND:{estado:"discusion"},NIC:{estado:"discusion"},VEN:{estado:"discusion"},
-  },
-  cdn:{
-    MEX:{anio:1990},GTM:{anio:1990},BLZ:{anio:1990},HND:{anio:1990},
-    SLV:{anio:1990},NIC:{anio:1990},CRI:{anio:1990},PAN:{anio:1990},
-    COL:{anio:1991},VEN:{anio:1990},GUY:{anio:1991},SUR:{anio:1993},
-    ECU:{anio:1990},PER:{anio:1990},BOL:{anio:1990},BRA:{anio:1990},
-    PRY:{anio:1990},URY:{anio:1990},ARG:{anio:1990},CHL:{anio:1990},
-  },
-  brecha:{
-    ARG:{valor:25,anio:2023},BOL:{valor:22,anio:2022},BRA:{valor:19,anio:2023},
-    CHL:{valor:22,anio:2023},COL:{valor:6,anio:2023},CRI:{valor:9,anio:2023},
-    ECU:{valor:15,anio:2023},SLV:{valor:18,anio:2023},GTM:{valor:28,anio:2022},
-    HND:{valor:20,anio:2023},MEX:{valor:18,anio:2023},NIC:{valor:15,anio:2022},
-    PAN:{valor:19,anio:2023},PRY:{valor:33,anio:2023},PER:{valor:28,anio:2023},
-    URY:{valor:19,anio:2023},VEN:{valor:26,anio:2022},
-  },
-  parlamento:{
-    ARG:{valor:41,anio:2026},BOL:{valor:51,anio:2026},BRA:{valor:17,anio:2026},
-    CHL:{valor:35,anio:2026},COL:{valor:29,anio:2026},CRI:{valor:49,anio:2026},
-    ECU:{valor:43,anio:2026},SLV:{valor:32,anio:2026},GTM:{valor:20,anio:2026},
-    HND:{valor:30,anio:2026},MEX:{valor:50,anio:2026},NIC:{valor:55,anio:2026},
-    PAN:{valor:22,anio:2026},PRY:{valor:24,anio:2026},PER:{valor:42,anio:2026},
-    URY:{valor:30,anio:2026},VEN:{valor:32,anio:2026},GUY:{valor:36,anio:2026},
-    SUR:{valor:31,anio:2026},BLZ:{valor:13,anio:2026},
-  },
-  licencias:{
-    ARG:{maternidad:91,paternidad:2,anio:2024},
-    BOL:{maternidad:91,paternidad:3,anio:2024},
-    BRA:{maternidad:119,paternidad:20,nota:"20 días para empresas adheridas al Programa Empresa Cidadã",anio:2024},
-    CHL:{maternidad:126,paternidad:5,nota:"Incluye postnatal de 84 días + 12 semanas de permiso parental",anio:2024},
-    COL:{maternidad:98,paternidad:14,anio:2024},
-    CRI:{maternidad:119,paternidad:8,anio:2024},
-    ECU:{maternidad:84,paternidad:10,anio:2024},
-    SLV:{maternidad:112,paternidad:3,anio:2024},
-    GTM:{maternidad:84,paternidad:2,anio:2024},
-    HND:{maternidad:70,paternidad:0,anio:2024},
-    MEX:{maternidad:84,paternidad:5,anio:2024},
-    NIC:{maternidad:84,paternidad:5,anio:2024},
-    PAN:{maternidad:98,paternidad:3,anio:2024},
-    PRY:{maternidad:126,paternidad:14,anio:2024},
-    PER:{maternidad:98,paternidad:10,anio:2024},
-    URY:{maternidad:84,paternidad:13,anio:2024},
-    VEN:{maternidad:182,paternidad:14,anio:2024},
-  },
-  cuotas:{
-    ARG:{tipo:"paridad",porcentaje:50,anio:2017},
-    BOL:{tipo:"paridad",porcentaje:50,anio:2010},
-    BRA:{tipo:"cuota",porcentaje:30,anio:1997},
-    CHL:{tipo:"cuota",porcentaje:40,anio:2015},
-    COL:{tipo:"cuota",porcentaje:30,anio:2011},
-    CRI:{tipo:"paridad",porcentaje:50,anio:2009},
-    ECU:{tipo:"paridad",porcentaje:50,anio:2020},
-    SLV:{tipo:"cuota",porcentaje:30,anio:2013},
-    GTM:{tipo:"ninguna",porcentaje:0},
-    HND:{tipo:"paridad",porcentaje:50,anio:2012},
-    MEX:{tipo:"paridad",porcentaje:50,anio:2019},
-    NIC:{tipo:"paridad",porcentaje:50,anio:2012},
-    PAN:{tipo:"paridad",porcentaje:50,anio:2021},
-    PRY:{tipo:"cuota",porcentaje:20,anio:1996},
-    PER:{tipo:"paridad",porcentaje:50,anio:2020},
-    URY:{tipo:"cuota",porcentaje:33,anio:2009},
-    VEN:{tipo:"paridad",porcentaje:50,anio:1997},
-  },
-  idg:{
-    ARG:{valor:0.305,ranking:51},BOL:{valor:0.402,ranking:89},BRA:{valor:0.373,ranking:79},
-    CHL:{valor:0.272,ranking:44},COL:{valor:0.360,ranking:75},CRI:{valor:0.280,ranking:46},
-    ECU:{valor:0.332,ranking:62},SLV:{valor:0.362,ranking:76},GTM:{valor:0.477,ranking:111},
-    HND:{valor:0.430,ranking:101},MEX:{valor:0.325,ranking:59},NIC:{valor:0.445,ranking:105},
-    PAN:{valor:0.474,ranking:110},PRY:{valor:0.418,ranking:96},PER:{valor:0.371,ranking:80},
-    URY:{valor:0.246,ranking:37},VEN:{valor:0.483,ranking:113},GUY:{valor:0.498,ranking:116},
-    SUR:{valor:0.452,ranking:107},BLZ:{valor:0.391,ranking:84},
-  },
-  tnr:{
-    ARG:{mujeres:43.0,varones:25.7,brecha:17.3,anio:2021},
-    BOL:{mujeres:35.0,varones:12.0,brecha:23.0,anio:2022},
-    BRA:{mujeres:21.3,varones:11.7,brecha:9.6,anio:2023},
-    CHL:{mujeres:35.6,varones:15.5,brecha:20.1,anio:2023},
-    COL:{mujeres:34.1,varones:12.4,brecha:21.7,anio:2023},
-    CRI:{mujeres:35.2,varones:18.0,brecha:17.2,anio:2023},
-    ECU:{mujeres:31.5,varones:11.3,brecha:20.2,anio:2023},
-    SLV:{mujeres:36.0,varones:14.0,brecha:22.0,anio:2023},
-    GTM:{mujeres:39.0,varones:12.0,brecha:27.0,anio:2023},
-    HND:{mujeres:37.0,varones:12.0,brecha:25.0,anio:2023},
-    MEX:{mujeres:42.8,varones:16.9,brecha:25.9,anio:2023},
-    NIC:{mujeres:22.9,varones:12.1,brecha:10.8,anio:2023},
-    PAN:{mujeres:33.0,varones:13.0,brecha:20.0,anio:2023},
-    PRY:{mujeres:28.5,varones:11.8,brecha:16.7,anio:2023},
-    PER:{mujeres:39.2,varones:16.2,brecha:23.0,anio:2022},
-    URY:{mujeres:30.0,varones:16.0,brecha:14.0,anio:2023},
-  },
-  ocupacion:{
-    ARG:{mujeres:48.35,varones:65.63,anio:2024},
-    BOL:{mujeres:71.02,varones:81.97,anio:2024},
-    BRA:{mujeres:48.4,varones:68.25,anio:2024},
-    CHL:{mujeres:47.68,varones:66.13,anio:2024},
-    COL:{mujeres:45.74,varones:70.07,anio:2024},
-    CRI:{mujeres:40.84,varones:63.74,anio:2024},
-    ECU:{mujeres:50.29,varones:74.86,anio:2024},
-    GTM:{mujeres:49.3,varones:83.8,anio:2024},
-    HND:{mujeres:38.24,varones:70.68,anio:2024},
-    MEX:{mujeres:44.97,varones:73.91,anio:2024},
-    NIC:{mujeres:54.58,varones:76.43,anio:2024},
-    PAN:{mujeres:45.99,varones:69.46,anio:2024},
-    PER:{mujeres:57.39,varones:74.12,anio:2024},
-    PRY:{mujeres:54.83,varones:78.39,anio:2024},
-    SLV:{mujeres:41.68,varones:70.51,anio:2024},
-    URY:{mujeres:50.93,varones:67.80,anio:2024},
-  },
-  fem_pobreza:{
-    ARG:{indice:116,anio:2022},
-    NIC:{indice:103,anio:2023},
-    HND:{indice:107,anio:2023},
-    BOL:{indice:112,anio:2023},
-    GTM:{indice:114,anio:2023},
-    MEX:{indice:116,anio:2023},
-    SLV:{indice:116,anio:2023},
-    PER:{indice:116,anio:2023},
-    COL:{indice:122,anio:2023},
-    PRY:{indice:122,anio:2023},
-    ECU:{indice:122,anio:2023},
-    VEN:{indice:123,anio:2023},
-    PAN:{indice:125,anio:2023},
-    CHL:{indice:130,anio:2023},
-    BRA:{indice:132,anio:2023},
-    CRI:{indice:136,anio:2023},
-    URY:{indice:153,anio:2023},
-  },
-  tnr_tiempo:{
-    ARG:{mujeres:18.4,varones:9.3,brecha:9.1,hs_mujeres:43.0,hs_varones:25.7,anio:2021},
-    BOL:{mujeres:23.3,varones:12.1,brecha:11.2,anio:2023},
-    BRA:{mujeres:12.0,varones:5.3,brecha:6.7,anio:2023},
-    CHL:{mujeres:20.7,varones:11.5,brecha:9.2,anio:2023},
-    COL:{mujeres:18.9,varones:5.9,brecha:13.0,anio:2023},
-    CRI:{mujeres:20.1,varones:9.6,brecha:10.5,anio:2023},
-    ECU:{mujeres:19.7,varones:4.7,brecha:15.0,anio:2023},
-    SLV:{mujeres:23.2,varones:9.2,brecha:14.0,anio:2023},
-    GTM:{mujeres:22.2,varones:3.9,brecha:18.3,anio:2023},
-    HND:{mujeres:15.5,varones:3.0,brecha:12.5,anio:2023},
-    MEX:{mujeres:20.9,varones:8.2,brecha:12.7,anio:2023},
-    NIC:{mujeres:22.9,varones:12.1,brecha:10.8,anio:2023},
-    PAN:{mujeres:18.0,varones:7.6,brecha:10.4,anio:2023},
-    PRY:{mujeres:15.0,varones:4.4,brecha:10.6,anio:2023},
-    PER:{mujeres:18.8,varones:6.5,brecha:12.3,anio:2023},
-    URY:{mujeres:14.8,varones:7.2,brecha:7.6,anio:2023},
-  },
-  informalidad:{
-    ARG:{mujeres:41.5,varones:41.6,anio:2024},
-    BOL:{mujeres:81.0,varones:80.0,anio:2023},
-    BRA:{mujeres:37.2,varones:38.5,anio:2024},
-    CHL:{mujeres:22.9,varones:23.9,anio:2024},
-    COL:{mujeres:49.1,varones:53.6,anio:2024},
-    CRI:{mujeres:27.0,varones:28.2,anio:2024},
-    ECU:{mujeres:51.3,varones:52.9,anio:2023},
-    SLV:{mujeres:68.4,varones:63.1,anio:2023},
-    GTM:{mujeres:79.2,varones:77.5,anio:2023},
-    HND:{mujeres:74.8,varones:71.2,anio:2023},
-    MEX:{mujeres:59.3,varones:55.3,anio:2024},
-    NIC:{mujeres:64.7,varones:66.3,anio:2022},
-    PAN:{mujeres:44.5,varones:43.1,anio:2023},
-    PRY:{mujeres:62.5,varones:60.6,anio:2023},
-    PER:{mujeres:71.0,varones:60.9,anio:2024},
-    URY:{mujeres:20.5,varones:22.8,anio:2024},
-  },
-  actividad_hijos:{
-    ARG:{mujeres:56.7,varones:97.6,anio:2025},
-    BOL:{mujeres:57.0,varones:99.0,anio:2021},
-    BRA:{mujeres:51.4,varones:95.2,anio:2023},
-    CHL:{mujeres:66.0,varones:98.0,anio:2024},
-    COL:{mujeres:48.9,varones:96.1,anio:2023},
-    CRI:{mujeres:39.0,varones:94.0,anio:2023},
-    ECU:{mujeres:52.1,varones:97.3,anio:2023},
-    SLV:{mujeres:41.2,varones:93.8,anio:2022},
-    GTM:{mujeres:35.4,varones:98.1,anio:2022},
-    HND:{mujeres:40.0,varones:94.0,anio:2023},
-    MEX:{mujeres:38.0,varones:96.8,anio:2024},
-    NIC:{mujeres:43.5,varones:95.0,anio:2021},
-    PAN:{mujeres:46.8,varones:94.6,anio:2023},
-    PRY:{mujeres:63.9,varones:98.7,anio:2023},
-    PER:{mujeres:65.0,varones:97.0,anio:2023},
-    URY:{mujeres:72.5,varones:97.5,anio:2022},
-    VEN:{mujeres:39.8,varones:92.1,anio:2021},
-  },
-  sin_ingresos:{
-    ARG:{mujeres:22,varones:17,anio:2024},
-    GTM:{mujeres:51,varones:14,anio:2023},
-    SLV:{mujeres:40,varones:13,anio:2023},
-    HND:{mujeres:39,varones:18,anio:2023},
-    VEN:{mujeres:32,varones:10,anio:2023},
-    CRI:{mujeres:31,varones:10,anio:2023},
-    ECU:{mujeres:31,varones:11,anio:2023},
-    COL:{mujeres:30,varones:12,anio:2023},
-    BOL:{mujeres:28,varones:7,anio:2023},
-    PRY:{mujeres:27,varones:11,anio:2023},
-    PAN:{mujeres:25,varones:9,anio:2023},
-    MEX:{mujeres:25,varones:6,anio:2023},
-    PER:{mujeres:21,varones:10,anio:2023},
-    BRA:{mujeres:19,varones:11,anio:2023},
-    CHL:{mujeres:18,varones:9,anio:2023},
-    URY:{mujeres:12,varones:7,anio:2023},
-  },
-  part_juv:{
-    ARG:{valor:34.5,anio:2025},BLZ:{valor:44.4,anio:2019},BOL:{valor:59.2,anio:2025},BRA:{valor:48.0,anio:2025},
-    CHL:{valor:25.7,anio:2025},COL:{valor:37.0,anio:2025},CRI:{valor:27.4,anio:2025},ECU:{valor:32.3,anio:2025},
-    GTM:{valor:44.7,anio:2024},GUY:{valor:39.3,anio:2021},HND:{valor:34.3,anio:2025},MEX:{valor:31.9,anio:2026},
-    NIC:{valor:32.5,anio:2014},PAN:{valor:33.8,anio:2025},PER:{valor:48.6,anio:2025},PRY:{valor:47.8,anio:2025},
-    SLV:{valor:33.9,anio:2025},SUR:{valor:28.3,anio:2016},URY:{valor:41.6,anio:2025},VEN:{valor:28.6,anio:2020},
-  },
-  part_mayor:{
-    ARG:{valor:54.0,anio:2025},BLZ:{valor:50.6,anio:2019},BOL:{valor:81.8,anio:2025},BRA:{valor:43.1,anio:2025},
-    CHL:{valor:53.7,anio:2025},COL:{valor:44.3,anio:2025},CRI:{valor:35.8,anio:2025},ECU:{valor:53.7,anio:2025},
-    GTM:{valor:44.9,anio:2024},GUY:{valor:30.0,anio:2021},HND:{valor:37.8,anio:2025},MEX:{valor:40.8,anio:2026},
-    NIC:{valor:45.8,anio:2014},PAN:{valor:52.3,anio:2025},PER:{valor:68.9,anio:2025},PRY:{valor:56.9,anio:2025},
-    SLV:{valor:45.3,anio:2025},SUR:{valor:35.5,anio:2016},URY:{valor:57.1,anio:2025},VEN:{valor:39.0,anio:2020},
-  },
-  emp_juv:{
-    ARG:{valor:27.2,anio:2025},BLZ:{valor:31.7,anio:2019},BOL:{valor:56.3,anio:2025},BRA:{valor:40.4,anio:2025},
-    CHL:{valor:19.2,anio:2025},COL:{valor:28.7,anio:2025},CRI:{valor:20.4,anio:2025},ECU:{valor:28.8,anio:2025},
-    GTM:{valor:42.5,anio:2024},GUY:{valor:24.5,anio:2021},HND:{valor:29.7,anio:2025},MEX:{valor:29.9,anio:2026},
-    NIC:{valor:28.3,anio:2014},PAN:{valor:25.6,anio:2025},PER:{valor:43.8,anio:2025},PRY:{valor:41.1,anio:2025},
-    SLV:{valor:30.5,anio:2025},SUR:{valor:17.0,anio:2016},URY:{valor:29.5,anio:2025},VEN:{valor:23.8,anio:2020},
-  },
-  emp_mayor:{
-    ARG:{valor:51.9,anio:2025},BLZ:{valor:48.3,anio:2019},BOL:{valor:81.2,anio:2025},BRA:{valor:41.6,anio:2025},
-    CHL:{valor:50.0,anio:2025},COL:{valor:42.3,anio:2025},CRI:{valor:34.8,anio:2025},ECU:{valor:53.3,anio:2025},
-    GTM:{valor:44.5,anio:2024},GUY:{valor:28.4,anio:2021},HND:{valor:37.4,anio:2025},MEX:{valor:40.4,anio:2026},
-    NIC:{valor:45.8,anio:2014},PAN:{valor:50.7,anio:2025},PER:{valor:67.1,anio:2025},PRY:{valor:55.8,anio:2025},
-    SLV:{valor:44.9,anio:2025},SUR:{valor:34.3,anio:2016},URY:{valor:55.0,anio:2025},VEN:{valor:37.0,anio:2020},
-  },
-  desem_juv:{
-    ARG:{valor:21.1,anio:2025},BLZ:{valor:28.5,anio:2019},BOL:{valor:4.8,anio:2025},BRA:{valor:15.8,anio:2025},
-    CHL:{valor:25.5,anio:2025},COL:{valor:22.4,anio:2025},CRI:{valor:25.5,anio:2025},ECU:{valor:10.9,anio:2025},
-    GTM:{valor:5.1,anio:2024},GUY:{valor:37.6,anio:2021},HND:{valor:13.4,anio:2025},MEX:{valor:6.5,anio:2026},
-    NIC:{valor:12.9,anio:2014},PAN:{valor:24.3,anio:2025},PER:{valor:9.7,anio:2025},PRY:{valor:13.9,anio:2025},
-    SLV:{valor:10.1,anio:2025},SUR:{valor:39.9,anio:2016},URY:{valor:29.1,anio:2025},VEN:{valor:16.8,anio:2020},
-  },
-  desem_mayor:{
-    ARG:{valor:4.0,anio:2025},BLZ:{valor:4.5,anio:2019},BOL:{valor:0.7,anio:2025},BRA:{valor:3.3,anio:2025},
-    CHL:{valor:6.8,anio:2025},COL:{valor:4.5,anio:2025},CRI:{valor:3.0,anio:2025},ECU:{valor:0.7,anio:2025},
-    GTM:{valor:0.8,anio:2024},GUY:{valor:5.3,anio:2021},HND:{valor:0.9,anio:2025},MEX:{valor:1.0,anio:2026},
-    NIC:{valor:1.4,anio:2014},PAN:{valor:3.0,anio:2025},PER:{valor:2.6,anio:2025},PRY:{valor:1.9,anio:2025},
-    SLV:{valor:1.0,anio:2025},SUR:{valor:3.4,anio:2016},URY:{valor:3.8,anio:2025},VEN:{valor:5.2,anio:2020},
-  },
-};
+let CAPA_DATA = {};
 
 // Metadata de cada capa (para el sidebar)
 const LAYER_META = {
@@ -1474,17 +1142,23 @@ function clearCapaDetail() {
 // ════════════════════════════════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════════════════════════════════
-buildLeftPanel();
-renderDetail();
-
 let worldData = null;
-d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-  .then(world => { worldData = world; initMap(world); })
-  .catch(err => {
-    document.getElementById('map-loading').innerHTML =
-      '<div style="color:#C62828;font-size:13px;text-align:center;padding:20px">&#9888; No se pudo cargar el mapa.<br><span style="color:#888;font-size:11px">Verificá la conexión a internet.</span></div>';
-    console.error(err);
-  });
+Promise.all([
+  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'),
+  fetch('data.json').then(r => r.json()),
+  fetch('indicadores.json').then(r => r.json())
+]).then(([world, leyes, indicadores]) => {
+  LEYES = leyes;
+  CAPA_DATA = indicadores;
+  worldData = world;
+  buildLeftPanel();
+  renderDetail();
+  initMap(world);
+}).catch(err => {
+  document.getElementById('map-loading').innerHTML =
+    '<div style="color:#C62828;font-size:13px;text-align:center;padding:20px">&#9888; No se pudo cargar el mapa o los datos.<br><span style="color:#888;font-size:11px">Verificá la conexión a internet.</span></div>';
+  console.error(err);
+});
 
 let resizeTimer;
 window.addEventListener('resize', () => {
