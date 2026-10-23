@@ -253,10 +253,12 @@
       "anio": 2022
     },
     "COL": {
-      "anio": 2025
+      "estado": "discusion",
+      "nota": "Ley aprobatoria 2528 de 2025 sancionada; falta el depósito del instrumento ante la OIT"
     },
     "CRI": {
-      "anio": 2025
+      "anio": 2025,
+      "en_vigor": "sí (desde 02/10/2026)"
     },
     "BOL": {
       "estado": "discusion"
@@ -631,7 +633,7 @@
     "HND": {
       "tipo": "paridad",
       "porcentaje": 50,
-      "anio": 2012
+      "anio": 2021
     },
     "MEX": {
       "tipo": "paridad",
@@ -666,7 +668,21 @@
     "VEN": {
       "tipo": "paridad",
       "porcentaje": 50,
-      "anio": 1997
+      "anio": 2015,
+      "nota": "Sin resolucion de paridad confirmada para el proceso de mayo 2025; revisar"
+    },
+    "BLZ": {
+      "tipo": "ninguna",
+      "porcentaje": 0
+    },
+    "GUY": {
+      "tipo": "cuota",
+      "porcentaje": 33,
+      "anio": 2022
+    },
+    "SUR": {
+      "tipo": "ninguna",
+      "porcentaje": 0
     }
   },
   "idg": {
