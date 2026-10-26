@@ -428,7 +428,8 @@
     },
     "PAN": {
       "valor": -3,
-      "anio": 2024
+      "anio": 2024,
+      "nota": "En promedio, el ingreso laboral de las mujeres ocupadas es un 3% mayor que el de los varones. Esto no indica igualdad: a igual nivel educativo, las mujeres ganan entre 9% y 42% menos (CEPAL, 2024). El promedio se explica porque acceden al empleo sobre todo mujeres con más años de estudio, mientras muchas otras quedan fuera del mercado laboral, en gran parte por la carga de cuidados."
     },
     "PRY": {
       "valor": 22.3,

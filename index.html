@@ -1037,7 +1037,7 @@ function renderCapaDetail(cod) {
     if(capaActiva==='brecha' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Brecha salarial de género</span><span class="cd-val">' + d.valor + '%</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
-      inner += '<div class="cd-note">' + (d.valor >= 0 ? 'En promedio, el ingreso laboral de las mujeres ocupadas es un ' + d.valor + '% menor que el de los varones.' : 'En promedio, el ingreso laboral de las mujeres ocupadas es un ' + (-d.valor) + '% mayor que el de los varones. Esto no indica igualdad: puede reflejar diferencias en quiénes acceden al empleo (por ejemplo, en nivel educativo).') + '</div>';
+      inner += '<div class="cd-note">' + (d.nota ? d.nota : (d.valor >= 0 ? 'En promedio, el ingreso laboral de las mujeres ocupadas es un ' + d.valor + '% menor que el de los varones.' : 'En promedio, el ingreso laboral de las mujeres ocupadas es un ' + (-d.valor) + '% mayor que el de los varones.')) + '</div>';
     }
     if(capaActiva==='parlamento' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Mujeres en el parlamento</span><span class="cd-val">' + d.valor + '%</span></div>';
