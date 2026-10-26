@@ -255,7 +255,7 @@ let LEYES = [];
 const CATEGORIES = [
   {
     id:'trabajo', nombre:'Trabajo e igualdad económica',
-    fuente:'OIT / CEPAL / ILOSTAT, 2022–2025',
+    fuente:'OIT / ILOSTAT y CEPAL; último año disponible por país',
     capas:[
       {id:'brecha', nombre:'Brecha salarial de género', tema:null},
       {id:'participacion', nombre:'Tasa de participación económica', tema:null},
@@ -265,7 +265,7 @@ const CATEGORIES = [
   },
   {
     id:'legislacion_cat', nombre:'Legislación y normativa',
-    fuente:'Registros nacionales, OIT NORMLEX, OEA. Actualizado 2024.',
+    fuente:'Normas oficiales de cada país, OIT NORMLEX, CEPAL e ILGA World. Actualizado octubre 2026.',
     capas:[
       {id:'legislacion', nombre:'Todas las leyes', tema:null},
       {id:'legislacion', nombre:'Matrimonio igualitario', tema:'matrimonio_igualitario'},
@@ -297,33 +297,33 @@ const CATEGORIES = [
   },
   {
     id:'indices', nombre:'Índices',
-    fuente:'PNUD, Informe de Desarrollo Humano 2023',
+    fuente:'PNUD, Informe sobre Desarrollo Humano 2025 (datos 2023)',
     capas:[
       {id:'idg', nombre:'Índice de Desigualdad de Género (IDG)', tema:null},
     ]
   },
   {
     id:'violencia', nombre:'Violencia',
-    fuente:'CEPAL / ONU Mujeres, 2024',
+    fuente:'CEPAL, Observatorio de Igualdad de Género (cifras oficiales)',
     capas:[
       {id:'femicidios', nombre:'Femicidios (tasa por 100.000 mujeres)', tema:null},
     ]
   },
   {
     id:'mercado_laboral', nombre:'Mercado laboral',
-    fuente:'CEPAL / OIT / ILOSTAT / INDEC, 2023–2024',
+    fuente:'CEPAL (CEPALSTAT) y OIT / ILOSTAT; último año disponible por país',
     capas:[
       {id:'ocupacion', nombre:'Tasa de ocupación femenina (%)', tema:null},
       {id:'fem_pobreza', nombre:'Índice de feminidad de la pobreza', tema:null},
       {id:'tnr_tiempo', nombre:'Proporción tiempo TNR — Mujeres (%)', tema:null},
       {id:'sin_ingresos', nombre:'Mujeres sin ingresos propios (%)', tema:null},
       {id:'informalidad', nombre:'Informalidad laboral femenina (%)', tema:null},
-      {id:'actividad_hijos', nombre:'Tasa de actividad con 3 hijos o más (%)', tema:null},
+      {id:'actividad_hijos', nombre:'Participación laboral con hijas/os menores de 6 años (%)', tema:null},
     ]
   },
   {
     id:'generacional', nombre:'Mercado laboral por generación',
-    fuente:'OIT / ILOSTAT, datos obtenidos agosto 2026. Mujeres únicamente.',
+    fuente:'OIT / ILOSTAT, consultado octubre 2026. Mujeres únicamente.',
     capas:[
       {id:'part_juv', nombre:'Participación laboral — Jóvenes 15-24 (%)', tema:null},
       {id:'part_mayor', nombre:'Participación laboral — 55-64 años (%)', tema:null},
@@ -366,8 +366,8 @@ let CAPA_DATA = {};
 
 // Metadata de cada capa (para el sidebar)
 const LAYER_META = {
-  brecha:{label:"Brecha salarial de género",desc:"Porcentaje en que los ingresos laborales de las mujeres son inferiores a los de los varones en empleos equivalentes.",fuente:"Fuente: OIT / CEPAL, 2022–2023"},
-  participacion:{label:"Tasa de participación económica",desc:"Porcentaje de mujeres en edad activa que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: OIT / CEPAL / ILOSTAT, 2022–2023"},
+  brecha:{label:"Brecha salarial de género",desc:"Porcentaje en que el ingreso laboral promedio de las mujeres ocupadas es menor que el de los varones (15 años y más). No compara puestos equivalentes: también refleja diferencias en horas trabajadas, ocupaciones y sectores.",fuente:"Fuente: CEPAL (CEPALSTAT), relación del ingreso medio entre mujeres y varones; último año disponible por país"},
+  participacion:{label:"Tasa de participación económica",desc:"Porcentaje de mujeres de 15 años y más que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: OIT / ILOSTAT; último año disponible por país"},
   licencias:{label:"Licencias parentales",desc:"Duración en días de las licencias de maternidad y paternidad establecidas por ley.",fuente:"Fuente: OIT, 2024"},
   legislacion:{label:"Legislación y normativa",desc:"Leyes nacionales e instrumentos internacionales sobre género y trabajo.",fuente:""},
   c190:{label:"Ratificación Convenio 190 OIT",desc:"Países que han ratificado el C190 sobre eliminación de la violencia y el acoso en el mundo del trabajo, y países donde la ratificación está en discusión legislativa.",fuente:"Fuente: OIT / NORMLEX, contrastado agosto 2026"},
@@ -375,15 +375,15 @@ const LAYER_META = {
   parlamento:{label:"Mujeres en el parlamento",desc:"Porcentaje de bancas en el poder legislativo nacional ocupadas por mujeres.",fuente:"Fuente: IPU (Unión Interparlamentaria) / ONU Mujeres, 2026"},
   cuotas:{label:"Cuotas y ley de cupos",desc:"Tipo de cuota o paridad electoral vigente para la representación de mujeres en listas electorales.",fuente:"Fuente: OEA / CEPAL, 2024"},
   lgbtq:{label:"Matrimonio igualitario e identidad de género",desc:"Estado de la legislación: matrimonio igualitario, ley de identidad de género y anti-discriminación por orientación sexual.",fuente:"Fuente: ILGA World, 2024"},
-  idg:{label:"Índice de Desigualdad de Género (IDG)",desc:"Índice del PNUD que mide la pérdida de desarrollo humano por desigualdad de género (0 = igualdad plena · 1 = máxima desigualdad).",fuente:"Fuente: PNUD, Informe de Desarrollo Humano 2023"},
-  femicidios:{label:"Femicidios",desc:"Tasa de femicidios (asesinatos de mujeres por razones de género) por cada 100.000 mujeres.",fuente:"Fuente: CEPAL / ONU Mujeres, 2024"},
-  tnr:{label:"Trabajo doméstico y de cuidados no remunerado",desc:"Promedio de horas semanales dedicadas al trabajo doméstico y de cuidados no remunerado, por género. El mapa muestra la brecha (horas de mujeres menos horas de varones), que refleja la desigualdad en la distribución de estas tareas.",fuente:"Fuente: OIT / CEPAL / ILOSTAT, 2022–2023. Argentina: ENUT 2021, INDEC."},
-  ocupacion:{label:"Tasa de ocupación femenina",desc:"Porcentaje de mujeres en edad activa que tienen empleo, sobre el total de la población en edad de trabajar. Permite comparar la brecha con la tasa masculina.",fuente:"Fuente: CEPAL / ILOSTAT, 2024"},
-  fem_pobreza:{label:"Índice de feminidad de la pobreza",desc:"Número de mujeres en situación de pobreza por cada 100 varones en la misma situación. Un valor superior a 100 indica que la pobreza afecta más a las mujeres.",fuente:"Fuente: CEPAL, 2023. Argentina (25–64 años): EPH 2022, INDEC / Población &amp; Sociedad Vol. 31(2), 2024."},
-  tnr_tiempo:{label:"Proporción del tiempo dedicado al TNR — Mujeres",desc:"Porcentaje del tiempo total que las mujeres dedican al trabajo doméstico y de cuidados no remunerado (TNR), comparado con el de varones.",fuente:"Fuente: CEPAL / OIT, 2023. Argentina: ENUT 2021, INDEC."},
-  informalidad:{label:"Informalidad laboral",desc:"Porcentaje de personas empleadas en el sector informal, por género. La informalidad implica falta de protección social, inestabilidad laboral y menor acceso a derechos laborales.",fuente:"Fuente: CEPAL / ILOSTAT, 2022–2024"},
-  actividad_hijos:{label:"Tasa de actividad con 3 hijos o más",desc:"Porcentaje de personas con 3 hijos o más que participan en el mercado laboral. Muestra la 'penalidad por maternidad': cómo tener hijos reduce drásticamente la actividad laboral de las mujeres pero apenas afecta a los varones.",fuente:"Fuente: CEPAL / ILOSTAT, 2021–2025"},
-  sin_ingresos:{label:"Mujeres sin ingresos propios",desc:"Porcentaje de mujeres mayores de 15 años que no tienen ingresos propios (ni laborales ni no laborales). Indicador de dependencia económica.",fuente:"Fuente: CEPAL, 2023. Argentina (15 años y más): EPH Q1 2024, INDEC / ONU Mujeres Perfil de País Argentina 2024."},
+  idg:{label:"Índice de Desigualdad de Género (IDG)",desc:"Índice del PNUD que mide la pérdida de desarrollo humano por desigualdad de género (0 = igualdad plena · 1 = máxima desigualdad).",fuente:"Fuente: PNUD, Informe sobre Desarrollo Humano 2025 (datos 2023)"},
+  femicidios:{label:"Femicidios",desc:"Tasa de femicidios (asesinatos de mujeres por razones de género) por cada 100.000 mujeres.",fuente:"Fuente: CEPAL, Observatorio de Igualdad de Género (cifras oficiales); último año disponible por país"},
+  tnr:{label:"Trabajo doméstico y de cuidados no remunerado",desc:"Promedio de horas semanales dedicadas al trabajo doméstico y de cuidados no remunerado, por género. El mapa muestra la brecha (horas de mujeres menos horas de varones), que refleja la desigualdad en la distribución de estas tareas.",fuente:"Fuente: CEPAL (CEPALSTAT), encuestas de uso del tiempo; el año de la encuesta varía según el país."},
+  ocupacion:{label:"Tasa de ocupación femenina",desc:"Porcentaje de mujeres en edad activa que tienen empleo, sobre el total de la población en edad de trabajar. Permite comparar la brecha con la tasa masculina.",fuente:"Fuente: CEPAL (CEPALSTAT), 2024"},
+  fem_pobreza:{label:"Índice de feminidad de la pobreza",desc:"Número de mujeres en situación de pobreza por cada 100 varones en la misma situación. Un valor superior a 100 indica que la pobreza afecta más a las mujeres.",fuente:"Fuente: CEPAL (CEPALSTAT); último año disponible por país."},
+  tnr_tiempo:{label:"Proporción del tiempo dedicado al TNR — Mujeres",desc:"Porcentaje del tiempo total que las mujeres dedican al trabajo doméstico y de cuidados no remunerado (TNR), comparado con el de varones.",fuente:"Fuente: CEPAL (CEPALSTAT), indicador ODS 5.4.1; el año de la encuesta varía según el país."},
+  informalidad:{label:"Informalidad laboral",desc:"Porcentaje de personas ocupadas de 15 años y más con empleo informal, por género. La informalidad implica falta de protección social, inestabilidad laboral y menor acceso a derechos laborales.",fuente:"Fuente: OIT / ILOSTAT; último año disponible por país"},
+  actividad_hijos:{label:"Participación laboral con hijas/os menores de 6 años",desc:"Porcentaje de personas de 25 a 54 años que trabajan o buscan trabajo, entre quienes viven en un hogar con al menos una niña o un niño menor de 6 años. Muestra la 'penalidad por maternidad': la crianza en la primera infancia reduce la participación laboral de las mujeres y casi no afecta la de los varones.",fuente:"Fuente: OIT / ILOSTAT; último año disponible por país (2014–2025)"},
+  sin_ingresos:{label:"Mujeres sin ingresos propios",desc:"Porcentaje de mujeres mayores de 15 años que no tienen ingresos propios (ni laborales ni no laborales). Indicador de dependencia económica.",fuente:"Fuente: CEPAL (CEPALSTAT); último año disponible por país."},
   part_juv:{label:"Participación laboral — Jóvenes 15-24",desc:"Porcentaje de mujeres de 15 a 24 años que integran la fuerza laboral (empleadas o buscando empleo). Permite ver la brecha generacional junto con la capa de 55-64 años.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
   part_mayor:{label:"Participación laboral — 55-64 años",desc:"Porcentaje de mujeres de 55 a 64 años que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
   emp_juv:{label:"Empleo — Jóvenes 15-24",desc:"Razón empleo-población: porcentaje de mujeres de 15 a 24 años que efectivamente tienen empleo (no solo lo buscan).",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
@@ -433,29 +433,29 @@ function getCountryColor(cod) {
     return pc.has(eff) ? (COUNTRY_COLORS[cod]||'#999') : null;
   }
   const d = CAPA_DATA[capaActiva]?.[eff];
-  if(capaActiva==='participacion') return d ? choropleth(d.valor,40,70,'#FFA726','#1B5E20') : null;
+  if(capaActiva==='participacion') return d ? choropleth(d.valor,40,75,'#FFA726','#1B5E20') : null;
   if(capaActiva==='femicidios')    return d ? choropleth(d.tasa,0.3,5.0,'#FFF8E1','#B71C1C') : null;
   if(capaActiva==='lgbtq')         return d!=null ? LGBTQ_COLORS[d.nivel] : null;
   if(capaActiva==='c190')          return d ? (d.anio ? '#2E7D32' : '#F9A825') : '#C8C4BB';
   if(capaActiva==='cdn')           return d ? '#0277BD' : '#C8C4BB';
-  if(capaActiva==='brecha')        return d ? choropleth(d.valor,12,30,'#E8F5E9','#C62828') : null;
+  if(capaActiva==='brecha')        return d ? choropleth(d.valor,0,30,'#E8F5E9','#C62828') : null;
   if(capaActiva==='parlamento')    return d ? choropleth(d.valor,10,55,'#FFF9C4','#1B5E20') : null;
   if(capaActiva==='licencias')     return d ? choropleth(d.paternidad,1,20,'#FFF3E0','#E65100') : null;
   if(capaActiva==='cuotas')        return d ? (CUOTA_COLORS[d.tipo]||'#C8C4BB') : '#C8C4BB';
-  if(capaActiva==='idg')           return d ? choropleth(d.valor,0.24,0.50,'#C8E6C9','#B71C1C') : null;
-  if(capaActiva==='tnr')           return d ? choropleth(d.brecha,9,28,'#FFF9C4','#B71C1C') : null;
+  if(capaActiva==='idg')           return d ? choropleth(d.valor,0.10,0.52,'#C8E6C9','#B71C1C') : null;
+  if(capaActiva==='tnr')           return d ? choropleth(d.brecha,10,34,'#FFF9C4','#B71C1C') : null;
   if(capaActiva==='ocupacion')      return d ? choropleth(d.mujeres,35,75,'#FFF3E0','#1B5E20') : null;
   if(capaActiva==='fem_pobreza')    return d ? choropleth(d.indice,100,155,'#FFF9C4','#B71C1C') : null;
   if(capaActiva==='tnr_tiempo')     return d ? choropleth(d.mujeres,10,25,'#FFF9C4','#B71C1C') : null;
-  if(capaActiva==='sin_ingresos')   return d ? choropleth(d.mujeres,10,55,'#FFF9C4','#B71C1C') : null;
-  if(capaActiva==='informalidad')   return d ? choropleth(d.mujeres,20,82,'#E8F5E9','#C62828') : null;
-  if(capaActiva==='actividad_hijos') return d ? choropleth(d.mujeres,35,75,'#FFEBEE','#1B5E20') : null;
+  if(capaActiva==='sin_ingresos')   return d ? choropleth(d.mujeres,5,55,'#FFF9C4','#B71C1C') : null;
+  if(capaActiva==='informalidad')   return d ? choropleth(d.mujeres,25,90,'#E8F5E9','#C62828') : null;
+  if(capaActiva==='actividad_hijos') return d ? choropleth(d.mujeres,40,80,'#FFEBEE','#1B5E20') : null;
   if(capaActiva==='part_juv')       return d ? choropleth(d.valor,25,60,'#FFF3E0','#1B5E20') : null;
-  if(capaActiva==='part_mayor')     return d ? choropleth(d.valor,30,82,'#FFF3E0','#1B5E20') : null;
-  if(capaActiva==='emp_juv')        return d ? choropleth(d.valor,17,56,'#FFF3E0','#1B5E20') : null;
-  if(capaActiva==='emp_mayor')      return d ? choropleth(d.valor,28,82,'#FFF3E0','#1B5E20') : null;
-  if(capaActiva==='desem_juv')      return d ? choropleth(d.valor,5,40,'#E8F5E9','#C62828') : null;
-  if(capaActiva==='desem_mayor')    return d ? choropleth(d.valor,0.7,7,'#E8F5E9','#C62828') : null;
+  if(capaActiva==='part_mayor')     return d ? choropleth(d.valor,25,82,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='emp_juv')        return d ? choropleth(d.valor,17,57,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='emp_mayor')      return d ? choropleth(d.valor,25,82,'#FFF3E0','#1B5E20') : null;
+  if(capaActiva==='desem_juv')      return d ? choropleth(d.valor,3,40,'#E8F5E9','#C62828') : null;
+  if(capaActiva==='desem_mayor')    return d ? choropleth(d.valor,0.7,8,'#E8F5E9','#C62828') : null;
   return null;
 }
 
@@ -752,9 +752,9 @@ function renderLegend() {
       Object.entries(CUOTA_LABELS).map(([k,v]) => '<div class="legend-item"><div class="legend-dot" style="background:' + CUOTA_COLORS[k] + '"></div>' + v + '</div>').join('');
   } else {
     const gradients = {
-      participacion:{lo:'#FFA726',hi:'#1B5E20',lbl:['40%','70%'],title:'Participación económica femenina'},
+      participacion:{lo:'#FFA726',hi:'#1B5E20',lbl:['40%','75%'],title:'Participación económica femenina'},
       femicidios:{lo:'#FFF8E1',hi:'#B71C1C',lbl:['Menos','Más'],title:'Femicidios (tasa/100k)'},
-      brecha:{lo:'#E8F5E9',hi:'#C62828',lbl:['12%','30%'],title:'Brecha salarial'},
+      brecha:{lo:'#E8F5E9',hi:'#C62828',lbl:['0%','30%'],title:'Brecha salarial'},
       parlamento:{lo:'#FFF9C4',hi:'#1B5E20',lbl:['10%','55%'],title:'Mujeres en parlamento'},
       licencias:{lo:'#FFF3E0',hi:'#E65100',lbl:['1 día','20 días'],title:'Licencias parentales (color: días de paternidad)'},
       idg:{lo:'#C8E6C9',hi:'#B71C1C',lbl:['Más igualdad','Más desigualdad'],title:'Índice IDG'},
@@ -762,15 +762,15 @@ function renderLegend() {
       ocupacion:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['35%','75%'],title:'Tasa de ocupación femenina'},
       fem_pobreza:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['~100 (paridad)','155+'],title:'Índice feminidad pobreza'},
       tnr_tiempo:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['10%','25%'],title:'% tiempo TNR — mujeres'},
-      sin_ingresos:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['10%','55%'],title:'Mujeres sin ingresos propios'},
-      informalidad:{lo:'#E8F5E9',hi:'#C62828',lbl:['20%','82%'],title:'Informalidad laboral femenina'},
-      actividad_hijos:{lo:'#FFEBEE',hi:'#1B5E20',lbl:['35%','75%'],title:'Actividad femenina con 3+ hijos'},
+      sin_ingresos:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['5%','55%'],title:'Mujeres sin ingresos propios'},
+      informalidad:{lo:'#E8F5E9',hi:'#C62828',lbl:['25%','90%'],title:'Informalidad laboral femenina'},
+      actividad_hijos:{lo:'#FFEBEE',hi:'#1B5E20',lbl:['40%','80%'],title:'Mujeres con hijas/os menores de 6'},
       part_juv:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['25%','60%'],title:'Participación laboral — Jóvenes 15-24'},
-      part_mayor:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['30%','82%'],title:'Participación laboral — 55-64 años'},
-      emp_juv:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['17%','56%'],title:'Empleo — Jóvenes 15-24'},
-      emp_mayor:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['28%','82%'],title:'Empleo — 55-64 años'},
-      desem_juv:{lo:'#E8F5E9',hi:'#C62828',lbl:['5%','40%'],title:'Desempleo — Jóvenes 15-24'},
-      desem_mayor:{lo:'#E8F5E9',hi:'#C62828',lbl:['0.7%','7%'],title:'Desempleo — 55-64 años'},
+      part_mayor:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['25%','82%'],title:'Participación laboral — 55-64 años'},
+      emp_juv:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['17%','57%'],title:'Empleo — Jóvenes 15-24'},
+      emp_mayor:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['25%','82%'],title:'Empleo — 55-64 años'},
+      desem_juv:{lo:'#E8F5E9',hi:'#C62828',lbl:['3%','40%'],title:'Desempleo — Jóvenes 15-24'},
+      desem_mayor:{lo:'#E8F5E9',hi:'#C62828',lbl:['0.7%','8%'],title:'Desempleo — 55-64 años'},
     };
     const g = gradients[capaActiva];
     if(g) el.innerHTML = '<div class="legend-title">' + g.title + '</div>' +
@@ -1016,6 +1016,7 @@ function renderCapaDetail(cod) {
       if(d.valor) inner += '<div class="cd-row"><span class="cd-label">Casos registrados</span><span class="cd-val">' + d.valor + '</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Tasa (por 100.000 mujeres)</span><span class="cd-val">' + d.tasa + '</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
+      if(d.nota) inner += '<div class="cd-note">' + d.nota + '</div>';
     }
     if(capaActiva==='lgbtq' && d != null) {
       inner += '<div class="cd-row"><span class="cd-label">Nivel de reconocimiento</span><span class="cd-val">' + LGBTQ_LABELS[d.nivel] + '</span></div>';
@@ -1027,6 +1028,7 @@ function renderCapaDetail(cod) {
       inner += '<div class="cd-row"><span class="cd-label">Estado</span><span class="cd-val">' + estadoTxt + '</span></div>';
       if(d && d.anio) inner += '<div class="cd-row"><span class="cd-label">Año de ratificación</span><span class="cd-val">' + d.anio + '</span></div>';
       if(d && !d.anio) inner += '<div class="cd-note">El Convenio 190 está siendo debatido en el Congreso o poder legislativo de este país, pero aún no fue ratificado.</div>';
+      if(d && d.nota) inner += '<div class="cd-note">' + d.nota + '</div>';
     }
     if(capaActiva==='cdn') {
       inner += '<div class="cd-row"><span class="cd-label">Estado</span><span class="cd-val">' + (d?'Ratificado &#10003;':'No ratificado') + '</span></div>';
@@ -1035,7 +1037,7 @@ function renderCapaDetail(cod) {
     if(capaActiva==='brecha' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Brecha salarial de género</span><span class="cd-val">' + d.valor + '%</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
-      inner += '<div class="cd-note">Las mujeres ganan un ' + d.valor + '% menos que los varones en empleos equivalentes.</div>';
+      inner += '<div class="cd-note">' + (d.valor >= 0 ? 'En promedio, el ingreso laboral de las mujeres ocupadas es un ' + d.valor + '% menor que el de los varones.' : 'En promedio, el ingreso laboral de las mujeres ocupadas es un ' + (-d.valor) + '% mayor que el de los varones. Esto no indica igualdad: puede reflejar diferencias en quiénes acceden al empleo (por ejemplo, en nivel educativo).') + '</div>';
     }
     if(capaActiva==='parlamento' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Mujeres en el parlamento</span><span class="cd-val">' + d.valor + '%</span></div>';
@@ -1051,11 +1053,12 @@ function renderCapaDetail(cod) {
       inner += '<div class="cd-row"><span class="cd-label">Tipo</span><span class="cd-val">' + CUOTA_LABELS[d.tipo] + '</span></div>';
       if(d.porcentaje>0) inner += '<div class="cd-row"><span class="cd-label">Porcentaje establecido</span><span class="cd-val">' + d.porcentaje + '%</span></div>';
       if(d.anio) inner += '<div class="cd-row"><span class="cd-label">Año de la ley</span><span class="cd-val">' + d.anio + '</span></div>';
+      if(d.nota) inner += '<div class="cd-note">' + d.nota + '</div>';
     }
     if(capaActiva==='idg' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Índice IDG</span><span class="cd-val">' + d.valor.toFixed(3) + '</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Ranking mundial</span><span class="cd-val">#' + d.ranking + '</span></div>';
-      inner += '<div class="cd-note">Cuanto menor el índice, mayor igualdad de género. Referencia: Noruega 0.016 · Promedio global 0.462.</div>';
+      inner += '<div class="cd-note">Cuanto menor el índice, mayor igualdad de género. Referencia (2023): Dinamarca 0.003 · América Latina y el Caribe 0.384 · Promedio mundial 0.455.</div>';
     }
     if(capaActiva==='tnr' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Horas semanales — mujeres</span><span class="cd-val">' + d.mujeres + ' h</span></div>';
@@ -1107,7 +1110,7 @@ function renderCapaDetail(cod) {
       inner += '<div class="cd-row"><span class="cd-label">Tasa de actividad — varones</span><span class="cd-val">' + d.varones + '%</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Brecha de género</span><span class="cd-val">' + (d.varones - d.mujeres).toFixed(1) + ' puntos porcentuales</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Año</span><span class="cd-val">' + d.anio + '</span></div>';
-      inner += '<div class="cd-note">Tasa de actividad laboral de personas con 3 hijos o más. Mientras los varones mantienen tasas cercanas al 95–99%, las mujeres caen drásticamente, evidenciando el impacto desigual de las responsabilidades de cuidado en el empleo femenino.</div>';
+      inner += '<div class="cd-note">Personas de 25 a 54 años en hogares con al menos una niña o un niño menor de 6 años. Mientras los varones mantienen tasas de entre 92% y 99%, la participación de las mujeres es mucho menor, lo que evidencia el impacto desigual de las responsabilidades de cuidado en el empleo femenino.</div>';
     }
     if((capaActiva==='part_juv'||capaActiva==='part_mayor'||capaActiva==='emp_juv'||capaActiva==='emp_mayor'||capaActiva==='desem_juv'||capaActiva==='desem_mayor') && d) {
       const PARES = {
