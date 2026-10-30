@@ -2,83 +2,123 @@
   "participacion": {
     "ARG": {
       "valor": 53.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 71.9,
+      "total": 62.2
     },
     "BOL": {
       "valor": 74.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 85.8,
+      "total": 80.1
     },
     "BRA": {
       "valor": 53.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 73.5,
+      "total": 63.2
     },
     "CHL": {
       "valor": 53.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 72.1,
+      "total": 62.5
     },
     "COL": {
       "valor": 52.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 76.6,
+      "total": 64
     },
     "CRI": {
       "valor": 44.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 67.7,
+      "total": 55.9
     },
     "ECU": {
       "valor": 52.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 77.1,
+      "total": 64.3
     },
     "SLV": {
       "valor": 48.6,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 76.9,
+      "total": 61.4
     },
     "GTM": {
       "valor": 47.2,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 83.5,
+      "total": 64.2
     },
     "HND": {
       "valor": 43.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 76.3,
+      "total": 58.2
     },
     "MEX": {
       "valor": 46.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 76.1,
+      "total": 60.4
     },
     "NIC": {
       "valor": 48.0,
-      "anio": 2014
+      "anio": 2014,
+      "varones": 83.3,
+      "total": 65
     },
     "PAN": {
       "valor": 52.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 74,
+      "total": 62.5
     },
     "PRY": {
       "valor": 61.2,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 82.7,
+      "total": 72
     },
     "PER": {
       "valor": 63.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 80,
+      "total": 71.7
     },
     "URY": {
       "valor": 58.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 73.7,
+      "total": 65.5
     },
     "VEN": {
       "valor": 47.2,
-      "anio": 2020
+      "anio": 2020,
+      "varones": 72.7,
+      "total": 59.9
     },
     "BLZ": {
       "anio": 2025,
-      "valor": 53.3
+      "valor": 53.3,
+      "varones": 76.1,
+      "total": 64.3
     },
     "GUY": {
       "anio": 2024,
-      "valor": 45.2
+      "valor": 45.2,
+      "varones": 68.6,
+      "total": 56.9
     },
     "SUR": {
       "anio": 2022,
-      "valor": 48.4
+      "valor": 48.4,
+      "varones": 71.4,
+      "total": 59.7
     }
   },
   "femicidios": {
@@ -891,82 +931,98 @@
     "ARG": {
       "mujeres": 48.35,
       "varones": 65.63,
-      "anio": 2024
+      "anio": 2024,
+      "total": 56.6
     },
     "BOL": {
       "mujeres": 71.02,
       "varones": 81.97,
-      "anio": 2024
+      "anio": 2024,
+      "total": 76.4
     },
     "BRA": {
       "mujeres": 48.4,
       "varones": 68.25,
-      "anio": 2024
+      "anio": 2024,
+      "total": 58
     },
     "CHL": {
       "mujeres": 47.68,
       "varones": 66.13,
-      "anio": 2024
+      "anio": 2024,
+      "total": 56.7
     },
     "COL": {
       "mujeres": 45.74,
       "varones": 70.07,
-      "anio": 2024
+      "anio": 2024,
+      "total": 57.4
     },
     "CRI": {
       "mujeres": 40.84,
       "varones": 63.74,
-      "anio": 2024
+      "anio": 2024,
+      "total": 52.3
     },
     "ECU": {
       "mujeres": 50.29,
       "varones": 74.86,
-      "anio": 2024
+      "anio": 2024,
+      "total": 62.3
     },
     "GTM": {
       "mujeres": 49.3,
       "varones": 83.8,
-      "anio": 2024
+      "anio": 2024,
+      "total": 64.3
     },
     "HND": {
       "mujeres": 38.24,
       "varones": 70.68,
-      "anio": 2024
+      "anio": 2024,
+      "total": 52.9
     },
     "MEX": {
       "mujeres": 44.97,
       "varones": 73.91,
-      "anio": 2024
+      "anio": 2024,
+      "total": 58.5
     },
     "NIC": {
       "mujeres": 54.58,
       "varones": 76.43,
-      "anio": 2024
+      "anio": 2024,
+      "total": 64.7
     },
     "PAN": {
       "mujeres": 45.99,
       "varones": 69.46,
-      "anio": 2024
+      "anio": 2024,
+      "total": 57.3
     },
     "PER": {
       "mujeres": 57.39,
       "varones": 74.12,
-      "anio": 2024
+      "anio": 2024,
+      "total": 65.6
     },
     "PRY": {
       "mujeres": 54.83,
       "varones": 78.39,
-      "anio": 2024
+      "anio": 2024,
+      "total": 66.3
     },
     "SLV": {
       "mujeres": 41.68,
       "varones": 70.51,
-      "anio": 2024
+      "anio": 2024,
+      "total": 55
     },
     "URY": {
       "mujeres": 50.93,
       "varones": 67.8,
-      "anio": 2024
+      "anio": 2024,
+      "total": 59
     }
   },
   "fem_pobreza": {
@@ -1135,742 +1191,1025 @@
     "ARG": {
       "mujeres": 52.7,
       "varones": 52.9,
-      "anio": 2025
+      "anio": 2025,
+      "total": 52.8
     },
     "BOL": {
       "mujeres": 87.7,
       "varones": 83.7,
-      "anio": 2025
+      "anio": 2025,
+      "total": 85.6
     },
     "BRA": {
       "mujeres": 33.5,
       "varones": 37.2,
-      "anio": 2025
+      "anio": 2025,
+      "total": 35.6
     },
     "CHL": {
       "mujeres": 28.1,
       "varones": 25.1,
-      "anio": 2025
+      "anio": 2025,
+      "total": 26.4
     },
     "COL": {
       "mujeres": 52.9,
       "varones": 58.2,
-      "anio": 2025
+      "anio": 2025,
+      "total": 56
     },
     "CRI": {
       "mujeres": 34.1,
       "varones": 37.4,
-      "anio": 2025
+      "anio": 2025,
+      "total": 36.1
     },
     "ECU": {
       "mujeres": 69.6,
       "varones": 67.7,
-      "anio": 2025
+      "anio": 2025,
+      "total": 68.5
     },
     "SLV": {
       "mujeres": 66.8,
       "varones": 61.2,
-      "anio": 2025
+      "anio": 2025,
+      "total": 63.6
     },
     "GTM": {
       "mujeres": 76.9,
       "varones": 71.4,
-      "anio": 2025
+      "anio": 2025,
+      "total": 73.5
     },
     "HND": {
       "mujeres": 81.0,
       "varones": 83.6,
-      "anio": 2017
+      "anio": 2017,
+      "total": 82.6
     },
     "MEX": {
       "mujeres": 56.8,
       "varones": 56.9,
-      "anio": 2025
+      "anio": 2025,
+      "total": 56.9
     },
     "NIC": {
       "mujeres": 82.4,
       "varones": 81.3,
-      "anio": 2012
+      "anio": 2012,
+      "total": 81.8
     },
     "PAN": {
       "mujeres": 53.2,
       "varones": 57.6,
-      "anio": 2025
+      "anio": 2025,
+      "total": 55.7
     },
     "PRY": {
       "mujeres": 65.9,
       "varones": 63.5,
-      "anio": 2025
+      "anio": 2025,
+      "total": 64.5
     },
     "PER": {
       "mujeres": 73.3,
       "varones": 68.2,
-      "anio": 2025
+      "anio": 2025,
+      "total": 70.5
     },
     "URY": {
       "mujeres": 31.5,
       "varones": 33.7,
-      "anio": 2025
+      "anio": 2025,
+      "total": 32.7
     },
     "GUY": {
       "anio": 2024,
       "mujeres": 37.9,
-      "varones": 56.7
+      "varones": 56.7,
+      "total": 49.4
     },
     "SUR": {
       "anio": 2022,
       "mujeres": 47.7,
-      "varones": 60.8
+      "varones": 60.8,
+      "total": 55.6
     },
     "VEN": {
       "anio": 2017,
       "mujeres": 54.1,
-      "varones": 61.2
+      "varones": 61.2,
+      "total": 58.3
     }
   },
   "actividad_hijos": {
     "ARG": {
       "mujeres": 67.0,
       "varones": 96.9,
-      "anio": 2025
+      "anio": 2025,
+      "total": 80.2
     },
     "BOL": {
       "mujeres": 64.8,
       "varones": 99.3,
-      "anio": 2024
+      "anio": 2024,
+      "total": 80.9
     },
     "BRA": {
       "mujeres": 61.7,
       "varones": 94.4,
-      "anio": 2025
+      "anio": 2025,
+      "total": 76.6
     },
     "CHL": {
       "mujeres": 69.0,
       "varones": 96.2,
-      "anio": 2025
+      "anio": 2025,
+      "total": 80.8
     },
     "COL": {
       "mujeres": 61.6,
       "varones": 96.7,
-      "anio": 2025
+      "anio": 2025,
+      "total": 77.3
     },
     "CRI": {
       "mujeres": 53.4,
       "varones": 97.3,
-      "anio": 2025
+      "anio": 2025,
+      "total": 71.7
     },
     "ECU": {
       "mujeres": 59.7,
       "varones": 98.0,
-      "anio": 2025
+      "anio": 2025,
+      "total": 76.9
     },
     "SLV": {
       "mujeres": 53.1,
       "varones": 97.7,
-      "anio": 2025
+      "anio": 2025,
+      "total": 72.4
     },
     "GTM": {
       "mujeres": 51.6,
       "varones": 96.3,
-      "anio": 2024
+      "anio": 2024,
+      "total": 71.6
     },
     "HND": {
       "mujeres": 45.5,
       "varones": 93.7,
-      "anio": 2024
+      "anio": 2024,
+      "total": 66.5
     },
     "MEX": {
       "mujeres": 51.5,
       "varones": 97.0,
-      "anio": 2025
+      "anio": 2025,
+      "total": 71.8
     },
     "NIC": {
       "mujeres": 55.6,
       "varones": 95.8,
-      "anio": 2014
+      "anio": 2014,
+      "total": 75
     },
     "PAN": {
       "mujeres": 66.3,
       "varones": 98.0,
-      "anio": 2025
+      "anio": 2025,
+      "total": 79.5
     },
     "PRY": {
       "mujeres": 62.8,
       "varones": 97.8,
-      "anio": 2016
+      "anio": 2016,
+      "total": 79.6
     },
     "PER": {
       "mujeres": 71.5,
       "varones": 92.6,
-      "anio": 2022
+      "anio": 2022,
+      "total": 81.3
     },
     "URY": {
       "mujeres": 79.4,
       "varones": 97.9,
-      "anio": 2024
+      "anio": 2024,
+      "total": 87.8
     },
     "VEN": {
       "mujeres": 64.2,
       "varones": 95.8,
-      "anio": 2017
+      "anio": 2017,
+      "total": 78.9
     }
   },
   "sin_ingresos": {
     "ARG": {
       "mujeres": 7.7,
       "varones": 4.3,
-      "anio": 2024
+      "anio": 2024,
+      "total": 6.1
     },
     "GTM": {
       "mujeres": 51,
       "varones": 14,
-      "anio": 2014
+      "anio": 2014,
+      "total": 33.6
     },
     "SLV": {
       "mujeres": 40.1,
       "varones": 13.1,
-      "anio": 2023
+      "anio": 2023,
+      "total": 28
     },
     "HND": {
       "mujeres": 39.4,
       "varones": 17.7,
-      "anio": 2024
+      "anio": 2024,
+      "total": 29.6
     },
     "VEN": {
       "mujeres": 32.1,
       "varones": 10.3,
-      "anio": 2014
+      "anio": 2014,
+      "total": 21.2
     },
     "CRI": {
       "mujeres": 31.1,
       "varones": 9.6,
-      "anio": 2024
+      "anio": 2024,
+      "total": 21
     },
     "ECU": {
       "mujeres": 30.9,
       "varones": 11.2,
-      "anio": 2024
+      "anio": 2024,
+      "total": 21.5
     },
     "COL": {
       "mujeres": 30,
       "varones": 11.9,
-      "anio": 2024
+      "anio": 2024,
+      "total": 21.4
     },
     "BOL": {
       "mujeres": 27.7,
       "varones": 6.7,
-      "anio": 2023
+      "anio": 2023,
+      "total": 17.6
     },
     "PRY": {
       "mujeres": 27.2,
       "varones": 10.7,
-      "anio": 2024
+      "anio": 2024,
+      "total": 19.1
     },
     "PAN": {
       "mujeres": 25.4,
       "varones": 8.8,
-      "anio": 2024
+      "anio": 2024,
+      "total": 17.4
     },
     "MEX": {
       "mujeres": 25,
       "varones": 5.7,
-      "anio": 2024
+      "anio": 2024,
+      "total": 15.9
     },
     "PER": {
       "mujeres": 21.3,
       "varones": 10.2,
-      "anio": 2024
+      "anio": 2024,
+      "total": 16.1
     },
     "BRA": {
       "mujeres": 18.6,
       "varones": 11,
-      "anio": 2024
+      "anio": 2024,
+      "total": 14.9
     },
     "CHL": {
       "mujeres": 17.6,
       "varones": 9.4,
-      "anio": 2022
+      "anio": 2022,
+      "total": 13.6
     },
     "URY": {
       "mujeres": 12.2,
       "varones": 6.7,
-      "anio": 2024
+      "anio": 2024,
+      "total": 9.6
     }
   },
   "part_juv": {
     "ARG": {
       "valor": 34.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 42.0,
+      "total": 38.4
     },
     "BLZ": {
       "valor": 40.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 56.6,
+      "total": 48.5
     },
     "BOL": {
       "valor": 59.2,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 67.7,
+      "total": 63.5
     },
     "BRA": {
       "valor": 48.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 59.9,
+      "total": 54.0
     },
     "CHL": {
       "valor": 25.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 33.1,
+      "total": 29.5
     },
     "COL": {
       "valor": 37.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 50.6,
+      "total": 43.9
     },
     "CRI": {
       "valor": 27.4,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 42.7,
+      "total": 36.0
     },
     "ECU": {
       "valor": 32.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 52.0,
+      "total": 42.8
     },
     "GTM": {
       "valor": 39.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 70.8,
+      "total": 55.2
     },
     "GUY": {
       "valor": 43.3,
-      "anio": 2024
+      "anio": 2024,
+      "varones": 58.3,
+      "total": 50.9
     },
     "HND": {
       "valor": 34.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 65.1,
+      "total": 49.1
     },
     "MEX": {
       "valor": 32.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 54.9,
+      "total": 43.8
     },
     "NIC": {
       "valor": 32.5,
-      "anio": 2014
+      "anio": 2014,
+      "varones": 71.4,
+      "total": 51.7
     },
     "PAN": {
       "valor": 33.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 51.4,
+      "total": 42.8
     },
     "PER": {
       "valor": 48.6,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 56.5,
+      "total": 52.5
     },
     "PRY": {
       "valor": 47.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 65.5,
+      "total": 56.7
     },
     "SLV": {
       "valor": 33.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 56.1,
+      "total": 44.8
     },
     "SUR": {
       "valor": 32.9,
-      "anio": 2022
+      "anio": 2022,
+      "varones": 53.4,
+      "total": 43.9
     },
     "URY": {
       "valor": 41.6,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 52.4,
+      "total": 47.1
     },
     "VEN": {
       "valor": 28.6,
-      "anio": 2020
+      "anio": 2020,
+      "varones": 45.6,
+      "total": 37.2
     }
   },
   "part_mayor": {
     "ARG": {
       "valor": 54.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 81.7,
+      "total": 67.7
     },
     "BLZ": {
       "valor": 45.2,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 74.9,
+      "total": 59.7
     },
     "BOL": {
       "valor": 81.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 93.0,
+      "total": 87.2
     },
     "BRA": {
       "valor": 43.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 69.5,
+      "total": 55.4
     },
     "CHL": {
       "valor": 53.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 84.1,
+      "total": 68.4
     },
     "COL": {
       "valor": 44.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 83.2,
+      "total": 61.9
     },
     "CRI": {
       "valor": 35.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 72.8,
+      "total": 53.9
     },
     "ECU": {
       "valor": 53.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 87.1,
+      "total": 69.8
     },
     "GTM": {
       "valor": 41.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 87.4,
+      "total": 62.0
     },
     "GUY": {
       "valor": 27.9,
-      "anio": 2024
+      "anio": 2024,
+      "varones": 63.6,
+      "total": 45.4
     },
     "HND": {
       "valor": 37.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 78.2,
+      "total": 55.7
     },
     "MEX": {
       "valor": 41.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 78.9,
+      "total": 58.6
     },
     "NIC": {
       "valor": 45.8,
-      "anio": 2014
+      "anio": 2014,
+      "varones": 85.2,
+      "total": 64.3
     },
     "PAN": {
       "valor": 52.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 84.6,
+      "total": 67.7
     },
     "PER": {
       "valor": 68.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 88.7,
+      "total": 78.5
     },
     "PRY": {
       "valor": 56.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 85.0,
+      "total": 70.7
     },
     "SLV": {
       "valor": 45.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 80.6,
+      "total": 60.1
     },
     "SUR": {
       "valor": 34.0,
-      "anio": 2022
+      "anio": 2022,
+      "varones": 63.3,
+      "total": 48.9
     },
     "URY": {
       "valor": 57.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 78.7,
+      "total": 67.3
     },
     "VEN": {
       "valor": 39.0,
-      "anio": 2020
+      "anio": 2020,
+      "varones": 72.4,
+      "total": 55.3
     }
   },
   "emp_juv": {
     "ARG": {
       "valor": 27.2,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 34.6,
+      "total": 31.0
     },
     "BLZ": {
       "valor": 39.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 55.4,
+      "total": 47.2
     },
     "BOL": {
       "valor": 56.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 65.3,
+      "total": 60.8
     },
     "BRA": {
       "valor": 40.4,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 52.8,
+      "total": 46.7
     },
     "CHL": {
       "valor": 19.2,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 26.7,
+      "total": 23.0
     },
     "COL": {
       "valor": 28.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 43.5,
+      "total": 36.2
     },
     "CRI": {
       "valor": 20.4,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 35.2,
+      "total": 28.7
     },
     "ECU": {
       "valor": 28.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 48.8,
+      "total": 39.5
     },
     "GTM": {
       "valor": 36.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 68.3,
+      "total": 52.5
     },
     "GUY": {
       "valor": 35.9,
-      "anio": 2024
+      "anio": 2024,
+      "varones": 53.6,
+      "total": 44.9
     },
     "HND": {
       "valor": 29.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 61.5,
+      "total": 45.0
     },
     "MEX": {
       "valor": 30.6,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 52.1,
+      "total": 41.3
     },
     "NIC": {
       "valor": 28.3,
-      "anio": 2014
+      "anio": 2014,
+      "varones": 66.8,
+      "total": 47.3
     },
     "PAN": {
       "valor": 25.6,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 42.9,
+      "total": 34.5
     },
     "PER": {
       "valor": 43.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 52.1,
+      "total": 48.0
     },
     "PRY": {
       "valor": 41.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 59.9,
+      "total": 50.6
     },
     "SLV": {
       "valor": 30.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 52.9,
+      "total": 41.5
     },
     "SUR": {
       "valor": 22.8,
-      "anio": 2022
+      "anio": 2022,
+      "varones": 45.9,
+      "total": 35.2
     },
     "URY": {
       "valor": 29.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 41.4,
+      "total": 35.6
     },
     "VEN": {
       "valor": 23.8,
-      "anio": 2020
+      "anio": 2020,
+      "varones": 40.2,
+      "total": 32.1
     }
   },
   "emp_mayor": {
     "ARG": {
       "valor": 51.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 77.7,
+      "total": 64.7
     },
     "BLZ": {
       "valor": 45.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 74.8,
+      "total": 59.5
     },
     "BOL": {
       "valor": 81.2,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 91.7,
+      "total": 86.3
     },
     "BRA": {
       "valor": 41.6,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 67.2,
+      "total": 53.6
     },
     "CHL": {
       "valor": 50.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 78.7,
+      "total": 63.9
     },
     "COL": {
       "valor": 42.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 79.0,
+      "total": 58.9
     },
     "CRI": {
       "valor": 34.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 71.1,
+      "total": 52.5
     },
     "ECU": {
       "valor": 53.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 86.1,
+      "total": 69.1
     },
     "GTM": {
       "valor": 40.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 86.9,
+      "total": 61.5
     },
     "GUY": {
       "valor": 25.6,
-      "anio": 2024
+      "anio": 2024,
+      "varones": 62.1,
+      "total": 43.6
     },
     "HND": {
       "valor": 37.4,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 75.4,
+      "total": 54.3
     },
     "MEX": {
       "valor": 41.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 77.9,
+      "total": 57.9
     },
     "NIC": {
       "valor": 45.8,
-      "anio": 2014
+      "anio": 2014,
+      "varones": 83.0,
+      "total": 63.2
     },
     "PAN": {
       "valor": 50.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 82.2,
+      "total": 65.7
     },
     "PER": {
       "valor": 67.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 86.2,
+      "total": 76.4
     },
     "PRY": {
       "valor": 55.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 82.1,
+      "total": 68.7
     },
     "SLV": {
       "valor": 44.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 79.0,
+      "total": 59.2
     },
     "SUR": {
       "valor": 33.8,
-      "anio": 2022
+      "anio": 2022,
+      "varones": 62.1,
+      "total": 48.2
     },
     "URY": {
       "valor": 55.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 76.5,
+      "total": 65.1
     },
     "VEN": {
       "valor": 37.0,
-      "anio": 2020
+      "anio": 2020,
+      "varones": 67.0,
+      "total": 51.6
     }
   },
   "desem_juv": {
     "ARG": {
       "valor": 21.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 17.8,
+      "total": 19.2
     },
     "BLZ": {
       "valor": 3.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 2.2,
+      "total": 2.5
     },
     "BOL": {
       "valor": 4.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 3.6,
+      "total": 4.2
     },
     "BRA": {
       "valor": 15.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 11.9,
+      "total": 13.6
     },
     "CHL": {
       "valor": 25.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 19.4,
+      "total": 22.0
     },
     "COL": {
       "valor": 22.4,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 14.0,
+      "total": 17.5
     },
     "CRI": {
       "valor": 25.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 17.4,
+      "total": 20.1
     },
     "ECU": {
       "valor": 10.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 6.1,
+      "total": 7.8
     },
     "GTM": {
       "valor": 7.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 3.5,
+      "total": 4.8
     },
     "GUY": {
       "valor": 16.9,
-      "anio": 2024
+      "anio": 2024,
+      "varones": 8.2,
+      "total": 11.9
     },
     "HND": {
       "valor": 13.4,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 5.5,
+      "total": 8.4
     },
     "MEX": {
       "valor": 6.4,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 5.2,
+      "total": 5.6
     },
     "NIC": {
       "valor": 12.9,
-      "anio": 2014
+      "anio": 2014,
+      "varones": 6.4,
+      "total": 8.5
     },
     "PAN": {
       "valor": 24.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 16.5,
+      "total": 19.5
     },
     "PER": {
       "valor": 9.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 7.8,
+      "total": 8.7
     },
     "PRY": {
       "valor": 13.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 8.5,
+      "total": 10.7
     },
     "SLV": {
       "valor": 10.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 5.7,
+      "total": 7.4
     },
     "SUR": {
       "valor": 30.8,
-      "anio": 2022
+      "anio": 2022,
+      "varones": 13.9,
+      "total": 19.8
     },
     "URY": {
       "valor": 29.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 20.9,
+      "total": 24.4
     },
     "VEN": {
       "valor": 16.8,
-      "anio": 2020
+      "anio": 2020,
+      "varones": 11.7,
+      "total": 13.6
     }
   },
   "desem_mayor": {
     "ARG": {
       "valor": 4.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 4.8,
+      "total": 4.5
     },
     "BLZ": {
       "valor": 4.5,
-      "anio": 2019
+      "anio": 2019,
+      "varones": 4.3
     },
     "BOL": {
       "valor": 0.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 1.3,
+      "total": 1.0
     },
     "BRA": {
       "valor": 3.3,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 3.3,
+      "total": 3.3
     },
     "CHL": {
       "valor": 6.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 6.5,
+      "total": 6.6
     },
     "COL": {
       "valor": 4.5,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 5.1,
+      "total": 4.9
     },
     "CRI": {
       "valor": 3.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 2.4,
+      "total": 2.6
     },
     "ECU": {
       "valor": 0.7,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 1.2,
+      "total": 1.0
     },
     "GTM": {
       "valor": 1.1,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 0.6,
+      "total": 0.8
     },
     "GUY": {
       "valor": 8.0,
-      "anio": 2024
+      "anio": 2024,
+      "varones": 2.3,
+      "total": 4.1
     },
     "HND": {
       "valor": 0.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 3.6,
+      "total": 2.6
     },
     "MEX": {
       "valor": 1.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 1.3,
+      "total": 1.2
     },
     "PAN": {
       "valor": 3.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 2.9,
+      "total": 2.9
     },
     "PER": {
       "valor": 2.6,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 2.9,
+      "total": 2.8
     },
     "PRY": {
       "valor": 1.9,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 3.4,
+      "total": 2.8
     },
     "SLV": {
       "valor": 1.0,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 1.9,
+      "total": 1.5
     },
     "SUR": {
       "valor": 3.4,
@@ -1878,11 +2217,525 @@
     },
     "URY": {
       "valor": 3.8,
-      "anio": 2025
+      "anio": 2025,
+      "varones": 2.8,
+      "total": 3.2
     },
     "VEN": {
       "valor": 5.2,
-      "anio": 2020
+      "anio": 2020,
+      "varones": 7.5,
+      "total": 6.6
+    }
+  },
+  "wef": {
+    "ARG": {
+      "valor": 0.751,
+      "ranking": 45,
+      "anio": 2026,
+      "economia": 0.66,
+      "economia_ranking": 107,
+      "educacion": 1,
+      "educacion_ranking": 1,
+      "salud": 0.974,
+      "salud_ranking": 43,
+      "politica": 0.369,
+      "politica_ranking": 30
+    },
+    "BLZ": {
+      "valor": 0.701,
+      "ranking": 92,
+      "anio": 2026,
+      "economia": 0.778,
+      "economia_ranking": 19,
+      "educacion": 1,
+      "educacion_ranking": 1,
+      "salud": 0.969,
+      "salud_ranking": 74,
+      "politica": 0.059,
+      "politica_ranking": 136
+    },
+    "BOL": {
+      "valor": 0.758,
+      "ranking": 36,
+      "anio": 2026,
+      "economia": 0.674,
+      "economia_ranking": 95,
+      "educacion": 0.989,
+      "educacion_ranking": 87,
+      "salud": 0.975,
+      "salud_ranking": 41,
+      "politica": 0.392,
+      "politica_ranking": 24
+    },
+    "BRA": {
+      "valor": 0.715,
+      "ranking": 72,
+      "anio": 2026,
+      "economia": 0.666,
+      "economia_ranking": 102,
+      "educacion": 1,
+      "educacion_ranking": 1,
+      "salud": 0.977,
+      "salud_ranking": 28,
+      "politica": 0.218,
+      "politica_ranking": 72
+    },
+    "CHL": {
+      "valor": 0.769,
+      "ranking": 29,
+      "anio": 2026,
+      "economia": 0.661,
+      "economia_ranking": 106,
+      "educacion": 0.987,
+      "educacion_ranking": 92,
+      "salud": 0.967,
+      "salud_ranking": 85,
+      "politica": 0.459,
+      "politica_ranking": 16
+    },
+    "COL": {
+      "valor": 0.761,
+      "ranking": 34,
+      "anio": 2026,
+      "economia": 0.708,
+      "economia_ranking": 72,
+      "educacion": 1,
+      "educacion_ranking": 1,
+      "salud": 0.978,
+      "salud_ranking": 23,
+      "politica": 0.358,
+      "politica_ranking": 35
+    },
+    "CRI": {
+      "valor": 0.779,
+      "ranking": 21,
+      "anio": 2026,
+      "economia": 0.696,
+      "economia_ranking": 81,
+      "educacion": 0.997,
+      "educacion_ranking": 55,
+      "salud": 0.974,
+      "salud_ranking": 44,
+      "politica": 0.448,
+      "politica_ranking": 18
+    },
+    "ECU": {
+      "valor": 0.79,
+      "ranking": 16,
+      "anio": 2026,
+      "economia": 0.707,
+      "economia_ranking": 74,
+      "educacion": 0.996,
+      "educacion_ranking": 60,
+      "salud": 0.977,
+      "salud_ranking": 26,
+      "politica": 0.481,
+      "politica_ranking": 15
+    },
+    "SLV": {
+      "valor": 0.725,
+      "ranking": 61,
+      "anio": 2026,
+      "economia": 0.634,
+      "economia_ranking": 113,
+      "educacion": 0.993,
+      "educacion_ranking": 72,
+      "salud": 0.98,
+      "salud_ranking": 1,
+      "politica": 0.292,
+      "politica_ranking": 55
+    },
+    "GTM": {
+      "valor": 0.74,
+      "ranking": 50,
+      "anio": 2026,
+      "economia": 0.675,
+      "economia_ranking": 94,
+      "educacion": 0.982,
+      "educacion_ranking": 100,
+      "salud": 0.98,
+      "salud_ranking": 1,
+      "politica": 0.325,
+      "politica_ranking": 41
+    },
+    "GUY": {
+      "valor": 0.759,
+      "ranking": 35,
+      "anio": 2026,
+      "economia": 0.719,
+      "economia_ranking": 59,
+      "educacion": 0.994,
+      "educacion_ranking": 70,
+      "salud": 0.98,
+      "salud_ranking": 1,
+      "politica": 0.342,
+      "politica_ranking": 37
+    },
+    "HND": {
+      "valor": 0.74,
+      "ranking": 51,
+      "anio": 2026,
+      "economia": 0.702,
+      "economia_ranking": 76,
+      "educacion": 1,
+      "educacion_ranking": 1,
+      "salud": 0.966,
+      "salud_ranking": 88,
+      "politica": 0.293,
+      "politica_ranking": 54
+    },
+    "MEX": {
+      "valor": 0.787,
+      "ranking": 18,
+      "anio": 2026,
+      "economia": 0.618,
+      "economia_ranking": 117,
+      "educacion": 0.995,
+      "educacion_ranking": 65,
+      "salud": 0.98,
+      "salud_ranking": 1,
+      "politica": 0.557,
+      "politica_ranking": 8
+    },
+    "PAN": {
+      "valor": 0.753,
+      "ranking": 41,
+      "anio": 2026,
+      "economia": 0.768,
+      "economia_ranking": 24,
+      "educacion": 0.998,
+      "educacion_ranking": 48,
+      "salud": 0.975,
+      "salud_ranking": 39,
+      "politica": 0.27,
+      "politica_ranking": 60
+    },
+    "PRY": {
+      "valor": 0.706,
+      "ranking": 86,
+      "anio": 2026,
+      "economia": 0.683,
+      "economia_ranking": 89,
+      "educacion": 0.997,
+      "educacion_ranking": 57,
+      "salud": 0.974,
+      "salud_ranking": 47,
+      "politica": 0.173,
+      "politica_ranking": 96
+    },
+    "PER": {
+      "valor": 0.7,
+      "ranking": 94,
+      "anio": 2026,
+      "economia": 0.667,
+      "economia_ranking": 100,
+      "educacion": 0.977,
+      "educacion_ranking": 103,
+      "salud": 0.976,
+      "salud_ranking": 35,
+      "politica": 0.182,
+      "politica_ranking": 92
+    },
+    "SUR": {
+      "valor": 0.732,
+      "ranking": 57,
+      "anio": 2026,
+      "economia": 0.738,
+      "economia_ranking": 46,
+      "educacion": 0.988,
+      "educacion_ranking": 90,
+      "salud": 0.976,
+      "salud_ranking": 36,
+      "politica": 0.226,
+      "politica_ranking": 71
+    },
+    "URY": {
+      "valor": 0.74,
+      "ranking": 53,
+      "anio": 2026,
+      "economia": 0.707,
+      "economia_ranking": 73,
+      "educacion": 1,
+      "educacion_ranking": 1,
+      "salud": 0.979,
+      "salud_ranking": 18,
+      "politica": 0.272,
+      "politica_ranking": 59
+    }
+  },
+  "ttnb": {
+    "ARG": {
+      "estado": "desactualizado",
+      "nota": "El Censo 2022 relevó la identidad de género, pero el INDEC no publicó datos laborales por identidad (solo por sexo registrado al nacer).",
+      "datos": [
+        {
+          "indicador": "Realiza actividades por las que obtiene dinero",
+          "poblacion": "Personas trans",
+          "valor": 80.9,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "INDEC e INADI",
+          "fuente": "Primera Encuesta sobre Población Trans, informe de la prueba piloto",
+          "anio": 2012,
+          "cobertura": "Solo municipio de La Matanza, prueba piloto (209 personas, muestra no probabilística)",
+          "link": "https://www.indec.gob.ar/micro_sitios/WebEncuestaTrans/pp_encuesta_trans_set2012.pdf",
+          "nota": "Según el informe, en su mayoría actividades precarias e informales."
+        },
+        {
+          "indicador": "Busca otra fuente de ingresos",
+          "poblacion": "Personas trans",
+          "valor": 72.2,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "INDEC e INADI",
+          "fuente": "Primera Encuesta sobre Población Trans, informe de la prueba piloto",
+          "anio": 2012,
+          "cobertura": "Solo municipio de La Matanza, prueba piloto (209 personas, muestra no probabilística)",
+          "link": "https://www.indec.gob.ar/micro_sitios/WebEncuestaTrans/pp_encuesta_trans_set2012.pdf",
+          "nota": "8 de cada 10 dicen que su identidad trans les dificulta la búsqueda."
+        }
+      ]
+    },
+    "BLZ": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "BOL": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "BRA": {
+      "estado": "reciente",
+      "nota": "",
+      "datos": [
+        {
+          "indicador": "Empleo asalariado formal",
+          "poblacion": "Personas trans (14 a 64 años)",
+          "valor": 25,
+          "unidad": "%",
+          "comparacion": "Población total de 14 a 64 años: 31,8%",
+          "organismo": "Ipea (Instituto de Pesquisa Econômica Aplicada)",
+          "fuente": "A inserção e as características das pessoas trans no assalariamento formal, Boletim Mercado de Trabalho n.º 80 (oct. 2025)",
+          "anio": 2023,
+          "cobertura": "Nacional, registros administrativos; solo personas trans identificables por cambio de nombre o género, o nombre social",
+          "link": "https://repositorio.ipea.gov.br/entities/publication/c4f145e9-b598-4fe0-a78f-ffd6d92b63eb",
+          "nota": "Mide solo el empleo asalariado formal registrado: no capta el empleo informal ni el trabajo por cuenta propia."
+        },
+        {
+          "indicador": "Empleo asalariado formal",
+          "poblacion": "Mujeres trans",
+          "valor": 20.7,
+          "unidad": "%",
+          "comparacion": "Mujeres en general: 28,4%",
+          "organismo": "Ipea (Instituto de Pesquisa Econômica Aplicada)",
+          "fuente": "A inserção e as características das pessoas trans no assalariamento formal, Boletim Mercado de Trabalho n.º 80 (oct. 2025)",
+          "anio": 2023,
+          "cobertura": "Nacional, registros administrativos; solo personas trans identificables por cambio de nombre o género, o nombre social",
+          "link": "https://repositorio.ipea.gov.br/entities/publication/c4f145e9-b598-4fe0-a78f-ffd6d92b63eb",
+          "nota": ""
+        },
+        {
+          "indicador": "Empleo asalariado formal",
+          "poblacion": "Varones trans",
+          "valor": 31.1,
+          "unidad": "%",
+          "comparacion": "Varones en general: 35,1%",
+          "organismo": "Ipea (Instituto de Pesquisa Econômica Aplicada)",
+          "fuente": "A inserção e as características das pessoas trans no assalariamento formal, Boletim Mercado de Trabalho n.º 80 (oct. 2025)",
+          "anio": 2023,
+          "cobertura": "Nacional, registros administrativos; solo personas trans identificables por cambio de nombre o género, o nombre social",
+          "link": "https://repositorio.ipea.gov.br/entities/publication/c4f145e9-b598-4fe0-a78f-ffd6d92b63eb",
+          "nota": ""
+        },
+        {
+          "indicador": "Empleo asalariado formal",
+          "poblacion": "Personas no binarias",
+          "valor": 23,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "Ipea (Instituto de Pesquisa Econômica Aplicada)",
+          "fuente": "A inserção e as características das pessoas trans no assalariamento formal, Boletim Mercado de Trabalho n.º 80 (oct. 2025)",
+          "anio": 2023,
+          "cobertura": "Nacional, registros administrativos; solo personas trans identificables por cambio de nombre o género, o nombre social",
+          "link": "https://repositorio.ipea.gov.br/entities/publication/c4f145e9-b598-4fe0-a78f-ffd6d92b63eb",
+          "nota": "El Ipea advierte imprecisiones en la clasificación de las personas no binarias."
+        }
+      ]
+    },
+    "CHL": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB. Existen relevamientos de organizaciones de la sociedad civil.",
+      "datos": []
+    },
+    "COL": {
+      "estado": "sin datos oficiales",
+      "nota": "El DANE publica indicadores laborales de la población LGBT en conjunto, sin desagregar a las personas trans.",
+      "datos": []
+    },
+    "CRI": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "ECU": {
+      "estado": "sin datos oficiales",
+      "nota": "El INEC publicó datos de la población LGBTI+ en conjunto (2025, muestra no probabilística), sin desagregar a las personas trans.",
+      "datos": []
+    },
+    "SLV": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "GTM": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "GUY": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "HND": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "MEX": {
+      "estado": "sin datos oficiales",
+      "nota": "La ENDISEG 2021 (INEGI) relevó a personas trans, pero no publicó cifras laborales específicas para esta población.",
+      "datos": []
+    },
+    "NIC": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "PAN": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "PRY": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "PER": {
+      "estado": "sin datos oficiales",
+      "nota": "El INEI publicó en 2017 una encuesta virtual de la población LGBTI en conjunto, sin desagregar a las personas trans.",
+      "datos": []
+    },
+    "SUR": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
+    },
+    "URY": {
+      "estado": "desactualizado",
+      "nota": "El Censo 2023 del INE incluyó por primera vez la identidad de género, pero no se encontraron datos laborales publicados por identidad.",
+      "datos": [
+        {
+          "indicador": "Personas ocupadas",
+          "poblacion": "Personas trans",
+          "valor": 65,
+          "unidad": "%",
+          "comparacion": "Tasa de empleo general: 58,4% (no es la misma medida)",
+          "organismo": "MIDES (Ministerio de Desarrollo Social)",
+          "fuente": "Primer Censo Nacional de Personas Trans, Fascículo 3: Derecho al trabajo",
+          "anio": 2016,
+          "cobertura": "Nacional, censo específico de personas trans (853 personas censadas)",
+          "link": "https://www.gub.uy/ministerio-desarrollo-social/sites/ministerio-desarrollo-social/files/documentos/publicaciones/1973.pdf",
+          "nota": "Porcentaje sobre todas las personas censadas, no sobre la población en edad de trabajar."
+        },
+        {
+          "indicador": "Personas ocupadas",
+          "poblacion": "Mujeres trans",
+          "valor": 66.5,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "MIDES (Ministerio de Desarrollo Social)",
+          "fuente": "Primer Censo Nacional de Personas Trans, Fascículo 3: Derecho al trabajo",
+          "anio": 2016,
+          "cobertura": "Nacional, censo específico de personas trans (853 personas censadas)",
+          "link": "https://www.gub.uy/ministerio-desarrollo-social/sites/ministerio-desarrollo-social/files/documentos/publicaciones/1973.pdf",
+          "nota": ""
+        },
+        {
+          "indicador": "Personas ocupadas",
+          "poblacion": "Varones trans",
+          "valor": 54.8,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "MIDES (Ministerio de Desarrollo Social)",
+          "fuente": "Primer Censo Nacional de Personas Trans, Fascículo 3: Derecho al trabajo",
+          "anio": 2016,
+          "cobertura": "Nacional, censo específico de personas trans (853 personas censadas)",
+          "link": "https://www.gub.uy/ministerio-desarrollo-social/sites/ministerio-desarrollo-social/files/documentos/publicaciones/1973.pdf",
+          "nota": ""
+        },
+        {
+          "indicador": "Personas desocupadas",
+          "poblacion": "Personas trans",
+          "valor": 30.3,
+          "unidad": "%",
+          "comparacion": "Desocupación general: 7,8% (no es la misma medida)",
+          "organismo": "MIDES (Ministerio de Desarrollo Social)",
+          "fuente": "Primer Censo Nacional de Personas Trans, Fascículo 3: Derecho al trabajo",
+          "anio": 2016,
+          "cobertura": "Nacional, censo específico de personas trans (853 personas censadas)",
+          "link": "https://www.gub.uy/ministerio-desarrollo-social/sites/ministerio-desarrollo-social/files/documentos/publicaciones/1973.pdf",
+          "nota": ""
+        },
+        {
+          "indicador": "Personas desocupadas",
+          "poblacion": "Mujeres trans",
+          "valor": 28.6,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "MIDES (Ministerio de Desarrollo Social)",
+          "fuente": "Primer Censo Nacional de Personas Trans, Fascículo 3: Derecho al trabajo",
+          "anio": 2016,
+          "cobertura": "Nacional, censo específico de personas trans (853 personas censadas)",
+          "link": "https://www.gub.uy/ministerio-desarrollo-social/sites/ministerio-desarrollo-social/files/documentos/publicaciones/1973.pdf",
+          "nota": ""
+        },
+        {
+          "indicador": "Personas desocupadas",
+          "poblacion": "Varones trans",
+          "valor": 42.6,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "MIDES (Ministerio de Desarrollo Social)",
+          "fuente": "Primer Censo Nacional de Personas Trans, Fascículo 3: Derecho al trabajo",
+          "anio": 2016,
+          "cobertura": "Nacional, censo específico de personas trans (853 personas censadas)",
+          "link": "https://www.gub.uy/ministerio-desarrollo-social/sites/ministerio-desarrollo-social/files/documentos/publicaciones/1973.pdf",
+          "nota": ""
+        },
+        {
+          "indicador": "Ocupadas con aporte a la salud (FONASA)",
+          "poblacion": "Personas trans ocupadas",
+          "valor": 23.5,
+          "unidad": "%",
+          "comparacion": "",
+          "organismo": "MIDES (Ministerio de Desarrollo Social)",
+          "fuente": "Primer Censo Nacional de Personas Trans, Fascículo 3: Derecho al trabajo",
+          "anio": 2016,
+          "cobertura": "Nacional, censo específico de personas trans (853 personas censadas)",
+          "link": "https://www.gub.uy/ministerio-desarrollo-social/sites/ministerio-desarrollo-social/files/documentos/publicaciones/1973.pdf",
+          "nota": "Aproximación a la formalidad: no es una tasa de informalidad."
+        }
+      ]
+    },
+    "VEN": {
+      "estado": "sin datos oficiales",
+      "nota": "No se encontraron estadísticas oficiales sobre la situación laboral de personas TTNB.",
+      "datos": []
     }
   }
 }
