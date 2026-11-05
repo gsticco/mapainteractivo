@@ -139,8 +139,10 @@
     .tema-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;background:var(--purple-pale);color:var(--purple);border-radius:12px;padding:2px 8px;font-weight:700;margin-bottom:6px;}
 
     .list-panel{flex:1;overflow-y:auto;padding:8px 10px;}
-    .list-panel::-webkit-scrollbar{width:4px;}
-    .list-panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+    .list-panel{scrollbar-width:thin;scrollbar-color:var(--purple-light) var(--surface2);}
+    .list-panel::-webkit-scrollbar{width:8px;}
+    .list-panel::-webkit-scrollbar-track{background:var(--surface2);}
+    .list-panel::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:4px;}
     .list-count{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);padding:3px 2px 7px;}
 
     /* LAW CARDS */
@@ -171,9 +173,11 @@
     .capa-item-unit{font-size:10px;color:var(--text3);margin-left:1px;}
 
     /* DETAIL */
-    .detail-panel{border-top:1px solid var(--border);background:white;flex-shrink:0;max-height:220px;overflow-y:auto;padding:12px 14px;}
-    .detail-panel::-webkit-scrollbar{width:4px;}
-    .detail-panel::-webkit-scrollbar-thumb{background:var(--border2);}
+    .detail-panel{border-top:1px solid var(--border);background:white;flex-shrink:0;max-height:min(320px,42vh);overflow-y:auto;padding:12px 14px;scrollbar-width:thin;scrollbar-color:var(--purple-light) var(--surface2);}
+    .detail-panel::-webkit-scrollbar{width:8px;}
+    .detail-panel::-webkit-scrollbar-track{background:var(--surface2);}
+    .detail-panel::-webkit-scrollbar-thumb{background:var(--purple-light);border-radius:4px;}
+    .tema-nota{font-size:11px;color:var(--text2);background:var(--white);border:1px solid var(--border);border-left:3px solid var(--purple-light);border-radius:6px;padding:7px 10px;margin-top:6px;line-height:1.45;}
     .detail-empty{color:var(--text3);font-size:12px;text-align:center;padding:8px 0;}
     .detail-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
     .detail-close{background:none;border:1px solid var(--border2);border-radius:50%;width:22px;height:22px;font-size:12px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;font-family:inherit;}
@@ -275,6 +279,10 @@ const CATEGORIES = [
       {id:'legislacion', nombre:'Ley de cupos / paridad', tema:'ley_cupos'},
       {id:'legislacion', nombre:'Violencia de género', tema:'violencia_genero'},
       {id:'legislacion', nombre:'Ratificación de convenios', tema:'ratificacion_convenios'},
+      {id:'legislacion', nombre:'Convenios OIT — Género', tema:'oit_genero'},
+      {id:'legislacion', nombre:'Convenios OIT — Complementarios', tema:'oit_complementario'},
+      {id:'legislacion', nombre:'Convenios OIT — Interseccionalidad', tema:'oit_interseccionalidad'},
+      {id:'legislacion', nombre:'Convenios OIT — Históricos', tema:'oit_historico'},
       {id:'_divider_', nombre:'—', tema:null},
       {id:'c190', nombre:'Mapa ratif. Convenio 190 OIT', tema:null},
       {id:'cdn', nombre:'Mapa ratif. Conv. Derechos del Niñe', tema:null},
@@ -297,9 +305,15 @@ const CATEGORIES = [
   },
   {
     id:'indices', nombre:'Índices',
-    fuente:'PNUD, Informe sobre Desarrollo Humano 2025 (datos 2023)',
+    fuente:'PNUD, Informe sobre Desarrollo Humano 2025 (datos 2023). WEF, Global Gender Gap Report 2026.',
     capas:[
       {id:'idg', nombre:'Índice de Desigualdad de Género (IDG)', tema:null},
+      {id:'_divider_', nombre:'—', tema:null},
+      {id:'wef', nombre:'Brecha Global de Género WEF 2026 — Índice general', tema:null},
+      {id:'wef_econ', nombre:'WEF — Participación y oportunidad económica', tema:null},
+      {id:'wef_edu', nombre:'WEF — Logro educativo', tema:null},
+      {id:'wef_salud', nombre:'WEF — Salud y supervivencia', tema:null},
+      {id:'wef_polit', nombre:'WEF — Empoderamiento político', tema:null},
     ]
   },
   {
@@ -375,6 +389,11 @@ const LAYER_META = {
   parlamento:{label:"Mujeres en el parlamento",desc:"Porcentaje de bancas en el poder legislativo nacional ocupadas por mujeres.",fuente:"Fuente: IPU (Unión Interparlamentaria) / ONU Mujeres, 2026"},
   cuotas:{label:"Cuotas y ley de cupos",desc:"Tipo de cuota o paridad electoral vigente para la representación de mujeres en listas electorales.",fuente:"Fuente: OEA / CEPAL, 2024"},
   lgbtq:{label:"Matrimonio igualitario e identidad de género",desc:"Estado de la legislación: matrimonio igualitario, ley de identidad de género y anti-discriminación por orientación sexual.",fuente:"Fuente: ILGA World, 2024"},
+  wef:{label:"Índice Global de Brecha de Género (WEF 2026)",desc:"Puntaje del Foro Económico Mundial que mide qué proporción de la brecha de género ya se cerró en cada país. Combina cuatro dimensiones: participación y oportunidad económica, logro educativo, salud y supervivencia, y empoderamiento político (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026, 145 economías. Nicaragua y Venezuela no figuran en esta edición."},
+  wef_econ:{label:"WEF 2026 — Participación y oportunidad económica",desc:"Subíndice del WEF que compara a mujeres y varones en participación en la fuerza laboral, igualdad salarial por trabajo similar, ingreso laboral estimado, y presencia en cargos legislativos, directivos y de profesionales y técnicos (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026. Nicaragua y Venezuela no figuran en esta edición."},
+  wef_edu:{label:"WEF 2026 — Logro educativo",desc:"Subíndice del WEF que compara a mujeres y varones en alfabetización y en matrícula en educación primaria, secundaria y terciaria (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026. Nicaragua y Venezuela no figuran en esta edición."},
+  wef_salud:{label:"WEF 2026 — Salud y supervivencia",desc:"Subíndice del WEF que compara la proporción de sexos al nacer y la esperanza de vida saludable de mujeres y varones (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026. Nicaragua y Venezuela no figuran en esta edición."},
+  wef_polit:{label:"WEF 2026 — Empoderamiento político",desc:"Subíndice del WEF que compara la presencia de mujeres y varones en el parlamento, en cargos ministeriales y en la jefatura de Estado durante los últimos 50 años (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026. Nicaragua y Venezuela no figuran en esta edición."},
   idg:{label:"Índice de Desigualdad de Género (IDG)",desc:"Índice del PNUD que mide la pérdida de desarrollo humano por desigualdad de género (0 = igualdad plena · 1 = máxima desigualdad).",fuente:"Fuente: PNUD, Informe sobre Desarrollo Humano 2025 (datos 2023)"},
   femicidios:{label:"Femicidios",desc:"Tasa de femicidios (asesinatos de mujeres por razones de género) por cada 100.000 mujeres.",fuente:"Fuente: CEPAL, Observatorio de Igualdad de Género (cifras oficiales); último año disponible por país"},
   tnr:{label:"Trabajo doméstico y de cuidados no remunerado",desc:"Promedio de horas semanales dedicadas al trabajo doméstico y de cuidados no remunerado, por género. El mapa muestra la brecha (horas de mujeres menos horas de varones), que refleja la desigualdad en la distribución de estas tareas.",fuente:"Fuente: CEPAL (CEPALSTAT), encuestas de uso del tiempo; el año de la encuesta varía según el país."},
@@ -426,9 +445,31 @@ const LGBTQ_LABELS = [
 const CUOTA_COLORS = {ninguna:'#C8C4BB',cuota:'#CE93D8',paridad:'#6A1B9A'};
 const CUOTA_LABELS = {ninguna:'Sin cuota electoral',cuota:'Cuota en candidaturas',paridad:'Paridad (50%)'};
 
+// Capas del WEF: todas leen el grupo "wef" de indicadores.json (un registro por país).
+// Puntaje 0-1: proporción de la brecha de género ya cerrada (1 = paridad plena).
+const WEF_ECONOMIAS = 145;
+const WEF_CAPAS = {
+  wef:       {campo:'valor',     rank:'ranking',           min:0.65, max:0.80, mundo:0.692, titulo:'Índice general'},
+  wef_econ:  {campo:'economia',  rank:'economia_ranking',  min:0.60, max:0.80, mundo:0.617, titulo:'Participación y oportunidad económica'},
+  wef_edu:   {campo:'educacion', rank:'educacion_ranking', min:0.97, max:1.00, mundo:0.969, titulo:'Logro educativo'},
+  wef_salud: {campo:'salud',     rank:'salud_ranking',     min:0.96, max:0.98, mundo:0.962, titulo:'Salud y supervivencia'},
+  wef_polit: {campo:'politica',  rank:'politica_ranking',  min:0.05, max:0.56, mundo:0.221, titulo:'Empoderamiento político'},
+};
+// Arma CAPA_DATA.wef_econ, wef_edu, etc. a partir del grupo "wef" (así el JSON tiene una sola fuente).
+function derivarCapasWef() {
+  Object.entries(WEF_CAPAS).forEach(([capa, w]) => {
+    if(capa === 'wef') return;
+    CAPA_DATA[capa] = {};
+    Object.entries(CAPA_DATA.wef || {}).forEach(([cod, d]) => {
+      if(d[w.campo] != null) CAPA_DATA[capa][cod] = {valor: d[w.campo], ranking: d[w.rank], anio: d.anio};
+    });
+  });
+}
+
 function getCountryColor(cod) {
   const eff = COUNTRY_ALIAS[cod] || cod;
   if(capaActiva==='legislacion') {
+    if(esOitTema(filtroTema)) return colorOit(eff);
     const pc = getPaisesConLeyes();
     return pc.has(eff) ? (COUNTRY_COLORS[cod]||'#999') : null;
   }
@@ -443,6 +484,7 @@ function getCountryColor(cod) {
   if(capaActiva==='licencias')     return d ? choropleth(d.paternidad,1,20,'#FFF3E0','#E65100') : null;
   if(capaActiva==='cuotas')        return d ? (CUOTA_COLORS[d.tipo]||'#C8C4BB') : '#C8C4BB';
   if(capaActiva==='idg')           return d ? choropleth(d.valor,0.10,0.52,'#C8E6C9','#B71C1C') : null;
+  if(WEF_CAPAS[capaActiva])        return d ? choropleth(d.valor,WEF_CAPAS[capaActiva].min,WEF_CAPAS[capaActiva].max,'#FFF3E0','#1B5E20') : null;
   if(capaActiva==='tnr')           return d ? choropleth(d.brecha,10,34,'#FFF9C4','#B71C1C') : null;
   if(capaActiva==='ocupacion')      return d ? choropleth(d.mujeres,35,75,'#FFF3E0','#1B5E20') : null;
   if(capaActiva==='fem_pobreza')    return d ? choropleth(d.indice,100,155,'#FFF9C4','#B71C1C') : null;
@@ -462,7 +504,37 @@ function getCountryColor(cod) {
 // ════════════════════════════════════════════════════════════════════════════
 // LEGISLACIÓN — HELPERS
 // ════════════════════════════════════════════════════════════════════════════
+// Convenios OIT: el mapa se pinta según cuántos convenios VIGENTES de la categoría ratificó cada país.
+const OIT_NOMBRES = {
+  oit_genero:'Género',
+  oit_complementario:'Complementarios',
+  oit_interseccionalidad:'Interseccionalidad',
+  oit_historico:'Históricos',
+};
+const OIT_LO = '#DAD8F2', OIT_HI = '#2B2870';   // 1 convenio = claro · más convenios = más oscuro
+function esOitTema(t) { return !!t && Object.prototype.hasOwnProperty.call(OIT_NOMBRES, t); }
+function esVigente(l) { return !l.estado || l.estado === 'vigente'; }
+// Map país -> cantidad de convenios vigentes de la categoría
+function contarOit(tema) {
+  const m = new Map();
+  LEYES.forEach(l => {
+    if(l.temas && l.temas.includes(tema) && esVigente(l)) m.set(l.codigoPais, (m.get(l.codigoPais) || 0) + 1);
+  });
+  return m;
+}
+// Cantidad de convenios distintos que tiene la categoría
+function totalOit(tema) {
+  return new Set(LEYES.filter(l => l.temas && l.temas.includes(tema)).map(l => l.id.split('-OIT-')[1])).size;
+}
+function colorOit(eff) {
+  const m = contarOit(filtroTema);
+  const n = m.get(eff) || 0;
+  if(!n) return null;
+  return choropleth(n, 1, Math.max(2, ...m.values()), OIT_LO, OIT_HI);
+}
+
 function getPaisesConLeyes() {
+  if(esOitTema(filtroTema)) return new Set(contarOit(filtroTema).keys());
   const fuente = filtroTema
     ? LEYES.filter(l => l.codigoPais!=='INT' && l.temas && l.temas.includes(filtroTema))
     : LEYES.filter(l => l.codigoPais!=='INT');
@@ -692,6 +764,11 @@ function updateMapColors() {
 }
 
 function getTooltipContent(eff, cod) {
+  if(capaActiva==='legislacion' && esOitTema(filtroTema)) {
+    const n = contarOit(filtroTema).get(eff) || 0;
+    return {v: n > 0 ? n + ' convenio' + (n!==1?'s':'') + ' vigente' + (n!==1?'s':'') + ' ratificado' + (n!==1?'s':'') : 'Sin convenios vigentes en esta categoría',
+            s: 'OIT — ' + OIT_NOMBRES[filtroTema] + ' · Clic para filtrar'};
+  }
   if(capaActiva==='legislacion') {
     const leyes = LEYES.filter(l => l.codigoPais===eff && (!filtroTema || (l.temas && l.temas.includes(filtroTema))));
     return {v: leyes.length>0 ? leyes.length + ' norma' + (leyes.length!==1?'s':'') + ' cargada' + (leyes.length!==1?'s':'') : 'Sin legislación cargada', s:'Clic para filtrar'};
@@ -708,6 +785,7 @@ function getTooltipContent(eff, cod) {
   if(capaActiva==='licencias') return {v: 'Maternidad ' + d.maternidad + 'd · Paternidad ' + d.paternidad + 'd', s: 'Año ' + d.anio};
   if(capaActiva==='cuotas') return {v: CUOTA_LABELS[d.tipo] + (d.porcentaje>0?' ('+d.porcentaje+'%)':''), s: d.anio?'Ley desde '+d.anio:''};
   if(capaActiva==='idg') return {v: 'IDG: ' + d.valor + ' — Ranking #' + d.ranking, s:'PNUD 2023'};
+  if(WEF_CAPAS[capaActiva]) return {v: WEF_CAPAS[capaActiva].titulo + ': ' + d.valor.toFixed(3), s: 'Ranking #' + d.ranking + ' de ' + WEF_ECONOMIAS + ' · WEF ' + d.anio};
   if(capaActiva==='tnr') return {v: 'Mujeres: ' + d.mujeres + 'h · Varones: ' + d.varones + 'h', s: 'Brecha: +' + d.brecha + 'h/semana (' + d.anio + ')'};
   if(capaActiva==='ocupacion') return {v: d.mujeres + '% ocupación femenina', s: 'Varones: ' + d.varones + '% · ' + d.anio};
   if(capaActiva==='fem_pobreza') return {v: 'Índice: ' + d.indice, s: d.indice > 100 ? (d.indice - 100) + ' mujeres más por cada 100 varones pobres' : 'Paridad'};
@@ -724,12 +802,23 @@ function getTooltipContent(eff, cod) {
 // ════════════════════════════════════════════════════════════════════════════
 function renderLegend() {
   const el = document.getElementById('legend');
+  if(capaActiva==='legislacion' && esOitTema(filtroTema)) {
+    const max = Math.max(1, ...contarOit(filtroTema).values());
+    el.innerHTML = '<div class="legend-title">Convenios OIT — ' + OIT_NOMBRES[filtroTema] + '</div>' +
+      '<div class="legend-grad-wrap"><div class="legend-grad" style="background:linear-gradient(to right,' + OIT_LO + ',' + OIT_HI + ')"></div>' +
+      '<div class="legend-grad-labels"><span>1</span><span>' + max + '</span></div></div>' +
+      '<div style="font-size:9px;color:var(--text3);margin-bottom:4px;line-height:1.4">Convenios vigentes ratificados (la categoría tiene ' + totalOit(filtroTema) + ')</div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:#C8C4BB"></div>Sin convenios vigentes</div>';
+    return;
+  }
   if(capaActiva==='legislacion') {
     const temaLabel = filtroTema ? ({
       violencia_genero:'Violencia de género',acoso:'Acoso laboral',
       discriminacion:'Discriminación',matrimonio_igualitario:'Matrimonio igualitario',
       identidad_genero:'Identidad de género',ley_cupos:'Ley de cupos',
-      ratificacion_convenios:'Ratif. convenios'
+      ratificacion_convenios:'Ratif. convenios',
+      oit_genero:'OIT — Género',oit_complementario:'OIT — Complementarios',
+      oit_interseccionalidad:'OIT — Interseccionalidad',oit_historico:'OIT — Históricos'
     })[filtroTema] || filtroTema : 'Todas';
     el.innerHTML = '<div class="legend-title">Legislación</div>' +
       '<div class="legend-item"><div class="legend-dot" style="background:#7B8FCC"></div>Con legislación</div>' +
@@ -758,6 +847,7 @@ function renderLegend() {
       parlamento:{lo:'#FFF9C4',hi:'#1B5E20',lbl:['10%','55%'],title:'Mujeres en parlamento'},
       licencias:{lo:'#FFF3E0',hi:'#E65100',lbl:['1 día','20 días'],title:'Licencias parentales (color: días de paternidad)'},
       idg:{lo:'#C8E6C9',hi:'#B71C1C',lbl:['Más igualdad','Más desigualdad'],title:'Índice IDG'},
+      ...Object.fromEntries(Object.entries(WEF_CAPAS).map(([k,w]) => [k,{lo:'#FFF3E0',hi:'#1B5E20',lbl:[w.min.toFixed(2),w.max.toFixed(2)],title:'WEF 2026 — ' + w.titulo + ' (1 = paridad)'}])),
       tnr:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['Menor brecha','Mayor brecha'],title:'Brecha TNR (horas/sem)'},
       ocupacion:{lo:'#FFF3E0',hi:'#1B5E20',lbl:['35%','75%'],title:'Tasa de ocupación femenina'},
       fem_pobreza:{lo:'#FFF9C4',hi:'#B71C1C',lbl:['~100 (paridad)','155+'],title:'Índice feminidad pobreza'},
@@ -803,11 +893,16 @@ function renderLegislacionSidebar() {
     identidad_genero:'Identidad de género',
     ley_cupos:'Ley de cupos / paridad',
     ratificacion_convenios:'Ratificación de convenios',
+    oit_genero:'Convenios OIT — Género',
+    oit_complementario:'Convenios OIT — Complementarios',
+    oit_interseccionalidad:'Convenios OIT — Interseccionalidad',
+    oit_historico:'Convenios OIT — Históricos',
   };
   const temaLabel = temaNames[filtroTema] || filtroTema || 'Todas las leyes';
   let topHtml = (filtroTema ? '<div class="tema-badge">&#9654; ' + temaLabel + '</div>' : '') +
     '<div class="filter-label">Filtrar por país</div>' +
-    '<div class="filter-row" id="country-filters"></div>';
+    '<div class="filter-row" id="country-filters"></div>' +
+    (filtroTema === 'oit_historico' ? '<div class="tema-nota">Estos convenios tienen otros que los reemplazan.</div>' : '');
   document.getElementById('sidebar-top').innerHTML = topHtml;
   buildCountryFilters();
   renderLaws();
@@ -918,6 +1013,7 @@ function sortCapaItems(cods) {
     if(capaActiva==='licencias') return d.paternidad;
     if(capaActiva==='cuotas') return d.tipo==='paridad'?2 : d.tipo==='cuota'?1 : 0;
     if(capaActiva==='idg') return -d.valor;
+    if(WEF_CAPAS[capaActiva]) return d.valor;
     if(capaActiva==='tnr') return d.brecha;
     if(capaActiva==='ocupacion') return d.mujeres;
     if(capaActiva==='fem_pobreza') return d.indice;
@@ -948,6 +1044,7 @@ function getCapaItemValue(cod, d) {
   if(capaActiva==='licencias') return {v:'M:'+d.maternidad+'d P:'+d.paternidad+'d',unit:''};
   if(capaActiva==='cuotas') return d ? {v:d.tipo==='ninguna'?'Sin cuota':(d.porcentaje+'%'),unit:''} : {v:'Sin datos',unit:''};
   if(capaActiva==='idg') return {v:d.valor.toFixed(3),unit:''};
+  if(WEF_CAPAS[capaActiva]) return {v:d.valor.toFixed(3),unit:' #' + d.ranking};
   if(capaActiva==='tnr') return {v:d.brecha.toFixed(1)+'h',unit:' brecha'};
   if(capaActiva==='ocupacion') return {v:d.mujeres+'%',unit:''};
   if(capaActiva==='fem_pobreza') return {v:d.indice,unit:''};
@@ -1060,6 +1157,21 @@ function renderCapaDetail(cod) {
       inner += '<div class="cd-row"><span class="cd-label">Ranking mundial</span><span class="cd-val">#' + d.ranking + '</span></div>';
       inner += '<div class="cd-note">Cuanto menor el índice, mayor igualdad de género. Referencia (2023): Dinamarca 0.003 · América Latina y el Caribe 0.384 · Promedio mundial 0.455.</div>';
     }
+    if(WEF_CAPAS[capaActiva] && d) {
+      const w = WEF_CAPAS[capaActiva];
+      const g = CAPA_DATA.wef[cod];
+      inner += '<div class="cd-row"><span class="cd-label">' + w.titulo + '</span><span class="cd-val">' + d.valor.toFixed(3) + '</span></div>';
+      inner += '<div class="cd-row"><span class="cd-label">Ranking mundial</span><span class="cd-val">#' + d.ranking + ' de ' + WEF_ECONOMIAS + '</span></div>';
+      if(capaActiva === 'wef') {
+        Object.entries(WEF_CAPAS).filter(([k]) => k !== 'wef').forEach(([k, s]) => {
+          inner += '<div class="cd-row"><span class="cd-label">' + s.titulo + '</span><span class="cd-val">' + g[s.campo].toFixed(3) + ' (#' + g[s.rank] + ')</span></div>';
+        });
+      } else {
+        inner += '<div class="cd-row"><span class="cd-label">Índice general</span><span class="cd-val">' + g.valor.toFixed(3) + ' (#' + g.ranking + ')</span></div>';
+      }
+      inner += '<div class="cd-row"><span class="cd-label">Edición del informe</span><span class="cd-val">' + d.anio + '</span></div>';
+      inner += '<div class="cd-note">El puntaje va de 0 a 1 y se lee como la proporción de la brecha de género que el país ya cerró (1 = paridad plena). Promedio mundial 2026: ' + w.mundo.toFixed(3) + (capaActiva === 'wef' ? ' · América Latina y el Caribe: 0.745' : '') + '.</div>';
+    }
     if(capaActiva==='tnr' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Horas semanales — mujeres</span><span class="cd-val">' + d.mujeres + ' h</span></div>';
       inner += '<div class="cd-row"><span class="cd-label">Horas semanales — varones</span><span class="cd-val">' + d.varones + ' h</span></div>';
@@ -1127,6 +1239,7 @@ function renderCapaDetail(cod) {
   }
   if(meta.fuente) inner += '<div class="cd-src">' + meta.fuente + '</div>';
   panel.innerHTML = inner;
+  panel.scrollTop = 0;
 }
 
 function clearSelection() {
@@ -1148,11 +1261,12 @@ function clearCapaDetail() {
 let worldData = null;
 Promise.all([
   d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'),
-  fetch('data.json').then(r => r.json()),
+  fetch('legislaciones.json').then(r => r.json()),
   fetch('indicadores.json').then(r => r.json())
 ]).then(([world, leyes, indicadores]) => {
   LEYES = leyes;
   CAPA_DATA = indicadores;
+  derivarCapasWef();
   worldData = world;
   buildLeftPanel();
   renderDetail();
