@@ -197,6 +197,21 @@
     .cd-src{font-size:10px;color:var(--text3);margin-top:5px;}
 
     footer{font-size:10px;color:var(--text3);padding:5px 16px;border-top:1px solid var(--border);background:var(--surface2);flex-shrink:0;}
+  
+    /* selector Mujeres / Varones / Total y datos TTNB */
+    .sel-btns{display:flex;flex-wrap:wrap;gap:3px;margin:0 0 7px;}
+    .sel-btns button{font-family:inherit;font-size:10px;padding:2px 7px;border-radius:10px;border:1px solid var(--border2);background:#fff;color:var(--text2);cursor:pointer;}
+    .sel-btns button.on{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700;}
+    .sel-btns button:disabled{opacity:.4;cursor:not-allowed;}
+    .legend-aviso{font-size:9px;color:var(--text3);margin-top:3px;}
+    .cd-sub{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px;}
+    .cd-row.cd-sel{background:var(--purple-pale);border-radius:4px;}
+    .cd-row.cd-sel .cd-val{color:var(--purple);font-weight:700;}
+    .cd-ttnb{margin-top:8px;padding-top:6px;border-top:1px dashed var(--border2);}
+    .cd-ttnb-src{font-size:9.5px;color:var(--text3);margin:-1px 0 5px;}
+    .cd-ttnb-src a{color:var(--purple);}
+    .cd-estado{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--text2);margin:0 0 5px;}
+    .cd-estado .legend-dot{flex-shrink:0;}
   </style>
 </head>
 <body>
@@ -327,17 +342,18 @@ const CATEGORIES = [
     id:'mercado_laboral', nombre:'Mercado laboral',
     fuente:'CEPAL (CEPALSTAT) y OIT / ILOSTAT; último año disponible por país',
     capas:[
-      {id:'ocupacion', nombre:'Tasa de ocupación femenina (%)', tema:null},
+      {id:'ocupacion', nombre:'Tasa de ocupación (%)', tema:null},
       {id:'fem_pobreza', nombre:'Índice de feminidad de la pobreza', tema:null},
-      {id:'tnr_tiempo', nombre:'Proporción tiempo TNR — Mujeres (%)', tema:null},
-      {id:'sin_ingresos', nombre:'Mujeres sin ingresos propios (%)', tema:null},
-      {id:'informalidad', nombre:'Informalidad laboral femenina (%)', tema:null},
+      {id:'tnr_tiempo', nombre:'Tiempo en trabajo no remunerado (%)', tema:null},
+      {id:'sin_ingresos', nombre:'Personas sin ingresos propios (%)', tema:null},
+      {id:'informalidad', nombre:'Informalidad laboral (%)', tema:null},
       {id:'actividad_hijos', nombre:'Participación laboral con hijas/os menores de 6 años (%)', tema:null},
+      {id:'ttnb', nombre:'Estadísticas laborales oficiales sobre personas TTNB', tema:null},
     ]
   },
   {
     id:'generacional', nombre:'Mercado laboral por generación',
-    fuente:'OIT / ILOSTAT, consultado octubre 2026. Mujeres únicamente.',
+    fuente:'OIT / ILOSTAT, consultado octubre 2026. Mujeres, varones y total.',
     capas:[
       {id:'part_juv', nombre:'Participación laboral — Jóvenes 15-24 (%)', tema:null},
       {id:'part_mayor', nombre:'Participación laboral — 55-64 años (%)', tema:null},
@@ -381,7 +397,7 @@ let CAPA_DATA = {};
 // Metadata de cada capa (para el sidebar)
 const LAYER_META = {
   brecha:{label:"Brecha salarial de género",desc:"Porcentaje en que el ingreso laboral promedio de las mujeres ocupadas es menor que el de los varones (15 años y más). No compara puestos equivalentes: también refleja diferencias en horas trabajadas, ocupaciones y sectores.",fuente:"Fuente: CEPAL (CEPALSTAT), relación del ingreso medio entre mujeres y varones; último año disponible por país"},
-  participacion:{label:"Tasa de participación económica",desc:"Porcentaje de mujeres de 15 años y más que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: OIT / ILOSTAT; último año disponible por país"},
+  participacion:{label:"Tasa de participación económica",desc:"Porcentaje de personas de 15 años y más que integran la fuerza laboral (empleadas o buscando empleo). Con el selector se comparan mujeres, varones y total.",fuente:"Fuente: OIT / ILOSTAT; último año disponible por país"},
   licencias:{label:"Licencias parentales",desc:"Duración en días de las licencias de maternidad y paternidad establecidas por ley.",fuente:"Fuente: OIT, 2024"},
   legislacion:{label:"Legislación y normativa",desc:"Leyes nacionales e instrumentos internacionales sobre género y trabajo.",fuente:""},
   c190:{label:"Ratificación Convenio 190 OIT",desc:"Países que han ratificado el C190 sobre eliminación de la violencia y el acoso en el mundo del trabajo, y países donde la ratificación está en discusión legislativa.",fuente:"Fuente: OIT / NORMLEX, contrastado agosto 2026"},
@@ -394,21 +410,22 @@ const LAYER_META = {
   wef_edu:{label:"WEF 2026 — Logro educativo",desc:"Subíndice del WEF que compara a mujeres y varones en alfabetización y en matrícula en educación primaria, secundaria y terciaria (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026. Nicaragua y Venezuela no figuran en esta edición."},
   wef_salud:{label:"WEF 2026 — Salud y supervivencia",desc:"Subíndice del WEF que compara la proporción de sexos al nacer y la esperanza de vida saludable de mujeres y varones (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026. Nicaragua y Venezuela no figuran en esta edición."},
   wef_polit:{label:"WEF 2026 — Empoderamiento político",desc:"Subíndice del WEF que compara la presencia de mujeres y varones en el parlamento, en cargos ministeriales y en la jefatura de Estado durante los últimos 50 años (0 = disparidad total · 1 = paridad plena).",fuente:"Fuente: Foro Económico Mundial (WEF), Global Gender Gap Report 2026. Nicaragua y Venezuela no figuran en esta edición."},
-  idg:{label:"Índice de Desigualdad de Género (IDG)",desc:"Índice del PNUD que mide la pérdida de desarrollo humano por desigualdad de género (0 = igualdad plena · 1 = máxima desigualdad).",fuente:"Fuente: PNUD, Informe sobre Desarrollo Humano 2025 (datos 2023)"},
+  idg:{label:"Índice de Desigualdad de Género (IDG)",desc:"Índice del PNUD que mide la pérdida de desarrollo humano por desigualdad de género (0 = igualdad plena · 1 = máxima desigualdad).",fuente:"Fuente: PNUD, Informe sobre Desarrollo Humano 2025 (datos 2023)"},
+  ttnb:{label:"Estadísticas laborales oficiales sobre personas TTNB",desc:"Muestra qué países publican datos oficiales sobre la situación laboral de personas travestis, trans y no binarias, y si están actualizados. El silencio estadístico también es un dato: la falta de información oficial invisibiliza a esta población y dificulta diseñar políticas públicas para ella.",fuente:"Fuente: relevamiento de Grow - Género y trabajo sobre publicaciones de organismos oficiales nacionales, octubre 2026."},
   femicidios:{label:"Femicidios",desc:"Tasa de femicidios (asesinatos de mujeres por razones de género) por cada 100.000 mujeres.",fuente:"Fuente: CEPAL, Observatorio de Igualdad de Género (cifras oficiales); último año disponible por país"},
   tnr:{label:"Trabajo doméstico y de cuidados no remunerado",desc:"Promedio de horas semanales dedicadas al trabajo doméstico y de cuidados no remunerado, por género. El mapa muestra la brecha (horas de mujeres menos horas de varones), que refleja la desigualdad en la distribución de estas tareas.",fuente:"Fuente: CEPAL (CEPALSTAT), encuestas de uso del tiempo; el año de la encuesta varía según el país."},
-  ocupacion:{label:"Tasa de ocupación femenina",desc:"Porcentaje de mujeres en edad activa que tienen empleo, sobre el total de la población en edad de trabajar. Permite comparar la brecha con la tasa masculina.",fuente:"Fuente: CEPAL (CEPALSTAT), 2024"},
+  ocupacion:{label:"Tasa de ocupación",desc:"Porcentaje de personas en edad de trabajar que tienen empleo. Con el selector se comparan mujeres, varones y total.",fuente:"Fuente: CEPAL (CEPALSTAT), 2024"},
   fem_pobreza:{label:"Índice de feminidad de la pobreza",desc:"Número de mujeres en situación de pobreza por cada 100 varones en la misma situación. Un valor superior a 100 indica que la pobreza afecta más a las mujeres.",fuente:"Fuente: CEPAL (CEPALSTAT); último año disponible por país."},
-  tnr_tiempo:{label:"Proporción del tiempo dedicado al TNR — Mujeres",desc:"Porcentaje del tiempo total que las mujeres dedican al trabajo doméstico y de cuidados no remunerado (TNR), comparado con el de varones.",fuente:"Fuente: CEPAL (CEPALSTAT), indicador ODS 5.4.1; el año de la encuesta varía según el país."},
+  tnr_tiempo:{label:"Tiempo dedicado al trabajo no remunerado",desc:"Porcentaje del tiempo diario que mujeres y varones dedican al trabajo doméstico y de cuidados no remunerado (TNR). CEPAL no publica el dato total.",fuente:"Fuente: CEPAL (CEPALSTAT), indicador ODS 5.4.1; el año de la encuesta varía según el país."},
   informalidad:{label:"Informalidad laboral",desc:"Porcentaje de personas ocupadas de 15 años y más con empleo informal, por género. La informalidad implica falta de protección social, inestabilidad laboral y menor acceso a derechos laborales.",fuente:"Fuente: OIT / ILOSTAT; último año disponible por país"},
   actividad_hijos:{label:"Participación laboral con hijas/os menores de 6 años",desc:"Porcentaje de personas de 25 a 54 años que trabajan o buscan trabajo, entre quienes viven en un hogar con al menos una niña o un niño menor de 6 años. Muestra la 'penalidad por maternidad': la crianza en la primera infancia reduce la participación laboral de las mujeres y casi no afecta la de los varones.",fuente:"Fuente: OIT / ILOSTAT; último año disponible por país (2014–2025)"},
-  sin_ingresos:{label:"Mujeres sin ingresos propios",desc:"Porcentaje de mujeres mayores de 15 años que no tienen ingresos propios (ni laborales ni no laborales). Indicador de dependencia económica.",fuente:"Fuente: CEPAL (CEPALSTAT); último año disponible por país."},
-  part_juv:{label:"Participación laboral — Jóvenes 15-24",desc:"Porcentaje de mujeres de 15 a 24 años que integran la fuerza laboral (empleadas o buscando empleo). Permite ver la brecha generacional junto con la capa de 55-64 años.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
-  part_mayor:{label:"Participación laboral — 55-64 años",desc:"Porcentaje de mujeres de 55 a 64 años que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
-  emp_juv:{label:"Empleo — Jóvenes 15-24",desc:"Razón empleo-población: porcentaje de mujeres de 15 a 24 años que efectivamente tienen empleo (no solo lo buscan).",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
-  emp_mayor:{label:"Empleo — 55-64 años",desc:"Razón empleo-población: porcentaje de mujeres de 55 a 64 años que efectivamente tienen empleo.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
-  desem_juv:{label:"Desempleo — Jóvenes 15-24",desc:"Tasa de desempleo entre mujeres de 15 a 24 años que integran la fuerza laboral. Suele ser mucho más alta que la de adultas mayores — la comparación entre ambas capas visibiliza la exclusión laboral juvenil femenina.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
-  desem_mayor:{label:"Desempleo — 55-64 años",desc:"Tasa de desempleo entre mujeres de 55 a 64 años que integran la fuerza laboral.",fuente:"Fuente: ILOSTAT (OIT), datos obtenidos agosto 2026."},
+  sin_ingresos:{label:"Personas sin ingresos propios",desc:"Porcentaje de personas de 15 años y más que no tienen ingresos propios (ni laborales ni no laborales). Indicador de autonomía económica.",fuente:"Fuente: CEPAL (CEPALSTAT); último año disponible por país."},
+  part_juv:{label:"Participación laboral — 15 a 24 años",desc:"Porcentaje de personas de 15 a 24 años que integran la fuerza laboral (empleadas o buscando empleo). Se puede comparar con la capa de 55 a 64 años.",fuente:"Fuente: OIT / ILOSTAT, consultado octubre 2026."},
+  part_mayor:{label:"Participación laboral — 55 a 64 años",desc:"Porcentaje de personas de 55 a 64 años que integran la fuerza laboral (empleadas o buscando empleo).",fuente:"Fuente: OIT / ILOSTAT, consultado octubre 2026."},
+  emp_juv:{label:"Empleo — 15 a 24 años",desc:"Razón empleo-población: porcentaje de personas de 15 a 24 años que tienen empleo.",fuente:"Fuente: OIT / ILOSTAT, consultado octubre 2026."},
+  emp_mayor:{label:"Empleo — 55 a 64 años",desc:"Razón empleo-población: porcentaje de personas de 55 a 64 años que tienen empleo.",fuente:"Fuente: OIT / ILOSTAT, consultado octubre 2026."},
+  desem_juv:{label:"Desempleo — 15 a 24 años",desc:"Tasa de desempleo de las personas de 15 a 24 años que integran la fuerza laboral. Suele ser mucho más alta que la de las personas de 55 a 64 años.",fuente:"Fuente: OIT / ILOSTAT, consultado octubre 2026."},
+  desem_mayor:{label:"Desempleo — 55 a 64 años",desc:"Tasa de desempleo de las personas de 55 a 64 años que integran la fuerza laboral.",fuente:"Fuente: OIT / ILOSTAT, consultado octubre 2026."},
 };
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -466,6 +483,159 @@ function derivarCapasWef() {
   });
 }
 
+// ── Selector Mujeres / Varones / Total en las capas laborales ─────────────────
+// La escala de color es la misma para los tres, así al cambiar se ve la diferencia.
+let sexoActivo = 'm';
+const SEXO_LABEL = {m:'Mujeres', v:'Varones', t:'Total'};
+const SEXO_CAPAS = {
+  participacion:  {m:'valor',   lo:'#FFA726', hi:'#1B5E20', titulo:'Participación laboral (15 años y más)',
+                   nota:'Porcentaje de personas de 15 años y más que trabajan o buscan trabajo.'},
+  ocupacion:      {m:'mujeres', lo:'#FFF3E0', hi:'#1B5E20', titulo:'Tasa de ocupación',
+                   nota:'Porcentaje de personas en edad de trabajar que tienen empleo.'},
+  tnr_tiempo:     {m:'mujeres', lo:'#FFF9C4', hi:'#B71C1C', titulo:'Tiempo en trabajo no remunerado', sinTotal:true,
+                   nota:'Proporción del tiempo diario dedicada al trabajo doméstico y de cuidados no remunerado. CEPAL no publica el dato total.'},
+  sin_ingresos:   {m:'mujeres', lo:'#FFF9C4', hi:'#B71C1C', titulo:'Personas sin ingresos propios',
+                   nota:'Porcentaje de personas de 15 años y más sin ingresos propios (ni laborales ni no laborales). Indicador de autonomía económica.'},
+  informalidad:   {m:'mujeres', lo:'#E8F5E9', hi:'#C62828', titulo:'Informalidad laboral',
+                   nota:'Porcentaje de personas ocupadas con empleo informal: sin protección social, contrato ni registro.'},
+  actividad_hijos:{m:'mujeres', lo:'#FFEBEE', hi:'#1B5E20', titulo:'Participación con hijas/os menores de 6',
+                   nota:'Personas de 25 a 54 años que trabajan o buscan trabajo, entre quienes viven en un hogar con al menos una niña o un niño menor de 6 años. La diferencia entre mujeres y varones muestra el impacto desigual de las responsabilidades de cuidado.'},
+  part_juv:   {m:'valor', lo:'#FFF3E0', hi:'#1B5E20', titulo:'Participación laboral — 15 a 24 años', par:'part_mayor'},
+  part_mayor: {m:'valor', lo:'#FFF3E0', hi:'#1B5E20', titulo:'Participación laboral — 55 a 64 años', par:'part_juv'},
+  emp_juv:    {m:'valor', lo:'#FFF3E0', hi:'#1B5E20', titulo:'Empleo — 15 a 24 años', par:'emp_mayor'},
+  emp_mayor:  {m:'valor', lo:'#FFF3E0', hi:'#1B5E20', titulo:'Empleo — 55 a 64 años', par:'emp_juv'},
+  desem_juv:  {m:'valor', lo:'#E8F5E9', hi:'#C62828', titulo:'Desempleo — 15 a 24 años', par:'desem_mayor', asc:true},
+  desem_mayor:{m:'valor', lo:'#E8F5E9', hi:'#C62828', titulo:'Desempleo — 55 a 64 años', par:'desem_juv', asc:true},
+};
+
+function sexoEfectivo(capa) {
+  // si la capa no tiene total publicado, se muestran mujeres
+  return (sexoActivo === 't' && SEXO_CAPAS[capa]?.sinTotal) ? 'm' : sexoActivo;
+}
+function valorSexo(capa, d, s) {
+  if(!d || !SEXO_CAPAS[capa]) return null;
+  const k = s === 'm' ? SEXO_CAPAS[capa].m : (s === 'v' ? 'varones' : 'total');
+  const x = d[k];
+  return (x === undefined || x === null || x === '') ? null : +x;
+}
+function rangoSexo(capa) {
+  const vals = [];
+  Object.values(CAPA_DATA[capa] || {}).forEach(d => ['m','v','t'].forEach(s => {
+    const x = valorSexo(capa, d, s); if(x != null) vals.push(x);
+  }));
+  if(!vals.length) return [0, 100];
+  const min = Math.min(...vals), max = Math.max(...vals), paso = max - min > 20 ? 5 : 1;
+  const lo = Math.floor(min / paso) * paso, hi = Math.ceil(max / paso) * paso;
+  return [lo, hi > lo ? hi : lo + paso];
+}
+function setSexo(s) {
+  sexoActivo = s;
+  updateMapColors(); renderCapaSidebar(); renderCapaDetail(selectedCountry); renderLegend();
+}
+function fmtPct(x) { return x == null ? 's/d' : x + '%'; }
+function filaCd(lbl, val, sel) {
+  return '<div class="cd-row' + (sel ? ' cd-sel' : '') + '"><span class="cd-label">' + lbl + '</span><span class="cd-val">' + val + '</span></div>';
+}
+function tooltipSexo(d) {
+  const c = SEXO_CAPAS[capaActiva], se = sexoEfectivo(capaActiva);
+  const partes = ['m','v','t'].filter(s => !(s === 't' && c.sinTotal))
+    .map(s => (s === se ? '▸ ' : '') + SEXO_LABEL[s] + ' ' + fmtPct(valorSexo(capaActiva, d, s)));
+  return {v: partes.join(' · '), s: d.anio ? 'Año ' + d.anio : ''};
+}
+function leyendaSexo() {
+  const c = SEXO_CAPAS[capaActiva], r = rangoSexo(capaActiva), se = sexoEfectivo(capaActiva);
+  const btns = ['m','v','t'].map(s => '<button class="' + (s === se ? 'on' : '') + '"' +
+    (s === 't' && c.sinTotal ? ' disabled title="CEPAL no publica el total"' : '') +
+    ' onclick="setSexo(\'' + s + '\')">' + SEXO_LABEL[s] + '</button>').join('');
+  return '<div class="legend-title">' + c.titulo + '</div>' +
+    '<div class="sel-btns">' + btns + '</div>' +
+    '<div class="legend-grad-wrap"><div class="legend-grad" style="background:linear-gradient(to right,' + c.lo + ',' + c.hi + ')"></div>' +
+    '<div class="legend-grad-labels"><span>' + r[0] + '%</span><span>' + r[1] + '%</span></div></div>' +
+    '<div class="legend-item"><div class="legend-dot" style="background:#C8C4BB"></div>Sin datos</div>' +
+    '<div class="legend-aviso">Misma escala para mujeres, varones y total</div>';
+}
+function fichaSexo(cod, d) {
+  const c = SEXO_CAPAS[capaActiva], se = sexoEfectivo(capaActiva);
+  const m = valorSexo(capaActiva, d, 'm'), v = valorSexo(capaActiva, d, 'v'), t = valorSexo(capaActiva, d, 't');
+  let h = '<div class="cd-sub">' + c.titulo + '</div>' +
+    filaCd('Mujeres', fmtPct(m), se === 'm') + filaCd('Varones', fmtPct(v), se === 'v');
+  if(!c.sinTotal) h += filaCd('Total', fmtPct(t), se === 't');
+  if(m != null && v != null) {
+    const dif = +(v - m).toFixed(1);
+    h += filaCd('Diferencia varones − mujeres', (dif > 0 ? '+' : '') + dif + ' p.p.');
+  }
+  if(d.anio) h += filaCd('Año', d.anio);
+  if(capaActiva === 'tnr_tiempo') {
+    const hs = CAPA_DATA.tnr?.[cod];
+    if(hs) h += filaCd('Horas semanales (mujeres / varones)', hs.mujeres + ' h / ' + hs.varones + ' h' + (hs.anio && hs.anio !== d.anio ? ' (' + hs.anio + ')' : ''));
+  }
+  if(c.par) {
+    const dp = CAPA_DATA[c.par]?.[cod], xp = valorSexo(c.par, dp, se);
+    if(xp != null) h += filaCd(SEXO_CAPAS[c.par].titulo.split('— ')[1] + ' (' + SEXO_LABEL[se].toLowerCase() + ')', xp + '% (' + dp.anio + ')');
+  }
+  if(d.nota) h += '<div class="cd-note">' + d.nota + '</div>';
+  if(c.nota) h += '<div class="cd-note">' + c.nota + '</div>';
+  return h + fichaTTNBCompacta(cod);
+}
+
+// ── Estadísticas laborales oficiales sobre personas travestis, trans y no binarias ──
+// Solo organismos oficiales. Estado del país: dato reciente (nacional, 2022 o después),
+// desactualizado o sin datos oficiales. El silencio estadístico también se muestra.
+const ESTADO_TTNB = {
+  'reciente':            {lbl:'Dato oficial reciente (2022 o posterior)', corto:'Reciente', color:'#2E7D32', orden:2},
+  'desactualizado':      {lbl:'Dato oficial desactualizado (anterior a 2022)', corto:'Desactualizado', color:'#F9A825', orden:1},
+  'sin datos oficiales': {lbl:'Sin datos oficiales', corto:'Sin datos oficiales', color:'#A8A3B5', orden:0},
+};
+function estadoTTNB(d) { return ESTADO_TTNB[d?.estado] || ESTADO_TTNB['sin datos oficiales']; }
+function lineaEstadoTTNB(d) {
+  const e = estadoTTNB(d);
+  return '<div class="cd-estado"><span class="legend-dot" style="background:' + e.color + '"></span>' + e.lbl + '</div>';
+}
+function fuentesTTNB(d) {
+  const vistas = [];
+  (d.datos || []).forEach(x => { const k = x.organismo + ', ' + x.anio; if(!vistas.includes(k)) vistas.push(k); });
+  return vistas.join(' · ');
+}
+function fichaTTNBCompacta(cod) {
+  // recuadro corto en las fichas de las capas laborales
+  const d = CAPA_DATA.ttnb?.[cod];
+  if(!d) return '';
+  const n = (d.datos || []).length;
+  return '<div class="cd-ttnb"><div class="cd-sub">Personas travestis, trans y no binarias (TTNB)</div>' + lineaEstadoTTNB(d) +
+    '<div class="cd-ttnb-src">' + (n ? n + ' indicadores · ' + fuentesTTNB(d) : (d.nota || '')) + '</div>' +
+    '<div class="cd-ttnb-src"><a href="#" onclick="verTTNB(\'' + cod + '\');return false;">Ver el detalle en la capa de estadísticas TTNB</a></div></div>';
+}
+function verTTNB(cod) { setCapaFromPanel('ttnb', null); selectCapaPais(cod); }
+function fichaTTNB(cod) {
+  const d = CAPA_DATA.ttnb?.[cod];
+  if(!d) return '';
+  let h = '<div class="cd-sub">Personas travestis, trans y no binarias (TTNB)</div>' + lineaEstadoTTNB(d);
+  (d.datos || []).forEach(x => {
+    h += filaCd(x.indicador + (x.poblacion ? ' — ' + x.poblacion : ''), x.valor + (x.unidad === '%' ? '%' : ''));
+    if(x.comparacion) h += '<div class="cd-ttnb-src">' + x.comparacion + '</div>';
+    if(x.nota) h += '<div class="cd-ttnb-src">' + x.nota + '</div>';
+  });
+  const vistas = [];
+  (d.datos || []).forEach(x => {
+    if(vistas.includes(x.fuente)) return;
+    vistas.push(x.fuente);
+    h += '<div class="cd-ttnb-src"><b>' + x.organismo + '</b>: ' + x.fuente + ', ' + x.anio + ' · ' + x.cobertura +
+      (x.link ? ' · <a href="' + x.link + '" target="_blank" rel="noopener noreferrer">ver fuente</a>' : '') + '</div>';
+  });
+  if(d.nota) h += '<div class="cd-note">' + d.nota + '</div>';
+  if((d.datos || []).length) h += '<div class="cd-note">Datos de fuentes específicas sobre población TTNB: no son comparables con los de mujeres y varones ni entre países.</div>';
+  return h;
+}
+function tooltipTTNB(d) {
+  const n = (d.datos || []).length;
+  return {v: estadoTTNB(d).lbl, s: n ? n + ' indicadores · ' + fuentesTTNB(d) : 'Silencio estadístico'};
+}
+function leyendaTTNB() {
+  return '<div class="legend-title">Estadísticas laborales oficiales TTNB</div>' +
+    Object.values(ESTADO_TTNB).map(e => '<div class="legend-item"><div class="legend-dot" style="background:' + e.color + '"></div>' + e.lbl + '</div>').join('') +
+    '<div class="legend-aviso">El silencio estadístico también es un dato: invisibiliza a la población TTNB.</div>';
+}
+
 function getCountryColor(cod) {
   const eff = COUNTRY_ALIAS[cod] || cod;
   if(capaActiva==='legislacion') {
@@ -474,6 +644,8 @@ function getCountryColor(cod) {
     return pc.has(eff) ? (COUNTRY_COLORS[cod]||'#999') : null;
   }
   const d = CAPA_DATA[capaActiva]?.[eff];
+  if(SEXO_CAPAS[capaActiva]) { const r = rangoSexo(capaActiva), x = valorSexo(capaActiva, d, sexoEfectivo(capaActiva)); return x == null ? null : choropleth(x, r[0], r[1], SEXO_CAPAS[capaActiva].lo, SEXO_CAPAS[capaActiva].hi); }
+  if(capaActiva==='ttnb') return d ? estadoTTNB(d).color : null;
   if(capaActiva==='participacion') return d ? choropleth(d.valor,40,75,'#FFA726','#1B5E20') : null;
   if(capaActiva==='femicidios')    return d ? choropleth(d.tasa,0.3,5.0,'#FFF8E1','#B71C1C') : null;
   if(capaActiva==='lgbtq')         return d!=null ? LGBTQ_COLORS[d.nivel] : null;
@@ -775,6 +947,8 @@ function getTooltipContent(eff, cod) {
   }
   const d = CAPA_DATA[capaActiva]?.[eff];
   if(!d && capaActiva!=='c190' && capaActiva!=='cdn' && capaActiva!=='cuotas') return {v:'Sin datos disponibles',s:''};
+  if(SEXO_CAPAS[capaActiva]) return tooltipSexo(d);
+  if(capaActiva==='ttnb') return tooltipTTNB(d);
   if(capaActiva==='participacion') return {v: d.valor + '% participación femenina', s: 'Año ' + d.anio};
   if(capaActiva==='femicidios') return {v: (d.valor ? d.valor + ' casos · ' : '') + 'Tasa: ' + d.tasa + '/100k mujeres', s: 'Año ' + d.anio};
   if(capaActiva==='lgbtq') return {v: LGBTQ_LABELS[d.nivel], s: d.anio ? 'Desde ' + d.anio : ''};
@@ -802,6 +976,8 @@ function getTooltipContent(eff, cod) {
 // ════════════════════════════════════════════════════════════════════════════
 function renderLegend() {
   const el = document.getElementById('legend');
+  if(SEXO_CAPAS[capaActiva]) { el.innerHTML = leyendaSexo(); return; }
+  if(capaActiva==='ttnb') { el.innerHTML = leyendaTTNB(); return; }
   if(capaActiva==='legislacion' && esOitTema(filtroTema)) {
     const max = Math.max(1, ...contarOit(filtroTema).values());
     el.innerHTML = '<div class="legend-title">Convenios OIT — ' + OIT_NOMBRES[filtroTema] + '</div>' +
@@ -1003,6 +1179,8 @@ function sortCapaItems(cods) {
   const val = c => {
     const d = CAPA_DATA[capaActiva]?.[c];
     if(!d) return -Infinity;
+    if(SEXO_CAPAS[capaActiva]) { const x = valorSexo(capaActiva, d, sexoEfectivo(capaActiva)); return x == null ? -Infinity : (SEXO_CAPAS[capaActiva].asc ? -x : x); }
+    if(capaActiva==='ttnb') return estadoTTNB(d).orden;
     if(capaActiva==='participacion') return d.valor;
     if(capaActiva==='femicidios') return d.tasa;
     if(capaActiva==='lgbtq') return d.nivel;
@@ -1034,6 +1212,8 @@ function sortCapaItems(cods) {
 
 function getCapaItemValue(cod, d) {
   if(!d && capaActiva!=='c190' && capaActiva!=='cdn' && capaActiva!=='cuotas') return {v:'',unit:''};
+  if(SEXO_CAPAS[capaActiva]) { const x = valorSexo(capaActiva, d, sexoEfectivo(capaActiva)); return {v: x == null ? 's/d' : x + '%', unit:''}; }
+  if(capaActiva==='ttnb') return {v: estadoTTNB(d).corto, unit:''};
   if(capaActiva==='participacion') return {v:d.valor+'%',unit:''};
   if(capaActiva==='femicidios') return {v:d.tasa.toFixed(2),unit:'/100k'};
   if(capaActiva==='lgbtq') return {v:LGBTQ_LABELS[d.nivel].split('+')[0].trim(),unit:''};
@@ -1103,6 +1283,10 @@ function renderCapaDetail(cod) {
     '<button class="detail-close" onclick="clearCapaDetail()" title="Cerrar">&#10005;</button></div>';
   if(!d && capaActiva !== 'c190' && capaActiva !== 'cdn' && capaActiva !== 'cuotas') {
     inner += '<div class="detail-empty" style="text-align:left;padding:0">Sin datos disponibles para este país.</div>';
+  } else if(SEXO_CAPAS[capaActiva]) {
+    inner += fichaSexo(cod, d);
+  } else if(capaActiva==='ttnb') {
+    inner += fichaTTNB(cod);
   } else {
     if(capaActiva==='participacion' && d) {
       inner += '<div class="cd-row"><span class="cd-label">Tasa de participación femenina</span><span class="cd-val">' + d.valor + '%</span></div>';
